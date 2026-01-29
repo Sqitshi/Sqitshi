@@ -69,12 +69,12 @@ void init_proc(); // idb
 void sub_804A6E8();
 // int atol(const char *nptr);
 // double cos(double x);
-// int mysql_real_escape_string(DWORD, DWORD, DWORD, DWORD); weak
-// int mysql_store_result(DWORD); weak
+// int mysql_real_escape_string((MYSQL*)DWORD, DWORD, DWORD, DWORD); weak
+// int mysql_store_result((MYSQL*)DWORD); weak
 // double __strtod_internal(const char *nptr, char **endptr, int a2);// int mysql_fetch_row(DWORD); weak
 // char *strncat(char *dest, const char *src, size_t n);
 // char *strchr(const char *s, int a2);// int feof(FILE *stream);
-// int mysql_affected_rows(DWORD); weak
+// int mysql_affected_rows((MYSQL*)DWORD); weak
 // __pid_t getpid();
 // long long mysql_insert_id(DWORD); weak
 // int PEM_read_bio_RSAPrivateKey(DWORD, DWORD, DWORD, DWORD); weak
@@ -128,8 +128,8 @@ void sub_804A6E8();
 // int ftruncate(int fd, __off_t length);
 // void openlog(const char *ident, int a2, int a3);// in_addr_t inet_addr(const char *cp);
 // int memcmp(const void *s1, const void *s2, size_t n);
-// int mysql_query(DWORD, DWORD, DWORD); weak
-// int mysql_error(DWORD); weak
+// int mysql_query((MYSQL*)DWORD, DWORD, DWORD); weak
+// int mysql_error((MYSQL*)DWORD); weak
 // int toupper(int c);
 // void *realloc(void *ptr, size_t size);
 // char *strcat(char *dest, const char *src);
@@ -454,8 +454,8 @@ int _lzo_ptr_linear(int a1);unsigned int _lzo_align_gap(int a1, unsigned int a2)
 int lzo_version();
 const char *lzo_version_string();
 const char *lzo_version_date();
-const char *lzo_version_string();
-const char *lzo_version_date();
+// DUP_DECL: const char *lzo_version_string();
+// DUP_DECL: const char *lzo_version_date();
 int lzo_adler32(int a1, unsigned char *a2, unsigned int a3);int lzo_memcmp(void *s1, void *s2, size_t n); // idb
 void *lzo_memcpy(void *dest, void *src, size_t n);
 void *lzo_memmove(void *dest, void *src, size_t n);
@@ -14463,7 +14463,7 @@ void /* __noreturn */ luaD_throw(int a1, int a2){
 }
 
 //----- (080A4498) --------------------------------------------------------
-int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a3){
+int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a2_dup){
   int v4; // [esp-8h] [ebp-C0h]
   int v5; // [esp-4h] [ebp-BCh]
   int v6; // [esp+14h] [ebp-A4h]
@@ -14474,7 +14474,7 @@ int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3, void*), i
   v6 = *(DWORD *)(a1 + 84);
   *(DWORD *)(a1 + 84) = &v6;
   if ( !_setjmp(env) )
-    a2(a1, a3, v4, v5);
+    a2(a1, a2_dup, v4, v5);
   *(DWORD *)(a1 + 84) = v6;
   return v8;
 }
@@ -14888,7 +14888,7 @@ char luaD_call(int a1, DWORD *a2, int a3){
 }
 
 //----- (080A4F70) --------------------------------------------------------
-int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a3, int a4, int a5){
+int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a2_dup, int a4, int a5){
   int v5; // edi
   DWORD *v6; // ebx
   DWORD *v7; // eax
@@ -14902,7 +14902,7 @@ int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a3, int
   v10 = *(BYTE *)(a1 + 49);
   v9 = *(DWORD *)(a1 + 88);
   *(DWORD *)(a1 + 88) = a5;
-  v5 = luaD_rawrunprotected(a1, a2, a3);
+  v5 = luaD_rawrunprotected(a1, a2, a2_dup);
   if ( v5 )
   {
     v6 = (DWORD *)(*(DWORD *)(a1 + 28) + a4);
@@ -15935,7 +15935,7 @@ void *luaM_realloc(int a1, void *ptr, int a2, size_t size){
 LABEL_10:
   if ( a1 )
   {
-    *(DWORD *)(*(DWORD *)(a1 + 16) + 36) -= a3;
+    *(DWORD *)(*(DWORD *)(a1 + 16) + 36) -= a2;
     *(DWORD *)(*(DWORD *)(a1 + 16) + 36) += size;
   }
   return v4;
@@ -23641,7 +23641,7 @@ unsigned short *wstrncpy(unsigned short *a1, unsigned short *a2, int a2_dup){
   unsigned short *result; // eax
   unsigned short v4; // cx
 
-  while ( a3 )
+  while ( a2_dup )
   {
     result = a1;
     v4 = *a2;
@@ -23650,9 +23650,9 @@ unsigned short *wstrncpy(unsigned short *a1, unsigned short *a2, int a2_dup){
     ++a1;
     if ( !v4 )
       break;
-    --a3;
+    --a2_dup;
   }
-  if ( !a3 )
+  if ( !a2_dup )
     *a1 = 0;
   return result;
 }
@@ -23783,10 +23783,10 @@ int CDBAccess_SQLQuery(CDBAccess *self, char *format, ...)
   if ( vsnprintf((char *)self + 33555292, 0x1000u, format, va) < 0 )
     return -1;
   v3 = strlen((const char *)self + 33555292);
-  if ( !mysql_query(self, (char *)self + 33555292, v3) )
+  if ( !mysql_query((MYSQL*)self, (char *)self + 33555292, v3) )
   {
 LABEL_15:
-    v9 = mysql_affected_rows(self);
+    v9 = mysql_affected_rows((MYSQL*)self);
     if ( v9 < 0 )
       result = 1;
     else
@@ -23794,14 +23794,14 @@ LABEL_15:
     return result;
   }
   v7 = mysql_errno(self);
-  v4 = (const char *)mysql_error(self);
+  v4 = (const char *)mysql_error((MYSQL*)self);
   sprintf(&s, "Mysql errro occured %s\n", v4);
   if ( v7 == 2006 || v7 == 2013 )
   {
     if ( !CDBAccess_ReConnect(self) )
     {
       v5 = strlen((const char *)self + 33555292);
-      if ( mysql_query(self, (char *)self + 33555292, v5) )
+      if ( mysql_query((MYSQL*)self, (char *)self + 33555292, v5) )
         return -1;
     }
     goto LABEL_15;
@@ -23810,10 +23810,10 @@ LABEL_15:
     __assert_fail("0", "CDBAccess.cpp", 0xA2u, "int CDBAccess_SQLQuery((char*)0, ...)");
   return -1;
 }
-// 804A7E8: using guessed type int mysql_affected_rows(DWORD);
+// 804A7E8: using guessed type int mysql_affected_rows((MYSQL*)DWORD);
 // 804AD78: using guessed type int mysql_errno(DWORD);
-// 804AE88: using guessed type int mysql_query(DWORD, DWORD, DWORD);
-// 804AED8: using guessed type int mysql_error(DWORD);
+// 804AE88: using guessed type int mysql_query((MYSQL*)DWORD, DWORD, DWORD);
+// 804AED8: using guessed type int mysql_error((MYSQL*)DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
 
 //----- (0815F74C) --------------------------------------------------------
@@ -23823,7 +23823,7 @@ int CDBAccess_FetchNextRow(CDBAccess *self)
 
   if ( *(((DWORD*)(void*)self) + 8389847) || *(((DWORD*)(void*)self) + 8388822) )
     goto LABEL_15;
-  *(((DWORD*)(void*)self) + 8389847) = mysql_store_result(self);
+  *(((DWORD*)(void*)self) + 8389847) = mysql_store_result((MYSQL*)self);
   if ( !*(((DWORD*)(void*)self) + 8389847) )
     return -1;
   *(((DWORD*)(void*)self) + 8388822) = mysql_num_rows(*(((DWORD*)(void*)self) + 8389847));
@@ -23840,7 +23840,7 @@ LABEL_15:
   *(((DWORD*)(void*)self) + 8389847) = 0;
   return -1;
 }
-// 804A758: using guessed type int mysql_store_result(DWORD);
+// 804A758: using guessed type int mysql_store_result((MYSQL*)DWORD);
 // 804A788: using guessed type int mysql_fetch_row(DWORD);
 // 804ACD8: using guessed type int mysql_num_rows(DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
@@ -23888,7 +23888,7 @@ int CDBAccess_FetchNextRow(CDBAccess *self, char *a2, ...)
   v21 = 0;
   if ( *(((DWORD*)(void*)self) + 8389847) || *(((DWORD*)(void*)self) + 8388822) )
     goto LABEL_33;
-  *(((DWORD*)(void*)self) + 8389847) = mysql_store_result(self);
+  *(((DWORD*)(void*)self) + 8389847) = mysql_store_result((MYSQL*)self);
   if ( !*(((DWORD*)(void*)self) + 8389847) )
     return -1;
   *(((DWORD*)(void*)self) + 8388822) = mysql_num_rows(*(((DWORD*)(void*)self) + 8389847));
@@ -24005,7 +24005,7 @@ LABEL_12:
   return result;
 }
 //  END DUPLICATE */
-// 804A758: using guessed type int mysql_store_result(DWORD);
+// 804A758: using guessed type int mysql_store_result((MYSQL*)DWORD);
 // 804A788: using guessed type int mysql_fetch_row(DWORD);
 // 804ACD8: using guessed type int mysql_num_rows(DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
@@ -24029,7 +24029,7 @@ int CDBAccess_BlobUpdate(int a1, int a2){
   if ( *(int *)(a2 + 1124) > 0xFFFFFF )
     return -1;
   v3 = sprintf((char *)(a1 + 656), "update %s set %s='", (const char *)a2, (const char *)(a2 + 80));
-  v6 = (char *)(mysql_real_escape_string(a1, v3 + 656 + a1, *(DWORD *)(a2 + 1120), *(DWORD *)(a2 + 1124))
+  v6 = (char *)(mysql_real_escape_string((MYSQL*)a1, v3 + 656 + a1, *(DWORD *)(a2 + 1120), *(DWORD *)(a2 + 1124))
               + v3
               + 656
               + a1);
@@ -24045,14 +24045,14 @@ int CDBAccess_BlobUpdate(int a1, int a2){
   sprintf(&s, " where %s", (const char *)(a2 + 960));
   v6 = (char *)strmov(v6, &s);
   *v6 = 0;
-  if ( mysql_query(a1, a1 + 656, &v6[-a1 - 656]) )
+  if ( mysql_query((MYSQL*)a1, a1 + 656, &v6[-a1 - 656]) )
     result = -1;
   else
     result = 0;
   return result;
 }
-// 804A748: using guessed type int mysql_real_escape_string(DWORD, DWORD, DWORD, DWORD);
-// 804AE88: using guessed type int mysql_query(DWORD, DWORD, DWORD);
+// 804A748: using guessed type int mysql_real_escape_string((MYSQL*)DWORD, DWORD, DWORD, DWORD);
+// 804AE88: using guessed type int mysql_query((MYSQL*)DWORD, DWORD, DWORD);
 
 //----- (08160268) --------------------------------------------------------
 int strmov(char *a1, const char *a2)
@@ -24919,7 +24919,7 @@ unsigned int CRC32_crc32_calc(CRC32 *self, unsigned char *a2, int a2_dup){
   unsigned int v4; // [esp+14h] [ebp-4h]
 
   v4 = *(((DWORD*)(void*)self) + 2);
-  while ( --a3 != -1 )
+  while ( --a2_dup != -1 )
     v4 = (v4 >> 8) ^ *(DWORD *)(*((DWORD*)(void*)self) + 4 * (*a2++ ^ (unsigned char)v4));
   return v4;
 }
@@ -24973,16 +24973,16 @@ const char *lzo_version_date()
 }
 
 //----- (08162B44) --------------------------------------------------------
-const char *lzo_version_string()
-{
-  return "1.08";
-}
+// DUP_FUNC: const char *lzo_version_string()
+// DUP_FUNC: {
+// DUP_FUNC:   return "1.08";
+// DUP_FUNC: }
 
 //----- (08162B54) --------------------------------------------------------
-const char *lzo_version_date()
-{
-  return "Jul 12 2002";
-}
+// DUP_FUNC: const char *lzo_version_date()
+// DUP_FUNC: {
+// DUP_FUNC:   return "Jul 12 2002";
+// DUP_FUNC: }
 
 //----- (08162B64) --------------------------------------------------------
 int lzo_adler32(int a1, unsigned char *a2, unsigned int a3){
@@ -28247,7 +28247,7 @@ const CMatrix *__pl(const CMatrix *a1, const CMatrix *a2, int a2_dup){
   v3 = 0;
   for ( i = 15; i >= 0; --i )
   {
-    *(float *)&v6[v3] = *(float *)((char *)a2 + v3) + *(float *)(a3 + v3);
+    *(float *)&v6[v3] = *(float *)((char *)a2 + v3) + *(float *)(a2_dup + v3);
     v3 += 4;
   }
   memcpy(a1, v6, 0x40u);
@@ -28264,7 +28264,7 @@ const CMatrix *__mi(const CMatrix *a1, const CMatrix *a2, int a2_dup){
   v3 = 0;
   for ( i = 15; i >= 0; --i )
   {
-    *(float *)&v6[v3] = *(float *)((char *)a2 + v3) - *(float *)(a3 + v3);
+    *(float *)&v6[v3] = *(float *)((char *)a2 + v3) - *(float *)(a2_dup + v3);
     v3 += 4;
   }
   memcpy(a1, v6, 0x40u);
@@ -30635,15 +30635,15 @@ void sub_804A6E8();
 // int pthread_attr_init(pthread_attr_t *attr);
 // int atol(const char *nptr);
 // double cos(double x);
-// int pthread_attr_setdetachstate(pthread_attr_t *attr, int a2);// int mysql_real_escape_string(DWORD, DWORD, DWORD, DWORD); weak
-// int mysql_store_result(DWORD); weak
+// int pthread_attr_setdetachstate(pthread_attr_t *attr, int a2);// int mysql_real_escape_string((MYSQL*)DWORD, DWORD, DWORD, DWORD); weak
+// int mysql_store_result((MYSQL*)DWORD); weak
 // double __strtod_internal(const char *nptr, char **endptr, int a2);// int rename(const char *old, const char *new);
 // int mysql_fetch_row(DWORD); weak
 // int ferror(FILE *stream);
 // int sigaction(int sig, const struct sigaction *act, struct sigaction *oact);
 // char *strncat(char *dest, const char *src, size_t n);
 // char *strchr(const char *s, int a2);// int feof(FILE *stream);
-// int mysql_affected_rows(DWORD); weak
+// int mysql_affected_rows((MYSQL*)DWORD); weak
 // int ungetc(int c, FILE *stream);
 // __pid_t getpid();
 // int nanosleep(const struct timespec *requested_time, struct timespec *remaining);
@@ -30734,10 +30734,10 @@ void sub_804A6E8();
 // void openlog(const char *ident, int a2, int a3);// in_addr_t inet_addr(const char *cp);
 // double floor(double x);
 // int memcmp(const void *s1, const void *s2, size_t n);
-// int mysql_query(DWORD, DWORD, DWORD); weak
+// int mysql_query((MYSQL*)DWORD, DWORD, DWORD); weak
 // int __libc_start_main(int (*main)(void*, char **, char **), int a2, char **ubp_av, void (*init)(), void (*fini)(), void (*rtld_fini)(), void *stack_end);// float floorf(float x);
 // double exp(double x);
-// int mysql_error(DWORD); weak
+// int mysql_error((MYSQL*)DWORD); weak
 // struct ::tm *localtime_r(const time_t *timer, struct ::tm *tp);
 // int toupper(int c);
 // void *realloc(void *ptr, size_t size);
@@ -31553,8 +31553,8 @@ int _lzo_ptr_linear(int a1);unsigned int _lzo_align_gap(int a1, unsigned int a2)
 int lzo_version();
 const char *lzo_version_string();
 const char *lzo_version_date();
-const char *lzo_version_string();
-const char *lzo_version_date();
+// DUP_DECL: const char *lzo_version_string();
+// DUP_DECL: const char *lzo_version_date();
 unsigned int lzo_adler32(int a1, unsigned char *a2, unsigned int a3);int lzo_memcmp(void *s1, void *s2, size_t n); // idb
 void *lzo_memcpy(void *dest, void *src, size_t n);
 void *lzo_memmove(void *dest, void *src, size_t n);
@@ -31787,141 +31787,141 @@ DWORD unk_819A300; // weak
 // DUPLICATE: char luaP_opmodes[9] = "$a $ a4A"; // weak
 // DUPLICATE: DWORD unk_819A8F9; // weak
 // DUPLICATE: char priority[] = { '\x06' }; // weak
-char byte_819AACD[50] =
-{
-  '\x06',
-  '\x06',
-  '\x06',
-  '\a',
-  '\a',
-  '\a',
-  '\a',
-  '\n',
-  '\t',
-  '\x05',
-  '\x04',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x03',
-  '\x02',
-  '\x02',
-  '\x01',
-  '\x01',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0',
-  '\0'
-}; // idb
-char *luaT_typenames[9] =
-{
-  "nil",
-  "boolean",
-  "userdata",
-  "number",
-  "string",
-  "table",
-  "function",
-  "userdata",
-  "thread"
-}; // weak
-char *luaT_eventname_3[15] =
-{
-  "__index",
-  "__newindex",
-  "__gc",
-  "__mode",
-  "__eq",
-  "__add",
-  "__sub",
-  "__mul",
-  "__div",
-  "__pow",
-  "__unm",
-  "__lt",
-  "__le",
-  "__concat",
-  "__call"
-}; // weak
+// DUP: char byte_819AACD[50] =
+// DUP: {
+// DUP:   '\x06',
+// DUP:   '\x06',
+// DUP:   '\x06',
+// DUP:   '\a',
+// DUP:   '\a',
+// DUP:   '\a',
+// DUP:   '\a',
+// DUP:   '\n',
+// DUP:   '\t',
+// DUP:   '\x05',
+// DUP:   '\x04',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x03',
+// DUP:   '\x02',
+// DUP:   '\x02',
+// DUP:   '\x01',
+// DUP:   '\x01',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0',
+// DUP:   '\0'
+// DUP: }; // idb
+// DUP: char *luaT_typenames[9] =
+// DUP: {
+// DUP:   "nil",
+// DUP:   "boolean",
+// DUP:   "userdata",
+// DUP:   "number",
+// DUP:   "string",
+// DUP:   "table",
+// DUP:   "function",
+// DUP:   "userdata",
+// DUP:   "thread"
+// DUP: }; // weak
+// DUP: char *luaT_eventname_3[15] =
+// DUP: {
+// DUP:   "__index",
+// DUP:   "__newindex",
+// DUP:   "__gc",
+// DUP:   "__mode",
+// DUP:   "__eq",
+// DUP:   "__add",
+// DUP:   "__sub",
+// DUP:   "__mul",
+// DUP:   "__div",
+// DUP:   "__pow",
+// DUP:   "__unm",
+// DUP:   "__lt",
+// DUP:   "__le",
+// DUP:   "__concat",
+// DUP:   "__call"
+// DUP: }; // weak
 // DUPLICATE: DWORD unk_819AEB0; // weak
 // DUPLICATE: int dword_819AEBC[] = { 1919252079 }; // weak
 // DUPLICATE: int dword_819B0DC[] = { 134928182 }; // weak
-char *token2string[31] =
-{
-  "and",
-  "break",
-  "do",
-  "else",
-  "elseif",
-  "end",
-  "false",
-  "for",
-  "function",
-  "if",
-  "in",
-  "local",
-  "nil",
-  "not",
-  "or",
-  "repeat",
-  "return",
-  "then",
-  "true",
-  "until",
-  "while",
-  "*name",
-  "..",
-  "...",
-  "==",
-  ">=",
-  "<=",
-  "~=",
-  "*number",
-  "*string",
-  "_eof_"
-}; // weak
+// DUP: char *token2string[31] =
+// DUP: {
+// DUP:   "and",
+// DUP:   "break",
+// DUP:   "do",
+// DUP:   "else",
+// DUP:   "elseif",
+// DUP:   "end",
+// DUP:   "false",
+// DUP:   "for",
+// DUP:   "function",
+// DUP:   "if",
+// DUP:   "in",
+// DUP:   "local",
+// DUP:   "nil",
+// DUP:   "not",
+// DUP:   "or",
+// DUP:   "repeat",
+// DUP:   "return",
+// DUP:   "then",
+// DUP:   "true",
+// DUP:   "until",
+// DUP:   "while",
+// DUP:   "*name",
+// DUP:   "..",
+// DUP:   "...",
+// DUP:   "==",
+// DUP:   ">=",
+// DUP:   "<=",
+// DUP:   "~=",
+// DUP:   "*number",
+// DUP:   "*string",
+// DUP:   "_eof_"
+// DUP: }; // weak
 // DUPLICATE: DWORD unk_819B3A7; // weak
-char *base_funcs = "error"; // weak
-char *co_funcs = "create"; // weak
+// DUP: char *base_funcs = "error"; // weak
+// DUP: char *co_funcs = "create"; // weak
 int mode_159[3] = { 0, 1, 2 }; // idb
 DWORD unk_819BB1C; // weak
 char *modenames_160 = NULL; // idb
 int cat_212[6] = {6, 3, 0, 4, 1, 2 }; // idb
 DWORD unk_819BC10; // weak
 char *catnames_213 = NULL; // idb
-char *iolib = "input"; // weak
-char *flib = "flush"; // weak
-char *syslib = "clock"; // weak
-void *mathlib = NULL; // weak
+// DUP: char *iolib = "input"; // weak
+// DUP: char *flib = "flush"; // weak
+// DUP: char *syslib = "clock"; // weak
+// DUP: void *mathlib = NULL; // weak
 DWORD unk_819C000; // weak
-char *strlib = "len"; // weak
+// DUP: char *strlib = "len"; // weak
 DWORD unk_819C708; // weak
 DWORD unk_819D110; // weak
 DWORD unk_819D26C; // weak
@@ -31936,7 +31936,7 @@ int *off_81A08B8 = &ti18CVKY_EntityManager; // weak
 // int (*(*0)[4])() = NULL; // weak
 // DUPLICATE: int completed_4 = 0; // weak
 // DUPLICATE: int force_to_data = 0; // weak
-FWLogClient *g_pcLogClient = NULL; // idb
+// DUP: FWLogClient *g_pcLogClient = NULL; // idb
 // DUPLICATE: char Bindings[9] = "DoEffect"; // weak
 // int (*off_DoEffect)(int) = NULL; // weak
 float g_fYVect =  0.76999998; // weak
@@ -31962,7 +31962,7 @@ char g_bShowAlive = '\0'; // weak
 // DUPLICATE: int g_dwGuardID = 0; // weak
 // DUPLICATE: int lastnpclocktry = 0; // weak
 // DUPLICATE: int lastnpclockdone = 0; // weak
-NPCGroupInfo *g_pcNPCList = NULL; // idb
+// DUP: NPCGroupInfo *g_pcNPCList = NULL; // idb
 // DUPLICATE: int lasttargetltry = 0; // weak
 // DUPLICATE: int lasttargetldone = 0; // weak
 // DUPLICATE: int lastspawntry = 0; // weak
@@ -31991,10 +31991,10 @@ DWORD CVKY_Entity__vtbl_vtbl; // weak
 // DUPLICATE: DWORD CGEN_Node__vtbl_vtbl; // weak
 int g_bTableInit = 0; // weak
 // DUPLICATE: DWORD force_to_data_0; // weak
-int (*off_81D4504)() = NULL; // weak
+// DUP: int (*off_81D4504)() = NULL; // weak
 // DUPLICATE: int _ctype_tolower; // weak
-FILE *stdout; // idb
-FILE *stderr; // idb
+// DUP: FILE *stdout; // idb
+// DUP: FILE *stderr; // idb
 int _ctype_toupper; // weak
 // DUPLICATE: int _ctype_b; // weak
 // int stdin; // removed - conflicts with stdio
