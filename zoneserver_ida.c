@@ -508,7 +508,7 @@ void CGEN_Node_dtor(CGEN_Node *self, char a2);int *tf9CGEN_Node();
 void CVKY_MeshFaceCache_ctor(CVKY_MeshFaceCache *self);
 int CVKY_MeshFaceCache_Flush(CVKY_MeshFaceCache *self);
 void CVKY_CollisionCache_ctor(CVKY_CollisionCache *self);
-long double FastAbs(float a1);// DWORD *CVector4_operator CVector(DWORD *a1, DWORD *a2);
+long double FastAbs(float a1);// DWORD *CVector4_operator_CVector(DWORD *a1, DWORD *a2);
 DWORD *CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_StructArrayList(DWORD *a1);
 DWORD *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_ArrayList(DWORD *a1);
 void *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int a1, int a2);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCurrent(DWORD *a1);
@@ -2620,7 +2620,7 @@ void CSession_dtor(CSession *self, char a2){
   {
     for ( i = (Connection *)(*(((DWORD*)(void*)self) + 16) + 224 * *(DWORD *)(*(((DWORD*)(void*)self) + 16) - 4));
           *((Connection **)self + 16) != i;
-          Connection_dtor(i, int))
+          Connection_dtor(i, 0))
     {
       i = (Connection *)((char *)i - 224);
     }
@@ -3208,7 +3208,7 @@ void CMemPage_dtor(CMemPage *self, char a2){
   {
     for ( i = (CMemObject *)(*(((DWORD*)(void*)self) + 8) + 60 * *(DWORD *)(*(((DWORD*)(void*)self) + 8) - 4));
           *((CMemObject **)self + 8) != i;
-          CMemObject_dtor(i, int))
+          CMemObject_dtor(i, 0))
     {
       i = (CMemObject *)((char *)i - 60);
     }
@@ -9785,7 +9785,7 @@ void CMemAccess_dtor(CMemAccess *self, char a2){
   {
     for ( i = (tMemCacheObject *)(*(((DWORD*)(void*)self) + 4) + 76 * *(DWORD *)(*(((DWORD*)(void*)self) + 4) - 4));
           *((tMemCacheObject **)self + 4) != i;
-          tMemCacheObject_dtor_tMemCacheObject(i, int))
+          tMemCacheObject_dtor_tMemCacheObject(i, 0))
     {
       i = (tMemCacheObject *)((char *)i - 76);
     }
@@ -11841,7 +11841,7 @@ void CWayPointMgr_dtor(CWayPointMgr *self, char a2){
   {
     for ( i = (CWayPoints *)(*(((DWORD*)(void*)self) + 1) + 40 * *(DWORD *)(*(((DWORD*)(void*)self) + 1) - 4));
           *((CWayPoints **)self + 1) != i;
-          CWayPoints_dtor(i, int))
+          CWayPoints_dtor(i, 0))
     {
       i = (CWayPoints *)((char *)i - 40);
     }
@@ -11885,7 +11885,7 @@ void CWayPointSceneMgr_dtor(CWayPointSceneMgr *self, char a2){
   {
     for ( i = (CWayPointMgr *)(*(((DWORD*)(void*)self) + 1) + 48 * *(DWORD *)(*(((DWORD*)(void*)self) + 1) - 4));
           *((CWayPointMgr **)self + 1) != i;
-          CWayPointMgr_dtor(i, int))
+          CWayPointMgr_dtor(i, 0))
     {
       i = (CWayPointMgr *)((char *)i - 48);
     }
@@ -12230,7 +12230,7 @@ void NPCGroupInfo_dtor(NPCGroupInfo *self, char a2){
   {
     for ( i = (NPCInfo *)(*(((DWORD*)(void*)self) + 1) + 2968 * *(DWORD *)(*(((DWORD*)(void*)self) + 1) - 4));
           *((NPCInfo **)self + 1) != i;
-          NPCInfo_dtor(i, int))
+          NPCInfo_dtor(i, 0))
     {
       i = (NPCInfo *)((char *)i - 2968);
     }
@@ -12595,7 +12595,7 @@ void NPCPoolMgr_dtor(NPCPoolMgr *self, char a2){
   {
     for ( i = (NPCPool *)(*((DWORD*)(void*)self) + 68 * *(DWORD *)(*(DWORD *)self - 4));
           *(NPCPool **)self != i;
-          NPCPool_dtor(i, int))
+          NPCPool_dtor(i, 0))
     {
       i = (NPCPool *)((char *)i - 68);
     }
@@ -18012,7 +18012,7 @@ DWORD *lua_open()
     *v0 = 0;
     preinit_state((int)v0);
     v1[4] = 0;
-    if ( luaD_rawrunprotected((int)v1, (void (*)(void*, int, int, void*))f_luaopen, int))    {
+    if ( luaD_rawrunprotected((int)v1, (void (*)(void*, int, int, void*))f_luaopen, 0))    {
       close_state(v1);
       v1 = 0;
     }
@@ -18044,7 +18044,7 @@ void *lua_close(int a1){
     *(DWORD *)(v1 + 12) = v3;
     *(WORD *)(v1 + 46) = 0;
   }
-  while ( luaD_rawrunprotected(v1, (void (*)(void*, int, int, void*))callallgcTM, int));  return close_state((void *)v1);
+  while ( luaD_rawrunprotected(v1, (void (*)(void*, int, int, void*))callallgcTM, 0));  return close_state((void *)v1);
 }
 
 //----- (080A9530) --------------------------------------------------------
@@ -18108,14 +18108,14 @@ DWORD *newlstr(int a1, void *src, size_t n, int a2){
 
   v4 = luaM_realloc(a1, 0, 0, n + 17);
   v4[3] = n;
-  v4[2] = a4;
+  v4[2] = a2;
   *((BYTE *)v4 + 5) = 0;
   *((BYTE *)v4 + 4) = 4;
   *((BYTE *)v4 + 6) = 0;
   memcpy(v4 + 4, src, n);
   *((BYTE *)v4 + n + 16) = 0;
   v5 = *(DWORD **)(a1 + 16);
-  v6 = (v5[2] - 1) & a4;
+  v6 = (v5[2] - 1) & a2;
   *v4 = *(DWORD *)(*v5 + 4 * v6);
   *(DWORD *)(*v5 + 4 * v6) = v4;
   v7 = v5[1] + 1;
@@ -21124,7 +21124,7 @@ int luaK_exp2reg(int *a1, DWORD *a2, int a3){
   {
     v7 = -1;
     v4 = -1;
-    if ( need_value((int)a1, v3, 1) || need_value((int)a1, a2[4], int))
+    if ( need_value((int)a1, v3, 1) || need_value((int)a1, a2[4], 0))
     {
       v6 = -1;
       if ( *a2 != 9 )
@@ -22847,7 +22847,7 @@ int luaL_openlib(DWORD *a1, void *a2, DWORD *a3, signed int a4){
       lua_pushvalue(a1, -2);
       lua_settable(a1, -10001);
     }
-    lua_insert(a1, dtor_a4);
+    lua_insert(a1, (-2));
   }
   if ( *a3 )
   {
@@ -22860,7 +22860,7 @@ int luaL_openlib(DWORD *a1, void *a2, DWORD *a3, signed int a4){
         v5 = a4;
         do
         {
-          lua_pushvalue(a1, dtor_a4);
+          lua_pushvalue(a1, (-2));
           --v5;
         }
         while ( v5 );
@@ -23704,7 +23704,7 @@ void CDBAccess_dtor(CDBAccess *self, char a2){
 int CDBAccess_Init(CDBAccess *self, char *src, char *a3, char *a4, char *a5)
 {
   mysql_init((MYSQL*)self);
-  if ( !mysql_real_connect((MYSQL*)self, a3, a4, a5, src, 0, 0, int))
+  if ( !mysql_real_connect((MYSQL*)self, a3, a4, a5, src, 0, 0, 0))
     return -1;
   strcpy((char *)self + 496, src);
   strcpy((char *)self + 561, a3);
@@ -23739,7 +23739,7 @@ int CDBAccess_ReConnect(CDBAccess *self)
   mysql_close((MYSQL*)self);
   mysql_init((MYSQL*)self);
   printf("\nDatabase connection lost..reconnecting.\n");
-  if ( mysql_real_connect((MYSQL*)self, (char *)self + 561, (char *)self + 622, (char *)self + 639, (char *)self + 496, 0, 0, int))
+  if ( mysql_real_connect((MYSQL*)self, (char *)self + 561, (char *)self + 622, (char *)self + 639, (char *)self + 496, 0, 0, 0))
     result = 0;
   else
     result = -1;
@@ -26843,7 +26843,7 @@ int CScene_LoadScene(CScene *self, const char *filename)
     ptr = (void *)malloc(size);
     fread(ptr, size, 1u, stream);
     fclose(stream);
-    v3 = (*(int (**)(CScene *, 0, int))(*(((DWORD*)(void*)self) + 33134) + 32))(self, ptr, size);
+    v3 = (*(int (**)(CScene *, 0, 0))(*(((DWORD*)(void*)self) + 33134) + 32))(self, ptr, size);
     if ( ptr )
       free(ptr);
     strcpy((char *)self + 131096, filename);
@@ -26974,6 +26974,7 @@ int *tf22CVKY_CollisionResponse()
 
 //----- (08175D20) --------------------------------------------------------
 
+int *tf18CVKY_EntityManager()
 {
   if ( !ti18CVKY_EntityManager )
     0;
@@ -27257,7 +27258,7 @@ long double FastAbs(float a1){
 }
 
 //----- (081794E8) --------------------------------------------------------
-DWORD *CVector4_operator CVector(DWORD *a1, DWORD *a2)
+DWORD *CVector4_operator_CVector(DWORD *a1, DWORD *a2)
 {
   DWORD *result; // eax
 
@@ -30608,7 +30609,7 @@ int _do_global_ctors_aux(void)
   {
     do
     {
-      result = if(v0) (*v0)();
+      if(v0) result = (*v0)();
       --v0;
     }
     while ( *v0 != (int (*)())-1 );
@@ -31685,7 +31686,7 @@ void CVKY_CollisionResponse_dtor(CVKY_CollisionResponse *self, char a2);DWORD *C
 CVKY_CollisionResponse *CVKY_CollisionResponse_DoCollisionCheck(CVKY_CollisionResponse *self, CVKY_CollisionResponse_tCollisionData *a2, tVKY_CollisionInfo *a3, int a4_dup, int a5);CVKY_CollisionResponse *CVKY_CollisionResponse_CheckCollision(CVKY_CollisionResponse *self, CVKY_CollisionResponse_tCollisionData *a2, tVKY_CollisionInfo *a3, int a4, int a5);unsigned int CVKY_CollisionResponse_GetCollisionSet(CVKY_CollisionResponse *self, CVKY_CollisionResponse_tCollisionData *a2);
 CMatrix *_static_initialization_and_destruction_0_41(int a1, int a2);
 long double FastAbs(float a1);const CVector *__mi(const CVector *a1, float *a2);
-// DWORD *CVector4_operator CVector(DWORD *a1, DWORD *a2);
+// DWORD *CVector4_operator_CVector(DWORD *a1, DWORD *a2);
 CVector4 *CVector4___ml(CVector4 *self, float a2, float a3);DWORD *CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_StructArrayList(DWORD *a1);
 int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_StructArrayList(DWORD *a1, char a2);DWORD *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_ArrayList(DWORD *a1);
 int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_ArrayList(int a1, char a2_dup);void *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int a1, int a2_dup);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int *a1, int a2);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCurrent(DWORD *a1);
@@ -31930,8 +31931,8 @@ DWORD unk_819DCD0; // weak
 DWORD unk_819F078; // weak
 DWORD unk_819F250; // weak
 DWORD unk_819FA80; // weak
-int *off_81A0064 = &ti6CScene; // weak
-int *off_81A01E4 = &ti6CScene; // weak
+int *off_81A0064 = &tf6CScene; // weak
+int *off_81A01E4 = &tf6CScene; // weak
 int *off_81A08B8 = &ti18CVKY_EntityManager; // weak
 // int (*(*0)[4])() = NULL; // weak
 // DUPLICATE: int completed_4 = 0; // weak
@@ -32209,7 +32210,7 @@ float g_fSinTable[256]; // idb
 int ti12CIndoorScene; // weak
 int ti15CLandscapeScene; // weak
 // DUPLICATE: int ti22CVKY_CollisionResponse; // weak
-int ti6CScene; // weak
+int tf6CScene; // weak
 // DUPLICATE: int ti9CGEN_Node; // weak
 // DUPLICATE: int ti18CVKY_EntityManager; // weak
 int ti11CVKY_Entity; // weak

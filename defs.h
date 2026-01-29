@@ -161,3 +161,8 @@ static inline void __terminate() { exit(1); }
 // Fehlende Variablen
 extern int g_sqrttable;
 
+// Missing declarations for IDA decompiled code
+static inline unsigned long mysql_real_escape_string(MYSQL* mysql, char* to, const char* from, unsigned long length) { return 0; }
+#define facility 0
+#define MEMORY 0
+// luaK_nil is declared in zoneserver_ida.c
