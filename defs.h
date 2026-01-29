@@ -125,3 +125,41 @@ int CMemAccess_RefreshCacheObject(void* self, void* obj);
 
 #endif /* _FWONLINE_DEFS_H_ */
 
+
+// OpenSSL Stubs
+typedef void BIO;
+typedef void BUF_MEM;
+typedef void RSA;
+static inline BIO* BIO_new(void* type) { return 0; }
+static inline void* BIO_s_mem() { return 0; }
+static inline void* BIO_s_file() { return 0; }
+static inline int BIO_free(BIO* bio) { return 0; }
+static inline BUF_MEM* BUF_MEM_new() { return 0; }
+static inline int BIO_printf(BIO* bio, const char* fmt, ...) { return 0; }
+static inline RSA* PEM_read_bio_RSA_PUBKEY(BIO* bio, RSA** rsa, void* cb, void* u) { return 0; }
+static inline RSA* PEM_read_bio_RSAPrivateKey(BIO* bio, RSA** rsa, void* cb, void* u) { return 0; }
+static inline void OpenSSL_add_all_algorithms() {}
+static inline void ERR_load_crypto_strings() {}
+static inline void ERR_load_PEM_strings() {}
+static inline void ERR_print_errors(BIO* bio) {}
+
+// Fehlende Typen
+struct tVKY_BBox;
+struct tVKY_FaceCache;
+struct VKY_SCENE__tFileHeader;
+struct CLandscapeScene_tGridUnit;
+struct CLandscapeScene_tVertex;
+struct CIndoorScene_tFaceTable;
+struct CVKY_CollisionResponse_tCollisionFace;
+
+// Fehlende Funktionen
+static inline void openlog(const char* ident, int option, int facility) {}
+static inline int _setjmp(void* env) { return 0; }
+#define longjmp(env, val) ((void)0)
+static inline double __strtod_internal(const char* nptr, char** endptr, int group) { return 0.0; }
+static inline void __terminate() { exit(1); }
+#define __write write
+
+// Fehlende Variablen
+extern int g_sqrttable;
+
