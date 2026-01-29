@@ -1,4 +1,4 @@
-#ifndef _FWONLINE_DEFS_H_
+﻿#ifndef _FWONLINE_DEFS_H_
 #define _FWONLINE_DEFS_H_
 
 #include <stdlib.h>
@@ -106,4 +106,22 @@ static inline int MD5_Init(MD5_CTX* c) { return 0; }
 static inline int MD5_Update(MD5_CTX* c, const void* d, size_t l) { return 0; }
 static inline int MD5_Final(unsigned char* m, MD5_CTX* c) { return 0; }
 
+
+// Fehlende Funktionsdeklarationen
+extern "C" {
+    int luaK_jump(void* fs);
+    void ERR_print_errors_fp(void* fp);
+    void syslog(int priority, const char* format, ...);
+}
+
+// Fehlende Typen
+typedef struct CVKY_CollisionResponse_tCollisionData {
+    int dummy;
+} CVKY_CollisionResponse_tCollisionData;
+
+// Fehlende Funktionen
+int CMemAccess_Init(void* self);
+int CMemAccess_RefreshCacheObject(void* self, void* obj);
+
 #endif /* _FWONLINE_DEFS_H_ */
+
