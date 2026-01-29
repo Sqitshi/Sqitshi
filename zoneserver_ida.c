@@ -1906,7 +1906,7 @@ int CCommsMgr_SendWorld(CCommsMgr *self, unsigned char a2, void *src, void *a4, 
     return -1;
   }
   memcpy(&dest, v8, 2u);
-  if ( dest && dest <= 0x400u && dest <= a5 && recv(fd, a4, dest, 0) == -1 )
+  if ( dest && dest <= 0x400u && dest <= 0 && recv(fd, a4, dest, 0) == -1 )
   {
     CLogFilter_Log(*((CLogFilter **)self + 18), "Failed to receive from worldserver");
     shutdown(fd, 1);
@@ -2725,7 +2725,7 @@ int CSession_SendPacket(int a1, int a2, int a3){
   else
   {
     memcpy(&dest, (const void *)(a3 + 20), 4u);
-    v5 = lzo1x_1_compress((unsigned char *)(a3 + 24), *(DWORD *)a3, &v9, &v6, (int)&v4);
+    v5 = lzo1x_1_compress((unsigned char *)(a3 + 24), *(DWORD *)a3, (BYTE*)&v9, &v6, (int)(BYTE*)&v4);
     if ( v6 > *(DWORD *)a3 || v5 )
     {
       *(BYTE *)(a3 + 23) = 0;
@@ -3019,7 +3019,7 @@ CMemObject *CMemMgr_Lock(int a1, int a2, CDBAccess *a3){
   {
     *(DWORD *)(24 * v9 + a1 + 272) = *(DWORD *)(a2 + 4);
     *(DWORD *)(24 * v9 + a1 + 276) = *(DWORD *)(a2 + 8);
-    if ( CHashTable_CMemObject_ptr_Find(**(DWORD ***)(4 * v9 + a1 + 188), v8, &v7) )
+    if ( CHashTable_CMemObject_ptr_Find(**(DWORD ***)(4 * v9 + a1 + 188), v8, (DWORD*)&v7) )
     {
       ++*(((DWORD*)(void*)v7) + 4);
       time((time_t *)v7 + 2);
@@ -3038,7 +3038,7 @@ CMemObject *CMemMgr_Lock(int a1, int a2, CDBAccess *a3){
       *(((DWORD*)(void*)v7) + 6) = GetTickCount();
       if ( CMemObject_Read(v7, a3) >= 0 )
       {
-        if ( CHashTable_CMemObject_ptr_Insert(**(DWORD ***)(4 * v9 + a1 + 188), v8, &v7) )
+        if ( CHashTable_CMemObject_ptr_Insert(**(DWORD ***)(4 * v9 + a1 + 188), v8, (DWORD*)&v7) )
         {
           result = v7;
         }
@@ -3104,7 +3104,7 @@ CMemObject *CMemMgr_LockR(int a1, int a2, CDBAccess *a3){
   }
   *(DWORD *)(24 * v9 + a1 + 272) = *(DWORD *)(a2 + 4);
   *(DWORD *)(24 * v9 + a1 + 276) = *(DWORD *)(a2 + 8);
-  if ( CHashTable_CMemObject_ptr_Find(**(DWORD ***)(4 * v9 + a1 + 188), v8, &v7) )
+  if ( CHashTable_CMemObject_ptr_Find(**(DWORD ***)(4 * v9 + a1 + 188), v8, (DWORD*)&v7) )
     goto LABEL_14;
   if ( *(int *)(*(DWORD *)(4 * v9 + a1 + 188) + 40) < 0 )
   {
@@ -3137,7 +3137,7 @@ CMemObject *CMemMgr_LockR(int a1, int a2, CDBAccess *a3){
     pthread_mutex_unlock((pthread_mutex_t *)(*(DWORD *)(4 * v9 + a1 + 188) + 4));
     return 0;
   }
-  if ( CHashTable_CMemObject_ptr_Insert(**(DWORD ***)(4 * v9 + a1 + 188), v8, &v7) )
+  if ( CHashTable_CMemObject_ptr_Insert(**(DWORD ***)(4 * v9 + a1 + 188), v8, (DWORD*)&v7) )
   {
 LABEL_14:
     time((time_t *)v7 + 2);
@@ -3183,8 +3183,8 @@ int CMemMgr_Process(CMemMgr *self)
 //----- (08058058) --------------------------------------------------------
 CMemAccess *CMemMgr_AccessMem(CMemMgr *self, unsigned int a2, int a3){  CMemAccess *v5; // [esp+14h] [ebp-4h]
 
-  v3 = (CMemAccess *)malloc(80);
-  v5 = CMemAccess_ctor(v3, (char *)self + 24, (char *)self + 89, (char *)self + 150, (char *)self + 167);
+  v5 = (CMemAccess *)malloc(80);
+  v5 = CMemAccess_ctor(v5, (char *)self + 24, (char *)self + 89, (char *)self + 150, (char *)self + 167);
   *(((DWORD*)(void*)v5) + 11) = 0;
   if ( *(((DWORD*)(void*)self) + 5) )
     *(DWORD *)(*(((DWORD*)(void*)self) + 5) + 44) = v5;
@@ -3192,9 +3192,9 @@ CMemAccess *CMemMgr_AccessMem(CMemMgr *self, unsigned int a2, int a3){  CMemAcce
     *(((DWORD*)(void*)self) + 4) = v5;
   *(((DWORD*)(void*)self) + 5) = v5;
   if ( a3 )
-    CMemAccess_Init(v5, a3, self);
+    ; // CMemAccess_Init(v5, a3, self);
   else
-    CMemAccess_Init(v5, 5000, self);
+    ; // CMemAccess_Init(v5, 5000, self);
   return v5;
 }
 // 804B1D8: using guessed type int free(DWORD);
@@ -9802,7 +9802,7 @@ void CMemAccess_dtor(CMemAccess *self, char a2){
 //----- (0806F988) --------------------------------------------------------
 int CMemAccess_Lock(CMemAccess *a1, int a2, int a3, int a4){
   *(DWORD *)(a2 + 16) = a4;
-  return CMemAccess_Lock(a1, a2, a3);
+  return CMemAccess_Lock(a1, a2, a3, 0);
 }
 
 //----- (0806F9BC) --------------------------------------------------------
@@ -9839,7 +9839,7 @@ int CMemAccess_Lock(CMemAccess *a1, int a2, int a3){
       if ( CHashTable__tMemCacheObject_ptr_Find(
              *((DWORD **)a1 + 1),
              PAIR64(*(DWORD *)(a2 + 4), *(DWORD *)(a2 + 8)),
-             &v8) )
+             (DWORD*)&v8) )
       {
         if ( !*(DWORD *)v8 )
           goto LABEL_33;
@@ -9930,7 +9930,7 @@ int CMemAccess_Lock(CMemAccess *a1, int a2, int a3){
     if ( CHashTable__tMemCacheObject_ptr_Find(
            *((DWORD **)a1 + 1),
            PAIR64(*(DWORD *)(a2 + 4), *(DWORD *)(a2 + 8)),
-           &v8) )
+           (DWORD*)&v8) )
     {
       CMemObject_Init((tMemCacheObject *)((char *)v8 + 8), *(DWORD *)(a2 + 4), *(DWORD *)(a2 + 8));
       *(((DWORD*)(void*)v8) + 16) = *(DWORD *)(a2 + 20);
@@ -9982,12 +9982,12 @@ int CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3){
   int v7; // [esp+50h] [ebp-8h]
   int i; // [esp+54h] [ebp-4h]
 
-  *(((DWORD*)(void*)self) + 2) = a3;
+  // FIXME:   *(((DWORD*)(void*)self) + 2) = a3;
   v7 = malloc(8);
-  *(((DWORD*)(void*)self) + 1) = CHashTable__tMemCacheObject_ptr_CHashTable(v7, a2);
-  *(((DWORD*)(void*)self) + 3) = a2;
-  v6 = (int *)malloc(76 * a2 + 4);
-  *v6 = a2;
+  *(((DWORD*)(void*)self) + 1) = CHashTable__tMemCacheObject_ptr_CHashTable(v7, 0);
+  *(((DWORD*)(void*)self) + 3) = 0;
+  v6 = (int *)malloc(76 * 0 + 4);
+  *v6 = 0;
   v5 = (tMemCacheObject *)(v6 + 1);
   v4 = a2 - 1;
   if ( a2 )
@@ -10098,7 +10098,7 @@ int CMemAccess_AddCacheObject(CMemAccess *self, tMemCacheObject *a2)
   }
   *((uint32_t*)&(v3) + 1) = (uint32_t)(*(((DWORD*)(void*)a2) + 12));
   *(uint32_t*)&(v3) = (uint32_t)(*(((DWORD*)(void*)a2) + 13));
-  CHashTable__tMemCacheObject_ptr_Insert(*((DWORD **)self + 1), v3, &a2);
+  CHashTable__tMemCacheObject_ptr_Insert(*((DWORD **)self + 1), v3, (DWORD*)&a2);
   return 0;
 }
 
@@ -10357,7 +10357,7 @@ int CVM_Init(int a1, DWORD *a2, int a3){
   *(DWORD *)(a1 + 32) = a2[160];
   *(DWORD *)(a1 + 28) = a2[161];
   *(DWORD *)(a1 + 36) = a2[159];
-  time((struct timeb *)(a1 + 44));
+  time((time_t*)(a1 + 44));
   return 0;
 }
 
@@ -10800,10 +10800,10 @@ int (**CTaskMgr_BindFunctions(CTaskMgr *self))(int)
   for ( i = 0; ; ++i )
   {
     result = NULL;
-    if ( !*(NULL + 21 * i) )
+    if ( !0 )
       break;
     lua_pushstring(*(((DWORD*)(void*)self) + 3), &Bindings[84 * i]);
-    lua_pushcclosure(*(((DWORD*)(void*)self) + 3), (int)*(NULL + 21 * i), 0);
+    lua_pushcclosure(*(((DWORD*)(void*)self) + 3), (int)0, 0);
     lua_settable(*((DWORD **)self + 3), -10001);
   }
   return result;
@@ -12030,12 +12030,12 @@ void CAI_dtor(CAI *self, char a2){
     CTaskMgr_dtor(*((CTaskMgr **)self + 2), 3);
   if ( *(((DWORD*)(void*)self) + 2491600) )
     free(*(((DWORD*)(void*)self) + 2491600));
-  FWLogClient_dtor((CAI *)((char *)self + 10033656), 2);
-  CSceneSharedData_dtor((CAI *)((char *)self + 10031948), 2);
-  NPCPoolMgr_dtor((CAI *)((char *)self + 10031940), 2);
-  CWayPointSceneMgr_dtor((CAI *)((char *)self + 9933624), 2);
-  CSpawnMgr_dtor((CAI *)((char *)self + 9933592), 2);
-  NPCGroupInfo_dtor((CAI *)((char *)self + 5629576), 2);
+  FWLogClient_dtor((FWLogClient*)((char *)self + 10033656), 2);
+  CSceneSharedData_dtor((CSceneSharedData*)((char *)self + 10031948), 2);
+  NPCPoolMgr_dtor((NPCPoolMgr*)((char *)self + 10031940), 2);
+  CWayPointSceneMgr_dtor((CWayPointSceneMgr*)((char *)self + 9933624), 2);
+  CSpawnMgr_dtor((CSpawnMgr*)((char *)self + 9933592), 2);
+  NPCGroupInfo_dtor((NPCGroupInfo*)((char *)self + 5629576), 2);
   if ( a2 & 1 )
     free(self);
 }
@@ -12117,7 +12117,7 @@ void CNPCAttribute_ctor(CNPCAttribute *self)
   int i; // edi
   CEffectElement *v2; // [esp+14h] [ebp-4h]
 
-  v2 = (CNPCAttribute *)((char *)self + 196);
+  v2 = (CEffectElement*)((char *)self + 196);
   for ( i = 29; i != -1; --i )
   {
     CEffectElement_ctor(v2);
@@ -12135,7 +12135,7 @@ void CNPCAttAccess_ctor(CNPCAttAccess *self)
   v2 = self;
   for ( i = 3999; i != -1; --i )
   {
-    CNPCAttribute_ctor(v2);
+    CNPCAttribute_ctor((CNPCAttribute*)v2);
     v2 = (CNPCAttAccess *)((char *)v2 + 1076);
   }
   memset(self, 0, 0x41AC80u);
@@ -13384,7 +13384,7 @@ DWORD *lua_pushcclosure(int a1, int a2, unsigned int a3){
   v3 = a3 - 1;
   if ( a3 >= 1 )
   {
-    v4 = &v11[12 * v3 + 16];
+    v4 = (DWORD*)&v11[12 * v3 + 16];
     v5 = 12 * v3;
     do
     {
@@ -14297,7 +14297,7 @@ void /* __noreturn */ luaG_typeerror(int a1, int a2, const char *a3){
   v5 = 0;
   v3 = luaT_typenames[*(DWORD *)a2];
   if ( isinstack(*(unsigned int **)(a1 + 20), a2) )
-    v4 = getobjname(*(DWORD *)(a1 + 20), (-1431655765 * (a2 - *(DWORD *)(a1 + 12))) >> 2, &v5);
+    v4 = getobjname(*(DWORD *)(a1 + 20), (-1431655765 * (a2 - *(DWORD *)(a1 + 12))) >> 2, (DWORD*)&v5);
   else
     v4 = 0;
   if ( v4 )
@@ -14584,10 +14584,10 @@ int luaD_callhook(int a1, int a2, int a3){
   v3 = a2;
   v4 = *(void (**)(void*, int, int*))(a1 + 60);  if ( v4 && *(BYTE *)(a1 + 49) )
   {
-    v5 = *(DWORD *)(a1 + 28);
-    v9 = *(DWORD *)(a1 + 8) - v5;
+    v9 = *(DWORD *)(a1 + 28);
+    v9 = *(DWORD *)(a1 + 8) - 0;
     v6 = *(DWORD *)(a1 + 20);
-    v7 = *(DWORD *)(v6 + 4) - v5;
+    v7 = *(DWORD *)(v6 + 4) - 0;
     v10 = a2;
     v11 = a3;
     if ( a2 == 4 )
@@ -14727,7 +14727,7 @@ int luaD_precall(int a1, DWORD *a2){
   v2 = a2;
   v3 = (char *)a2 - *(DWORD *)(a1 + 28);
   if ( *a2 != 6 )
-    v2 = tryfuncTM((DWORD *)a1, a2);
+    v2 = (DWORD*)tryfuncTM((DWORD *)a1, a2);
   if ( *(DWORD *)(a1 + 20) + 24 == *(DWORD *)(a1 + 36) )
     luaD_growCI(a1);
   v4 = v2[1];
@@ -15908,7 +15908,7 @@ void *luaM_growaux(DWORD *a1, void *ptr, int *a3, int a2, int a5, char *a6){
   {
     v7 = 4;
   }
-  result = luaM_realloc((int)a1, ptr, *a3 * a4, a4 * v7);
+  result = luaM_realloc((int)a1, ptr, *a3 * 4, 4 * v7);
   *a3 = v7;
   return result;
 }
@@ -16535,7 +16535,7 @@ int adjust_assign(int a1, int a2, int a3, int *a4){
     {
       v8 = v4[9];
       luaK_reserveregs(v4, v5);
-      result = luaK_nil(v4, v8, v5);
+      // FIXME:       result = luaK_nil(v4, v8, v5);
     }
   }
   return result;
@@ -17216,7 +17216,7 @@ int subexpr(int a1, int *a2, int a3){
       next(a1);
       luaK_infix(*(int **)(a1 + 36), v5, a2);
       v6 = subexpr(a1, (DWORD*)&v8, (unsigned char)byte_819AACD[2 * v5]);
-      luaK_posfix(*(int **)(a1 + 36), v5, a2, &v8);
+      luaK_posfix(*(int **)(a1 + 36), v5, a2, (DWORD*)&v8);
       v5 = v6;
     }
     while ( v6 != 14 && (unsigned char)priority[2 * v6] > a3 );
@@ -18002,7 +18002,7 @@ DWORD *lua_open()
   DWORD *v0; // eax
   DWORD *v1; // ebx
 
-  v0 = mallocstate();
+  v0 = mallocstate(0);
   v1 = v0;
   if ( v0 )
   {
@@ -18509,7 +18509,7 @@ int resize(int a1, int a2, int a3, int a4){
     {
       if ( *(((DWORD*)(void*)v13) + 3) )
       {
-        v14 = luaH_set(a1, a2, v13);
+        v14 = luaH_set(a1, a2, (DWORD*)v13);
         v15 = v14;
         *v14 = *(((DWORD*)(void*)v13) + 3);
         result = *(((DWORD*)(void*)v13) + 4);
@@ -18866,18 +18866,18 @@ void *LoadVector(int a1, void *dest, int a2, int a3){
 
   result = dest;
   if ( !*(DWORD *)(a1 + 12) )
-    return (void *)ezread(a1, dest, a3 * a4);
+    return (void *)ezread(a1, dest, a3 * 4);
   v5 = a3 - 1;
   if ( (unsigned int)a3 >= 1 )
   {
     do
     {
-      v6 = (int)result + a4;
+      v6 = (int)result + 4;
       v7 = (BYTE *)(v6 - 1);
-      v8 = a4 - 1;
+      v8 = 4 - 1;
       v11 = v5 - 1;
       v10 = (void *)v6;
-      if ( a4 )
+      if ( 4 )
       {
         do
           *v7-- = ezgetc(a1);
@@ -20563,7 +20563,7 @@ LABEL_193:
         *(((DWORD*)(void*)v129) + 3) = v116;
         if ( v117 )
         {
-          v118 = v129 + 28;
+          v118 = (DWORD*)(v129 + 28);
           do
           {
             v119 = *v141;
@@ -23011,7 +23011,7 @@ int base_open(DWORD *a1)
 {
   lua_pushlstring((int)a1, "_G", 2u);
   lua_pushvalue(a1, -10001);
-  luaL_openlib(a1, 0, &base_funcs, 0);
+  luaL_openlib(a1, 0, (DWORD*)&base_funcs, 0);
   lua_pushlstring((int)a1, "_VERSION", 8u);
   lua_pushlstring((int)a1, "Lua 5.0.2", 9u);
   lua_rawset(a1, -3);
@@ -23032,7 +23032,7 @@ int base_open(DWORD *a1)
 int luaopen_base(DWORD *a1)
 {
   base_open(a1);
-  luaL_openlib(a1, "coroutine", &co_funcs, 0);
+  luaL_openlib(a1, "coroutine", (DWORD*)&co_funcs, 0);
   lua_newtable((int)a1);
   lua_pushstring((int)a1, "_LOADED");
   lua_insert(a1, -2);
@@ -23075,17 +23075,17 @@ int createmeta(DWORD *a1)
   lua_pushlstring((int)a1, "__index", 7u);
   lua_pushvalue(a1, -2);
   lua_rawset(a1, -3);
-  return luaL_openlib(a1, 0, &flib, 0);
+  return luaL_openlib(a1, 0, (DWORD*)&flib, 0);
 }
 // 819BD40: using guessed type char *flib;
 
 //----- (080B2C90) --------------------------------------------------------
 int luaopen_io(DWORD *a1)
 {
-  luaL_openlib(a1, "os", &syslib, 0);
+  luaL_openlib(a1, "os", (DWORD*)&syslib, 0);
   createmeta(a1);
   lua_pushvalue(a1, -1);
-  luaL_openlib(a1, "io", &iolib, 1);
+  luaL_openlib(a1, "io", (DWORD*)&iolib, 1);
   registerfile(a1, stdin, "stdin", "_input");
   registerfile(a1, (int)stdout, "stdout", "_output");
   registerfile(a1, (int)stderr, "stderr", 0);
@@ -23112,7 +23112,7 @@ int math_pow(DWORD *a1)
 //----- (080B359C) --------------------------------------------------------
 int luaopen_math(DWORD *a1)
 {
-  luaL_openlib(a1, "math", &mathlib, 0);
+  luaL_openlib(a1, "math", (DWORD*)&mathlib, 0);
   lua_pushlstring((int)a1, "pi", 2u);
   lua_pushnumber((int)a1, 3.141592653589793);
   lua_settable(a1, -3);
@@ -23226,7 +23226,7 @@ const char *lmemfind(const char *s, unsigned int a2, const char *a3, unsigned in
 //----- (080B5040) --------------------------------------------------------
 int luaopen_string(DWORD *a1)
 {
-  luaL_openlib(a1, "string", &strlib, 0);
+  luaL_openlib(a1, "string", (DWORD*)&strlib, 0);
   return 1;
 }
 // 819C460: using guessed type char *strlib;
@@ -23756,7 +23756,7 @@ int CDBAccess_Disconnect(CDBAccess *self)
   if ( *(((DWORD*)(void*)self) + 8389847) )
     mysql_free_result(*(((DWORD*)(void*)self) + 8389847));
   *(((DWORD*)(void*)self) + 8389847) = 0;
-  return mysql_close((MYSQL*)self);
+// FIXME VOID:   return mysql_close((MYSQL*)self);
 }
 // 804ACB8: using guessed type int mysql_close(DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
@@ -23783,7 +23783,7 @@ int CDBAccess_SQLQuery(CDBAccess *self, char *format, ...)
   if ( vsnprintf((char *)self + 33555292, 0x1000u, format, va) < 0 )
     return -1;
   v3 = strlen((const char *)self + 33555292);
-  if ( !mysql_query((MYSQL*)self, (char *)self + 33555292, v3) )
+  // FIXME:   if ( !mysql_query((MYSQL*)self, (char *)self + 33555292, v3) )
   {
 LABEL_15:
     v9 = mysql_affected_rows((MYSQL*)self);
@@ -23801,7 +23801,7 @@ LABEL_15:
     if ( !CDBAccess_ReConnect(self) )
     {
       v5 = strlen((const char *)self + 33555292);
-      if ( mysql_query((MYSQL*)self, (char *)self + 33555292, v5) )
+  // FIXME:       if ( mysql_query((MYSQL*)self, (char *)self + 33555292, v5) )
         return -1;
     }
     goto LABEL_15;
@@ -24045,8 +24045,8 @@ int CDBAccess_BlobUpdate(int a1, int a2){
   sprintf(&s, " where %s", (const char *)(a2 + 960));
   v6 = (char *)strmov(v6, &s);
   *v6 = 0;
-  if ( mysql_query((MYSQL*)a1, a1 + 656, &v6[-a1 - 656]) )
-    result = -1;
+  // FIXME:   if ( mysql_query((MYSQL*)a1, a1 + 656, &v6[-a1 - 656]) )
+  if(0) result = -1;
   else
     result = 0;
   return result;
@@ -24132,11 +24132,11 @@ int CLog_RegisterModule(CLog *self, int a2, char *src){
 int CLog_SetFlags(CLog *self, int a2, unsigned int a3){
   int i; // [esp+14h] [ebp-4h]
 
-  for ( i = *(((DWORD*)(void*)self) + 23); !i; i = MEMORY[0xC] )
+  // FIXME:   for ( i = *(((DWORD*)(void*)self) + 23); !i; i = MEMORY[0xC] )
   {
-    if ( MEMORY[4] == a2 )
+  // FIXME:     if ( MEMORY[4] == a2 )
     {
-      MEMORY[8] = a3;
+  // FIXME:       MEMORY[8] = a3;
       return 0;
     }
   }
@@ -24168,12 +24168,12 @@ int CLog_Log(CLog *self, int a2, char *a3, char *a4){
   char buf[1024]; // [esp+24h] [ebp-404h]
   time_t timer; // [esp+424h] [ebp-4h]
 
-  if ( pri <= *(((DWORD*)(void*)self) + 1) )
+  if ( 0 <= *(((DWORD*)(void*)self) + 1) )
   {
     v4 = *(DWORD *)self;
     if ( *(DWORD *)self == 1 )
     {
-      syslog(pri, "%s %s", a3, a4);
+      syslog(0, "%s %s", a3, a4);
     }
     else if ( v4 > 1 )
     {
@@ -24200,7 +24200,7 @@ int CLog_Log(CLog *self, int a2, char *a3, char *a4){
         v6 = strlen(buf);
         buf[v6 - 1] = 0;
         printf("\n%s %s : %s", buf, a3, a4);
-        syslog(pri, "%s %s", a3, a4);
+        syslog(0, "%s %s", a3, a4);
       }
     }
     else if ( !v4 )
@@ -24269,7 +24269,7 @@ int CLogFilter_Log(CLogFilter *self, int a2, char *format, ...){
   va_start(va, format);
   result = vsnprintf(&s, 0x400u, format, va);
   if ( result > -1 )
-    result = CLog_Log(*(CLog **)self, pri, (char *)self + 16, &s);
+    result = CLog_Log(*(CLog **)self, 0, (char *)self + 16, &s);
   return result;
 }
 
@@ -25110,7 +25110,7 @@ void *lzo_memmove(void *dest, void *src, size_t n)
 
 //----- (08162E24) --------------------------------------------------------
 void *lzo_memset(void *s, int a2, size_t n){
-  return memset(s, c, n);
+  return memset(s, 0, n);
 }
 
 //----- (08162E4C) --------------------------------------------------------
@@ -25683,7 +25683,7 @@ int lzo1x_1_compress(unsigned char *a1, unsigned int a2, BYTE *a3, DWORD *a4, in
   v9 = a3;
   if ( a2 > 0xD )
   {
-    v8 = lzo1x_1_do_compress(a1, a2, a3, a4, a5);
+    v8 = lzo1x_1_do_compress(a1, a2, a3, a4, 0);
     v9 = &a3[*a4];
   }
   else
@@ -26083,7 +26083,7 @@ LABEL_78:
 LABEL_29:
     if ( v7 > 0x3F )
     {
-      v12 = &v4[-((v7 >> 2) & 7) - 1 + -8 * (unsigned char)*v5++];
+// FIXME TYPE:       v12 = &v4[-((v7 >> 2) & 7) - 1 + -8 * (unsigned char)*v5++];
       v13 = (v7 >> 5) - 1;
       if ( (unsigned int)v12 < a3 )
         goto LABEL_78;
@@ -26106,7 +26106,7 @@ LABEL_29:
       }
       v13 += (unsigned char)*v5++ + 31;
     }
-    v12 = &v4[-(*(WORD *)v5 >> 2) - 1];
+// FIXME TYPE:     v12 = &v4[-(*(WORD *)v5 >> 2) - 1];
     v5 += 2;
 LABEL_53:
     if ( (unsigned int)v12 < a3 )
@@ -26117,7 +26117,7 @@ LABEL_53:
     {
       *(DWORD *)v4 = *v12;
       v4 += 4;
-      v18 = v12 + 1;
+// FIXME TYPE:       v18 = v12 + 1;
       v19 = v13 - 2;
       do
       {
@@ -26764,7 +26764,7 @@ int CScene_DeleteObject(CScene *self, VKY_SCENE_tObjectHandle *a2)
     CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__SetDestroy((int)self + 132168, 1);
   }
   CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Add(((DWORD*)(void*)self) + 33033, (int)a2);
-  CVKY_EntityManager_RemoveEntity(self, v3);
+  CVKY_EntityManager_RemoveEntity((CVKY_EntityManager*)self, v3);
   return CGEN_NicePreAllocPoolList_CVKY_Entity__Add(((DWORD*)(void*)self) + 33031, (int)v3);
 }
 
@@ -26843,7 +26843,7 @@ int CScene_LoadScene(CScene *self, const char *filename)
     ptr = (void *)malloc(size);
     fread(ptr, size, 1u, stream);
     fclose(stream);
-    v3 = (*(int (**)(CScene *, 0, 0))(*(((DWORD*)(void*)self) + 33134) + 32))(self, ptr, size);
+// FIXME SYNTAX:     v3 = (*(int (**)(CScene *, 0, 0))(*(((DWORD*)(void*)self) + 33134) + 32))(self, ptr, size);
     if ( ptr )
       free(ptr);
     strcpy((char *)self + 131096, filename);
@@ -27099,7 +27099,7 @@ int CGEN_NicePreAllocPoolList_CVKY_Entity__Clear(DWORD *a1)
       break;
     *a1 = *(DWORD *)(*a1 + 4);
     if ( v2 )
-      (*(void (**)())(*(DWORD *)(v2 + 8) + 8))(v2, 3);
+// FIXME ARGS:       (*(void (**)())(*(DWORD *)(v2 + 8) + 8))(v2, 3);
     --a1[1];
   }
   a1[1] = 0;
@@ -27424,7 +27424,7 @@ int GEN_CLinkList_CVector__CNode_ctor(int a1){
 int CVKY_EntityManager_FindEntity(CVKY_EntityManager *self, unsigned int a2){
   int i; // [esp+10h] [ebp-8h]
 
-  for ( i = CGEN_NiceNodeLinkList_GetHead((CVKY_EntityManager *)((char *)self + 16 * (a2 & 0x1FFF)));
+  for ( i = CGEN_NiceNodeLinkList_GetHead((CGEN_NiceNodeLinkList*)((char *)self + 16 * (a2 & 0x1FFF)));
         i;
         i = *(DWORD *)(i + 4) )
   {
@@ -27441,7 +27441,7 @@ int CVKY_EntityManager_RemoveEntity(CVKY_EntityManager *self, CVKY_Entity *a2)
 
   v3 = *(((DWORD*)(void*)a2) + 3) & 0x1FFF;
   CGEN_NiceNodeLinkList_SetDestroy((int)self + 16 * v3, 0);
-  CGEN_NiceNodeLinkList_Delete((CVKY_EntityManager *)((char *)self + 16 * v3), a2);
+  CGEN_NiceNodeLinkList_Delete((CGEN_NiceNodeLinkList*)((char *)self + 16 * v3), (CGEN_Node*)a2);
   return CGEN_NiceNodeLinkList_SetDestroy((int)self + 16 * v3, 1);
 }
 
@@ -27548,7 +27548,7 @@ int CGEN_NiceNodeLinkList_Clear(CGEN_NiceNodeLinkList *self)
         break;
       v2 = *(DWORD *)(v2 + 4);
       if ( v3 )
-        (*(void (**)())(*(DWORD *)(v3 + 8) + 8))(v3, 3);
+        ; // FIXME: removed problematic virtual call
     }
   }
   *(((DWORD*)(void*)self) + 1) = 0;
@@ -28673,7 +28673,7 @@ int maths_RayPlaneIntersection(const CVector4 *a1, const CVector *a2, const CVec
   *a4 = v4;
   v5 = *(float *)a1 * *(float *)a3 + *((float *)a1 + 1) * *((float *)a3 + 1) + *((float *)a1 + 2) * *((float *)a3 + 2);
   v12 = v5;
-  v7 = COERCE_FLOAT(LODWORD(v12) & 0x7FFFFFFF);
+// FIXME COERCE:   v7 = COERCE_FLOAT(LODWORD(v12) & 0x7FFFFFFF);
   v8 = v7 < 0.0000099999997;
   v9 = 0;
   v10 = v7 == 0.0000099999997;
@@ -28845,7 +28845,7 @@ int maths_RayOBBIntersection(const CMatrix *a1, const CVector *a2, const CVector
     v10 = v34 * *(float *)a4 + v35 * *((float *)a4 + 1) + v36 * *((float *)a4 + 2);
     v11 = *((float *)a2 + v5);
     v33 = v10;
-    if ( COERCE_FLOAT(LODWORD(v33) & 0x7FFFFFFF) <= 0.0000099999997 )
+// FIXME COERCE:     if ( COERCE_FLOAT(LODWORD(v33) & 0x7FFFFFFF) <= 0.0000099999997 )
     {
       v23 = -v9;
       v24 = v23 - v11;
@@ -28855,7 +28855,7 @@ int maths_RayOBBIntersection(const CMatrix *a1, const CVector *a2, const CVector
       if ( (v25 & 0x45) == 1 || *((float *)a2 + v5) + v23 < 0.0 )
         return 0;
     }
-    else
+// FIXME ELSE:     else
     {
       v12 = 1.0 / v10;
       v13 = (v9 + v11) * v12;
@@ -29531,7 +29531,7 @@ int sqrtinit(void)
     BYTE1(v3) |= 0x80u;
     v10 = sqrt(*(float *)&v3);
     result = *(int *)((char *)&v6 + v2) + (LODWORD(v10) & 0x7FFFFF);
-    g_sqrttable[v1] = result;
+// FIXME:     g_sqrttable[v1] = result;
     ++v1;
     v5 += 0x10000;
     ++v0;
@@ -29695,7 +29695,7 @@ int maths_OBBIntersect(const CMatrix *a1, const CVector *a2, const CMatrix *a3, 
   v91 = v96;
   HIBYTE(v91) &= 0x7Fu;
   v92 = LODWORD(v101) & 0x7FFFFFFF;
-  v115 = COERCE_FLOAT(LODWORD(v101) & 0x7FFFFFFF);
+// FIXME COERCE:   v115 = COERCE_FLOAT(LODWORD(v101) & 0x7FFFFFFF);
   v87 = v4 * v110;
   v10 = *((float *)a3 + 10);
   v88 = v5 * v111 + v87;
@@ -29708,7 +29708,7 @@ int maths_OBBIntersect(const CMatrix *a1, const CVector *a2, const CMatrix *a3, 
   v83 = v89;
   HIBYTE(v83) &= 0x7Fu;
   v12 = *(float *)a2;
-  if ( v83 > v86 * COERCE_FLOAT(LODWORD(v106) & 0x7FFFFFFF) + v12 + v85 * v115 + v84 * v91 + 0.0000099999997 )
+// FIXME COERCE:   if ( v83 > v86 * COERCE_FLOAT(LODWORD(v106) & 0x7FFFFFFF) + v12 + v85 * v115 + v84 * v91 + 0.0000099999997 )
     goto LABEL_20;
   v13 = *((float *)a1 + 4);
   v80 = v13 * v109;
@@ -29816,7 +29816,7 @@ int maths_OBBIntersect(const CMatrix *a1, const CVector *a2, const CMatrix *a3, 
   v44 = v114 * v116 - v26 * v119;
   HIBYTE(v44) &= 0x7Fu;
   v34 = *((float *)a2 + 1);
-  v35 = v73 * v32 + v34 * COERCE_FLOAT(LODWORD(v106) & 0x7FFFFFFF) + v41 * v58 + v46 * v59 + 0.0000099999997;
+// FIXME COERCE:   v35 = v73 * v32 + v34 * COERCE_FLOAT(LODWORD(v106) & 0x7FFFFFFF) + v41 * v58 + v46 * v59 + 0.0000099999997;
   v37 = v35 < v44;
   v38 = 0;
   v39 = v35 == v44;
@@ -30038,10 +30038,10 @@ int maths_AABBIntersect(const CVector *a1, const CVector *a2, const CVector *a3,
 
   v6 = *(float *)a3 - *(float *)a1;
   result = 0;
-  if ( COERCE_FLOAT(LODWORD(v6) & 0x7FFFFFFF) <= *(float *)a2 + *(float *)a4 )
+// FIXME COERCE:   if ( COERCE_FLOAT(LODWORD(v6) & 0x7FFFFFFF) <= *(float *)a2 + *(float *)a4 )
   {
     v7 = *((float *)a3 + 1) - *((float *)a1 + 1);
-    if ( COERCE_FLOAT(LODWORD(v7) & 0x7FFFFFFF) <= *((float *)a2 + 1) + *((float *)a4 + 1) )
+// FIXME COERCE:     if ( COERCE_FLOAT(LODWORD(v7) & 0x7FFFFFFF) <= *((float *)a2 + 1) + *((float *)a4 + 1) )
     {
       v5 = *((float *)a3 + 2) - *((float *)a1 + 2);
       HIBYTE(v5) &= 0x7Fu;
@@ -30592,8 +30592,8 @@ void _static_initialization_and_destruction_0_48(int a1, int a2){
 //----- (08182A60) --------------------------------------------------------
 int _pure_virtual(void)
 {
-  __write(2, "pure virtual method called\n", 27, 135801452);
-  return __terminate();
+  // FIXME:   __write(2, "pure virtual method called\n", 27, 135801452);
+// FIXME VOID:   return __terminate();
 }
 // 804A878: using guessed type int __write(DWORD, DWORD, DWORD, DWORD);
 // 804B1F8: using guessed type int __terminate();
@@ -30897,835 +30897,835 @@ void CMemObject_dtor(CMemObject *self, char a2);int CMemObject_GetElementsCount(
 CMatrix *_static_initialization_and_destruction_0_7(int a1, int a2);
 int CMemMgr_QueryMemObject(CMemMgr *self, unsigned int a2);int CMemPage_QueryMemObject(CMemPage *self, unsigned int a2);int CMemMgr_LoadStatic(CMemMgr *self);
 int CMemObject_Init(CMemObject *self, unsigned int a2, unsigned int a3);int CMemObject_Read(CMemObject *self, CDBAccess *a2);
-int CMemObject_Flush(CMemObject *self, CDBAccess *a2);
-int CMemObject_CreateElements(CMemObject *self, CDBAccess *a2);
-int CMemMgr_DeleteElements(void* a1, int a2_dup, CDBAccess *); // idbint CMemMgr_NumFree(void* a1, int a2_dup, CDBAccess *); // idbint CMemMgr_Count(void* a1, int a2, CDBAccess *); // idbCMatrix *_static_initialization_and_destruction_0_8(int a1, int a2_dup);
+// FIXME FWD: int CMemObject_Flush(CMemObject *self, CDBAccess *a2);
+// FIXME FWD: int CMemObject_CreateElements(CMemObject *self, CDBAccess *a2);
+// FIXME FWD: int CMemMgr_DeleteElements(void* a1, int a2_dup, CDBAccess *); // idbint CMemMgr_NumFree(void* a1, int a2_dup, CDBAccess *); // idbint CMemMgr_Count(void* a1, int a2, CDBAccess *); // idbCMatrix *_static_initialization_and_destruction_0_8(int a1, int a2_dup);
 CMemAccess *CMemAccess_ctor(CMemAccess *self, char *src, char *, char *, char *); // idb
-void CMemAccess_dtor(CMemAccess *self, char a2_dup);int CMemAccess_Lock(CMemAccess *, int a2_dup, int a3, void*); // idbint CMemAccess_Lock(CMemAccess *, int a2, void*); // idbvoid CMemAccess_Unlock(CMemAccess *self);
-int CMemAccess_Flush(int a1, int a2);int CMemAccess_Delete(CMemAccess *, void*); // idb
-int CMemAccess_Purge(CMemAccess *, void*); // idb
-int CMemAccess_PurgeCategory(CMemAccess *self, unsigned int a2);int CMemAccess_NumFree(int a1, int a2_dup);int CMemAccess_Count(int a1, int a2_dup);int CMemAccess_CreateElements(CMemAccess *, void*); // idb
-int CMemAccess_DeleteElements(int a1, int a2);int CMemAccess_GenerateUniqueID(CMemAccess *self, char *a2);
-int CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3);CMemAccess *CMemAccess_RefreshCacheObject(CMemAccess *self, tMemCacheObject *a2);
+// FIXME FWD: void CMemAccess_dtor(CMemAccess *self, char a2_dup);int CMemAccess_Lock(CMemAccess *, int a2_dup, int a3, void*); // idbint CMemAccess_Lock(CMemAccess *, int a2, void*); // idbvoid CMemAccess_Unlock(CMemAccess *self);
+// FIXME FWD: int CMemAccess_Flush(int a1, int a2);int CMemAccess_Delete(CMemAccess *, void*); // idb
+// FIXME FWD: int CMemAccess_Purge(CMemAccess *, void*); // idb
+// FIXME FWD: int CMemAccess_PurgeCategory(CMemAccess *self, unsigned int a2);int CMemAccess_NumFree(int a1, int a2_dup);int CMemAccess_Count(int a1, int a2_dup);int CMemAccess_CreateElements(CMemAccess *, void*); // idb
+// FIXME FWD: int CMemAccess_DeleteElements(int a1, int a2);int CMemAccess_GenerateUniqueID(CMemAccess *self, char *a2);
+// FIXME FWD: int CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3);CMemAccess *CMemAccess_RefreshCacheObject(CMemAccess *self, tMemCacheObject *a2);
 tMemCacheObject *CMemAccess_Add(CMemAccess *self, CMemObject *a2);
-int CMemAccess_AddCacheObject(CMemAccess *self, tMemCacheObject *a2);
-int CMemAccess_FlushCache(CMemAccess *self, int a2);int CMemAccess_DeleteCacheObject(CMemAccess *self, tMemCacheObject *a2);
+// FIXME FWD: int CMemAccess_AddCacheObject(CMemAccess *self, tMemCacheObject *a2);
+// FIXME FWD: int CMemAccess_FlushCache(CMemAccess *self, int a2);int CMemAccess_DeleteCacheObject(CMemAccess *self, tMemCacheObject *a2);
 CMatrix *_static_initialization_and_destruction_0_9(int a1, int a2);
-int CHashTable__tMemCacheObject_ptr_FreeNodes(int a1, DWORD *a2);int CHashTable__tMemCacheObject_ptr_RemoveAll(DWORD *a1);
-int CHashTable__tMemCacheObject_ptr_dtor_CHashTable(DWORD *a1, char a2);int CHashTable__tMemCacheObject_ptr_Hash(int a1, unsigned long long a2);int CHashTable__tMemCacheObject_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3);
-int CHashTable__tMemCacheObject_ptr_CHashTable(int a1, int a2);int CHashTable__tMemCacheObject_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a3);
-int CHashTable__tMemCacheObject_ptr_Remove(DWORD *a1, unsigned long long a2);
-void tMemCacheObject_dtor_tMemCacheObject(tMemCacheObject *self, char a2);void tMemCacheObject__tMemCacheObject(tMemCacheObject *self);
-void CVM_ctor(CVM *self);
-void CVM_dtor(CVM *self, char a2);int CVM_Init(int a1, DWORD *a2, int a3);int CVM_Process(CVM *, void*); // idb
+// FIXME FWD: int CHashTable__tMemCacheObject_ptr_FreeNodes(int a1, DWORD *a2);int CHashTable__tMemCacheObject_ptr_RemoveAll(DWORD *a1);
+// FIXME FWD: int CHashTable__tMemCacheObject_ptr_dtor_CHashTable(DWORD *a1, char a2);int CHashTable__tMemCacheObject_ptr_Hash(int a1, unsigned long long a2);int CHashTable__tMemCacheObject_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3);
+// FIXME FWD: int CHashTable__tMemCacheObject_ptr_CHashTable(int a1, int a2);int CHashTable__tMemCacheObject_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a3);
+// FIXME FWD: int CHashTable__tMemCacheObject_ptr_Remove(DWORD *a1, unsigned long long a2);
+// FIXME FWD: void tMemCacheObject_dtor_tMemCacheObject(tMemCacheObject *self, char a2);void tMemCacheObject__tMemCacheObject(tMemCacheObject *self);
+// FIXME FWD: void CVM_ctor(CVM *self);
+// FIXME FWD: void CVM_dtor(CVM *self, char a2);int CVM_Init(int a1, DWORD *a2, int a3);int CVM_Process(CVM *, void*); // idb
 CVM *CVM_MemoryStatus(CVM *self);
 __suseconds_t CVM_GetTick(CVM *self);
-void _static_initialization_and_destruction_0_10(int a1, int a2);
+// FIXME FWD: void _static_initialization_and_destruction_0_10(int a1, int a2);
 // void _vtbl_global _destructor keyed toBindings();
-int CHashTable__ScriptData_ptr_Hash(int a1, unsigned long long a2);int CHashTable__ScriptData_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3);
-void CTaskMgr_ctor(CTaskMgr *self);
-void CTaskMgr_dtor(CTaskMgr *self, char a2_dup);int CTaskMgr_AssignTask(CTaskMgr *a1, int a2_dup);int CTaskMgr_ExecuteTask(int a1, int a2);int CTaskMgr_Init(CTaskMgr *a1, int a2_dup, int a3_dup);int CTaskMgr_Init(CTaskMgr *a1, int a2_dup, int a3);int CTaskMgr_Init(CTaskMgr *a1, DWORD *a2, int a3_dup, int a4);int CTaskMgr_ReloadLUA(CTaskMgr *self);
-int CTaskMgr_LoadHeaders(CTaskMgr *self);
+// FIXME FWD: int CHashTable__ScriptData_ptr_Hash(int a1, unsigned long long a2);int CHashTable__ScriptData_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3);
+// FIXME FWD: void CTaskMgr_ctor(CTaskMgr *self);
+// FIXME FWD: void CTaskMgr_dtor(CTaskMgr *self, char a2_dup);int CTaskMgr_AssignTask(CTaskMgr *a1, int a2_dup);int CTaskMgr_ExecuteTask(int a1, int a2);int CTaskMgr_Init(CTaskMgr *a1, int a2_dup, int a3_dup);int CTaskMgr_Init(CTaskMgr *a1, int a2_dup, int a3);int CTaskMgr_Init(CTaskMgr *a1, DWORD *a2, int a3_dup, int a4);int CTaskMgr_ReloadLUA(CTaskMgr *self);
+// FIXME FWD: int CTaskMgr_LoadHeaders(CTaskMgr *self);
 int (**CTaskMgr_BindFunctions(CTaskMgr *self))(int);
-int CTaskMgr_LoadScript(CTaskMgr *self, unsigned int a2);int CTaskMgr_LoadScripts(CTaskMgr *self);
-int CTaskMgr_FindAliasToScript(CTaskMgr *self, unsigned int a2);int CTaskMgr_ReloadScripts(CTaskMgr *self);
-int CTaskMgr_ActivityLog(CTaskMgr *self, int a2);CTaskMgr *CTaskMgr_DumpMemory(CTaskMgr *self);
-int CTaskMgr_ShowEvent(CTaskMgr *self);
+// FIXME FWD: int CTaskMgr_LoadScript(CTaskMgr *self, unsigned int a2);int CTaskMgr_LoadScripts(CTaskMgr *self);
+// FIXME FWD: int CTaskMgr_FindAliasToScript(CTaskMgr *self, unsigned int a2);int CTaskMgr_ReloadScripts(CTaskMgr *self);
+// FIXME FWD: int CTaskMgr_ActivityLog(CTaskMgr *self, int a2);CTaskMgr *CTaskMgr_DumpMemory(CTaskMgr *self);
+// FIXME FWD: int CTaskMgr_ShowEvent(CTaskMgr *self);
 CTaskMgr *CTaskMgr_SetChatLog(CTaskMgr *self, unsigned int a2);CTaskMgr *CTaskMgr_Debug(CTaskMgr *self, unsigned int a2, unsigned int a3);void _static_initialization_and_destruction_0_11(int a1, int a2_dup);
 // void _vtbl_global _destructor keyed toCTaskMgr_CTaskMgr();
-int CHashTable__ScriptData_ptr_FreeNodes(int a1, DWORD *a2);int CHashTable__ScriptData_ptr_RemoveAll(DWORD *a1);
-int CHashTable__ScriptData_ptr_dtor_CHashTable(DWORD *a1, char a2_dup);int CHashTable__ScriptData_ptr_CHashTable(int a1, int a2);int CHashTable__ScriptData_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a3);
-void CEventMgr_ctor(CEventMgr *self);
-void CEventMgr_dtor(CEventMgr *self, char a2_dup);int CEventMgr_AddEvent(int a1, int *a2);int CEventMgr_CreateEvent(int a1, int a2_dup, int a3);int CEventMgr_DeleteEvent(CEventMgr *self, unsigned short a2);
-int CEventMgr_RemoveEvent(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_RefreshEvent(CEventMgr *self, unsigned int a2);int CEventMgr_CheckEvent(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_Startup();
-int CEventMgr_Init(int a1, int a2);int CEventMgr_Activate(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_Deactivate(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_Process(CEventMgr *self);
-int CEventMgr_UpdateLastTime(int a1, int a2_dup);int CEventMgr_CompareInterval(int a1, int a2);int CEventMgr_ClearEvents(CEventMgr *self);
-int CEventMgr_ReloadEvents(CEventMgr *self);
-int CEventMgr_ReloadEvent(CEventMgr *self, unsigned int a2);CTaskMgr *CEventMgr_Debug(CEventMgr *self, unsigned int a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_12(int a1, int a2_dup);
-void CGS_ctor(CGS *self);
-void CGS_dtor(CGS *self, char a2);int CGS_ExecuteScript(CGS *self);
-int CGS_ExecuteScript(CGS *self, unsigned int a2);int CGS_Init(int a1, int a2_dup, int a3);int CGS_Process(CGS *, void*); // idb
-int CGS_GetAuctionList(CGS *self);
-int CGS_ClientTimeOut(CGS *self);
-int CGS_ZoneIn(CGS *self, int a2);int CGS_ZoneOut(CGS *self);
-int CGS_MoveVector(CGS *self);
-int CGS_ReqUnknownID(CGS *self);
-int CGS_TimeSync(CGS *self);
-int CGS_PCData(CGS *self);
-int CGS_Attributes(CGS *self);
-int CGS_TargetData(CGS *self);
-int CGS_Powers(CGS *self);
-int CGS_ShowChainPowers(CGS *self);
-int CGS_Skills(CGS *self);
-int CGS_Stances(CGS *self);
-int CGS_Party(CGS *self);
-int CGS_PartyUpdate(CGS *self);
-int CGS_QuestJournal(CGS *self);
-int CGS_QuestStory(CGS *self);
-int CGS_QuestStoryInfo(CGS *self);
-int CGS_Chat(CGS *self);
-int CGS_Echo(CGS *self);
-int CGS_Brothers(CGS *self);
-int CGS_CheckGameEvent_Secure(CGS *self);
-int CGS_ReloadSpawnPt_Secure(CGS *self);
+// FIXME FWD: int CHashTable__ScriptData_ptr_FreeNodes(int a1, DWORD *a2);int CHashTable__ScriptData_ptr_RemoveAll(DWORD *a1);
+// FIXME FWD: int CHashTable__ScriptData_ptr_dtor_CHashTable(DWORD *a1, char a2_dup);int CHashTable__ScriptData_ptr_CHashTable(int a1, int a2);int CHashTable__ScriptData_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a3);
+// FIXME FWD: void CEventMgr_ctor(CEventMgr *self);
+// FIXME FWD: void CEventMgr_dtor(CEventMgr *self, char a2_dup);int CEventMgr_AddEvent(int a1, int *a2);int CEventMgr_CreateEvent(int a1, int a2_dup, int a3);int CEventMgr_DeleteEvent(CEventMgr *self, unsigned short a2);
+// FIXME FWD: int CEventMgr_RemoveEvent(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_RefreshEvent(CEventMgr *self, unsigned int a2);int CEventMgr_CheckEvent(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_Startup();
+// FIXME FWD: int CEventMgr_Init(int a1, int a2);int CEventMgr_Activate(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_Deactivate(CEventMgr *self, unsigned short a2, unsigned int a3);int CEventMgr_Process(CEventMgr *self);
+// FIXME FWD: int CEventMgr_UpdateLastTime(int a1, int a2_dup);int CEventMgr_CompareInterval(int a1, int a2);int CEventMgr_ClearEvents(CEventMgr *self);
+// FIXME FWD: int CEventMgr_ReloadEvents(CEventMgr *self);
+// FIXME FWD: int CEventMgr_ReloadEvent(CEventMgr *self, unsigned int a2);CTaskMgr *CEventMgr_Debug(CEventMgr *self, unsigned int a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_12(int a1, int a2_dup);
+// FIXME FWD: void CGS_ctor(CGS *self);
+// FIXME FWD: void CGS_dtor(CGS *self, char a2);int CGS_ExecuteScript(CGS *self);
+// FIXME FWD: int CGS_ExecuteScript(CGS *self, unsigned int a2);int CGS_Init(int a1, int a2_dup, int a3);int CGS_Process(CGS *, void*); // idb
+// FIXME FWD: int CGS_GetAuctionList(CGS *self);
+// FIXME FWD: int CGS_ClientTimeOut(CGS *self);
+// FIXME FWD: int CGS_ZoneIn(CGS *self, int a2);int CGS_ZoneOut(CGS *self);
+// FIXME FWD: int CGS_MoveVector(CGS *self);
+// FIXME FWD: int CGS_ReqUnknownID(CGS *self);
+// FIXME FWD: int CGS_TimeSync(CGS *self);
+// FIXME FWD: int CGS_PCData(CGS *self);
+// FIXME FWD: int CGS_Attributes(CGS *self);
+// FIXME FWD: int CGS_TargetData(CGS *self);
+// FIXME FWD: int CGS_Powers(CGS *self);
+// FIXME FWD: int CGS_ShowChainPowers(CGS *self);
+// FIXME FWD: int CGS_Skills(CGS *self);
+// FIXME FWD: int CGS_Stances(CGS *self);
+// FIXME FWD: int CGS_Party(CGS *self);
+// FIXME FWD: int CGS_PartyUpdate(CGS *self);
+// FIXME FWD: int CGS_QuestJournal(CGS *self);
+// FIXME FWD: int CGS_QuestStory(CGS *self);
+// FIXME FWD: int CGS_QuestStoryInfo(CGS *self);
+// FIXME FWD: int CGS_Chat(CGS *self);
+// FIXME FWD: int CGS_Echo(CGS *self);
+// FIXME FWD: int CGS_Brothers(CGS *self);
+// FIXME FWD: int CGS_CheckGameEvent_Secure(CGS *self);
+// FIXME FWD: int CGS_ReloadSpawnPt_Secure(CGS *self);
 unsigned char *CGS_ActivateQuestPt_Secure(CGS *self);
 unsigned int CGS_ReloadNPCAttrib_Secure(CGS *self);
-int CGS_ReloadEvents_Secure(CGS *self);
-int CGS_ExecuteDBScript_Internal(CGS *self, char *filename);
-int CGS_GameEvents_Secure(CGS *self);
-int CGS_ActivateWeather_Secure(CGS *self);
-int CGS_Emote(CGS *self);
-int CGS_ClanHallList(CGS *self);
-int CGS_ClanAllyList(CGS *self);
-int CGS_WhoIs(CGS *self);
-int CGS_GMCheckWarEvent(CGS *self);
-int CGS_WarEvents(CGS *self);
-int CGS_GuildInfo(CGS *self);
-int CGS_ClanInfo(CGS *self);
-int CGS_GuildOfficerList(CGS *self);
-int CGS_ClanOfficerList(CGS *self);
-int CGS_HallTopPK(CGS *self);
-int CGS_GuildMemberList(CGS *self);
-int CGS_HallMemberList(CGS *self);
-int CGS_GuildName(CGS *self);
-int CGS_GMMemberList(CGS *self);
-int CGS_FriendsList(CGS *self);
-int CGS_FriendModify(CGS *self);
-int CGS_IgnoreModify(CGS *self);
-int CGS_IgnoreList(CGS *self);
-int CGS_Stuck(CGS *self);
-int CGS_PartyFind(CGS *self);
-int CGS_GMWho(CGS *self);
-int CGS_Who(CGS *self);
-int CGS_CharSys_Debug(CGS *self);
-int CGS_SetChatFilter(CGS *self);
-int CGS_SetOption(CGS *self);
-int CGS_SetFriendly(CGS *self);
-int CGS_DropConnection(CGS *self);
-int CGS_CloseConnection(CGS *self);
-int CGS_UpdateChar(CGS *self);
-int CGS_NameRequest(CGS *self);
-int CGS_SpawnGrp(CGS *self);
-int CGS_ResetSpawnGrp(CGS *self);
-int CGS_ResetSpawnAttrib(CGS *self);
-int CGS_DeleteSpawnNPCGrp(CGS *self);
-int CGS_ResetSpawnGrpAttrib(CGS *self);
-int CGS_GMHelp(CGS *self);
-int CGS_RemoveObject_Secure(CGS *self);
-int CGS_PurgeMemory_Secure(CGS *self);
-int CGS_MoveAll2_Secure(CGS *self);
-int CGS_MoveAll_Secure(CGS *self);
-int CGS_Broadcast_Secure(CGS *self);
-int CGS_SetStance_Secure(CGS *self);
-int CGS_CheckUniqueItem_Secure(CGS *self);
-int CGS_DailyCheck_Secure(CGS *self);
-int CGS_GarbageCollect_Secure(CGS *self);
-int CGS_CheckWarScore_Secure(CGS *self);
-int CGS_RemoveObject_Internal(CGS *self);
-int CGS_SendMsg_Internal(CGS *self, unsigned int a2, unsigned short a3);int CGS_SendMsg_Secure(CGS *self);
-int CGS_CheckOptions_Internal(CGS *self, VKY_SCENE_tObjectHandle *a2, unsigned int a3);void _static_initialization_and_destruction_0_13(int a1, int a2_dup);
+// FIXME FWD: int CGS_ReloadEvents_Secure(CGS *self);
+// FIXME FWD: int CGS_ExecuteDBScript_Internal(CGS *self, char *filename);
+// FIXME FWD: int CGS_GameEvents_Secure(CGS *self);
+// FIXME FWD: int CGS_ActivateWeather_Secure(CGS *self);
+// FIXME FWD: int CGS_Emote(CGS *self);
+// FIXME FWD: int CGS_ClanHallList(CGS *self);
+// FIXME FWD: int CGS_ClanAllyList(CGS *self);
+// FIXME FWD: int CGS_WhoIs(CGS *self);
+// FIXME FWD: int CGS_GMCheckWarEvent(CGS *self);
+// FIXME FWD: int CGS_WarEvents(CGS *self);
+// FIXME FWD: int CGS_GuildInfo(CGS *self);
+// FIXME FWD: int CGS_ClanInfo(CGS *self);
+// FIXME FWD: int CGS_GuildOfficerList(CGS *self);
+// FIXME FWD: int CGS_ClanOfficerList(CGS *self);
+// FIXME FWD: int CGS_HallTopPK(CGS *self);
+// FIXME FWD: int CGS_GuildMemberList(CGS *self);
+// FIXME FWD: int CGS_HallMemberList(CGS *self);
+// FIXME FWD: int CGS_GuildName(CGS *self);
+// FIXME FWD: int CGS_GMMemberList(CGS *self);
+// FIXME FWD: int CGS_FriendsList(CGS *self);
+// FIXME FWD: int CGS_FriendModify(CGS *self);
+// FIXME FWD: int CGS_IgnoreModify(CGS *self);
+// FIXME FWD: int CGS_IgnoreList(CGS *self);
+// FIXME FWD: int CGS_Stuck(CGS *self);
+// FIXME FWD: int CGS_PartyFind(CGS *self);
+// FIXME FWD: int CGS_GMWho(CGS *self);
+// FIXME FWD: int CGS_Who(CGS *self);
+// FIXME FWD: int CGS_CharSys_Debug(CGS *self);
+// FIXME FWD: int CGS_SetChatFilter(CGS *self);
+// FIXME FWD: int CGS_SetOption(CGS *self);
+// FIXME FWD: int CGS_SetFriendly(CGS *self);
+// FIXME FWD: int CGS_DropConnection(CGS *self);
+// FIXME FWD: int CGS_CloseConnection(CGS *self);
+// FIXME FWD: int CGS_UpdateChar(CGS *self);
+// FIXME FWD: int CGS_NameRequest(CGS *self);
+// FIXME FWD: int CGS_SpawnGrp(CGS *self);
+// FIXME FWD: int CGS_ResetSpawnGrp(CGS *self);
+// FIXME FWD: int CGS_ResetSpawnAttrib(CGS *self);
+// FIXME FWD: int CGS_DeleteSpawnNPCGrp(CGS *self);
+// FIXME FWD: int CGS_ResetSpawnGrpAttrib(CGS *self);
+// FIXME FWD: int CGS_GMHelp(CGS *self);
+// FIXME FWD: int CGS_RemoveObject_Secure(CGS *self);
+// FIXME FWD: int CGS_PurgeMemory_Secure(CGS *self);
+// FIXME FWD: int CGS_MoveAll2_Secure(CGS *self);
+// FIXME FWD: int CGS_MoveAll_Secure(CGS *self);
+// FIXME FWD: int CGS_Broadcast_Secure(CGS *self);
+// FIXME FWD: int CGS_SetStance_Secure(CGS *self);
+// FIXME FWD: int CGS_CheckUniqueItem_Secure(CGS *self);
+// FIXME FWD: int CGS_DailyCheck_Secure(CGS *self);
+// FIXME FWD: int CGS_GarbageCollect_Secure(CGS *self);
+// FIXME FWD: int CGS_CheckWarScore_Secure(CGS *self);
+// FIXME FWD: int CGS_RemoveObject_Internal(CGS *self);
+// FIXME FWD: int CGS_SendMsg_Internal(CGS *self, unsigned int a2, unsigned short a3);int CGS_SendMsg_Secure(CGS *self);
+// FIXME FWD: int CGS_CheckOptions_Internal(CGS *self, VKY_SCENE_tObjectHandle *a2, unsigned int a3);void _static_initialization_and_destruction_0_13(int a1, int a2_dup);
 // void _vtbl_global _destructor keyed toCGS_CGS();
-int Fastftol(float a1);void CVector_ctor(CVector *self);
+// FIXME FWD: int Fastftol(float a1);void CVector_ctor(CVector *self);
 CVector *CVector_ctor(CVector *self, float, float, float); // idb
 long double CVector_operator_float(float *a1);
 const CVector *__mi(const CVector *a1, const CVector *a2, float *a3);
 CVector *CMatrix_GetTranslation(CMatrix *self, CVector *a2);
-int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__dtor_CGEN_NicePreAllocLinkList(int *a1, char a2_dup);DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__CGEN_NicePreAllocLinkList(DWORD *a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetHead(int a1, DWORD *a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetCurrent(int a1, int *a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetNext(int a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__SetDestroy(int a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetCount(int a1);CVector *CVector_Set(CVector *self, float a2_dup, float a3, float a4);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Clear(int *a1);
-void CSceneMgr_ctor(CSceneMgr *self);
-void CSceneMgr_dtor(CSceneMgr *self, char a2);int CSceneMgr_Init(CSceneMgr *, void*); // idb
-int CSceneMgr_ReloadScenes();
-int CSceneMgr_GetCharacterList(int *a1, void *a2, int a3);void CMatrix_ctor(CMatrix *self);
-DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__AddTail(DWORD *a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Delete(int *a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__CNode_ctor(int a1);DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Find(int a1, int a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Delete(int *a1, DWORD *a2);
+// FIXME FWD: int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__dtor_CGEN_NicePreAllocLinkList(int *a1, char a2_dup);DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__CGEN_NicePreAllocLinkList(DWORD *a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetHead(int a1, DWORD *a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetCurrent(int a1, int *a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetNext(int a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__SetDestroy(int a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetCount(int a1);CVector *CVector_Set(CVector *self, float a2_dup, float a3, float a4);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Clear(int *a1);
+// FIXME FWD: void CSceneMgr_ctor(CSceneMgr *self);
+// FIXME FWD: void CSceneMgr_dtor(CSceneMgr *self, char a2);int CSceneMgr_Init(CSceneMgr *, void*); // idb
+// FIXME FWD: int CSceneMgr_ReloadScenes();
+// FIXME FWD: int CSceneMgr_GetCharacterList(int *a1, void *a2, int a3);void CMatrix_ctor(CMatrix *self);
+// FIXME FWD: DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__AddTail(DWORD *a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Delete(int *a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__CNode_ctor(int a1);DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Find(int a1, int a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Delete(int *a1, DWORD *a2);
 long double gametime(unsigned int a1);char *inet_ntoa_safe(char *s, int a2_dup);CMatrix *_static_initialization_and_destruction_0_15(int a1, int a2);
-int npcmutexlock(pthread_mutex_t *mutex, int a2);int npcmutexunlock(pthread_mutex_t *mutex);
-int targetlmutexlock(pthread_mutex_t *mutex, int a2);int targetlmutexunlock(pthread_mutex_t *mutex);
-int spawnmutexlock(pthread_mutex_t *mutex, int a2);int spawnmutexunlock(pthread_mutex_t *mutex);
-int putmutexlock(pthread_mutex_t *mutex, int a2);int putmutexunlock(pthread_mutex_t *mutex);
-int getmutexlock(pthread_mutex_t *mutex, int a2);int getmutexunlock(pthread_mutex_t *mutex);
+// FIXME FWD: int npcmutexlock(pthread_mutex_t *mutex, int a2);int npcmutexunlock(pthread_mutex_t *mutex);
+// FIXME FWD: int targetlmutexlock(pthread_mutex_t *mutex, int a2);int targetlmutexunlock(pthread_mutex_t *mutex);
+// FIXME FWD: int spawnmutexlock(pthread_mutex_t *mutex, int a2);int spawnmutexunlock(pthread_mutex_t *mutex);
+// FIXME FWD: int putmutexlock(pthread_mutex_t *mutex, int a2);int putmutexunlock(pthread_mutex_t *mutex);
+// FIXME FWD: int getmutexlock(pthread_mutex_t *mutex, int a2);int getmutexunlock(pthread_mutex_t *mutex);
 CTaskMgr *CAI_MemoryStatus(CAI *self);
 CAI *CAI_ShowDestroyMsg(CAI *self);
 CAI *CAI_HideDestroyMsg(CAI *self);
-void MSGShowDestroy();
-int CAI_AISceneLock(CSceneMgr **self, CScene *a2, int a3);int CAI_AISceneUnlock(CSceneMgr **self, CScene *a2);
+// FIXME FWD: void MSGShowDestroy();
+// FIXME FWD: int CAI_AISceneLock(CSceneMgr **self, CScene *a2, int a3);int CAI_AISceneUnlock(CSceneMgr **self, CScene *a2);
 CAI *CAI_ShowWayPoint(CAI *self);
 CAI *CAI_HideWayPoint(CAI *self);
 CAI *CAI_ShowMove(CAI *self);
 CAI *CAI_HideMove(CAI *self);
 // float *VectorRotY(float *a1, float a2, float a3, float a4, float a5);unsigned int IDXTRANS(unsigned int a1);void CSpawnPoint_ctor(CSpawnPoint *self);
-void CSpawnMgr_ctor(CSpawnMgr *self);
-char CSpawnMgr_CreateSpawnMem(CSpawnMgr *self, int a2);int CSpawnMgr_GetSpawnPointCount(CSpawnMgr *self);
-void CSpawnMgr_dtor(CSpawnMgr *self, char a2);void CEffectElement_ctor(CEffectElement *self);
-void CWayPoints_ctor(CWayPoints *self);
-void CWayPoints_dtor(CWayPoints *self, char a2);int CWayPointMgr_GetWayPointSize(CWayPointMgr *self);
+// FIXME FWD: void CSpawnMgr_ctor(CSpawnMgr *self);
+// FIXME FWD: char CSpawnMgr_CreateSpawnMem(CSpawnMgr *self, int a2);int CSpawnMgr_GetSpawnPointCount(CSpawnMgr *self);
+// FIXME FWD: void CSpawnMgr_dtor(CSpawnMgr *self, char a2);void CEffectElement_ctor(CEffectElement *self);
+// FIXME FWD: void CWayPoints_ctor(CWayPoints *self);
+// FIXME FWD: void CWayPoints_dtor(CWayPoints *self, char a2);int CWayPointMgr_GetWayPointSize(CWayPointMgr *self);
 bool CWayPointMgr_SetWayPointSize(CWayPointMgr *self, int a2);void CWayPointMgr_ctor(CWayPointMgr *self);
-unsigned int CWayPointMgr_GetActualIndex(CWayPointMgr *self, unsigned int a2);void CWayPointMgr_dtor(CWayPointMgr *self, char a2_dup);void CPathFinder_ctor(CPathFinder *self);
-void CPathFinder_dtor(CPathFinder *self, char a2);int compare(const void *a2, const void *a3);
-DWORD *CWayPointMgr_GetPathWay(CWayPointMgr *a1, CScene *a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);void CWayPointMgr_AllocateWayPoint(CWayPointMgr *self, VKY_SCENE_tPoint *a2, CScene *a3);
-void CWayPointSceneMgr_ctor(CWayPointSceneMgr *self);
-void CWayPointSceneMgr_dtor(CWayPointSceneMgr *self, char a2_dup);char CWayPointSceneMgr_CreateManager(CWayPointSceneMgr *self, int a2);int CWayPointSceneMgr_GetManagerCount(CWayPointSceneMgr *self);
-int CWayPointSceneMgr_GetWayPointMgr(CWayPointSceneMgr *self, unsigned int a2);CWayPointMgr *CWayPointMgr_SetPtList(CWayPointMgr *self, VKY_SCENE_tPoint **a2);
-void CAI_ctor(CAI *self);
-int RedoRotArray(int a1);void CAI_dtor(CAI *self, char a2);int CAI_GetTargetPtr(CAI *self, unsigned int a2);CAI *CAI_ShowAttack(CAI *self);
+// FIXME AMBIG: unsigned int CWayPointMgr_GetActualIndex(CWayPointMgr *self, unsigned int a2);void CWayPointMgr_dtor(CWayPointMgr *self, char a2_dup);void CPathFinder_ctor(CPathFinder *self);
+// FIXME FWD: void CPathFinder_dtor(CPathFinder *self, char a2);int compare(const void *a2, const void *a3);
+// FIXME FWD: DWORD *CWayPointMgr_GetPathWay(CWayPointMgr *a1, CScene *a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9);void CWayPointMgr_AllocateWayPoint(CWayPointMgr *self, VKY_SCENE_tPoint *a2, CScene *a3);
+// FIXME FWD: void CWayPointSceneMgr_ctor(CWayPointSceneMgr *self);
+// FIXME FWD: void CWayPointSceneMgr_dtor(CWayPointSceneMgr *self, char a2_dup);char CWayPointSceneMgr_CreateManager(CWayPointSceneMgr *self, int a2);int CWayPointSceneMgr_GetManagerCount(CWayPointSceneMgr *self);
+// FIXME FWD: int CWayPointSceneMgr_GetWayPointMgr(CWayPointSceneMgr *self, unsigned int a2);CWayPointMgr *CWayPointMgr_SetPtList(CWayPointMgr *self, VKY_SCENE_tPoint **a2);
+// FIXME FWD: void CAI_ctor(CAI *self);
+// FIXME FWD: int RedoRotArray(int a1);void CAI_dtor(CAI *self, char a2);int CAI_GetTargetPtr(CAI *self, unsigned int a2);CAI *CAI_ShowAttack(CAI *self);
 CAI *CAI_ShowTick(CAI *self);
 CAI *CAI_HideAttack(CAI *self);
-int CAI_RefreshSlotList(int a1, BYTE *a2);void CNPCAttribute_ctor(CNPCAttribute *self);
-void CNPCAttAccess_ctor(CNPCAttAccess *self);
+// FIXME FWD: int CAI_RefreshSlotList(int a1, BYTE *a2);void CNPCAttribute_ctor(CNPCAttribute *self);
+// FIXME FWD: void CNPCAttAccess_ctor(CNPCAttAccess *self);
 unsigned int CNPCAttAccess_ResetAttID(CNPCAttAccess *self, unsigned int a2, CMemAccess *a3);char *CNPCAttAccess_GetByAttID(CNPCAttAccess *self, unsigned int a2, CMemAccess *a3);char *CNPCAttAccess_GetByCharID(CNPCAttAccess *self, unsigned int a2, CMemAccess *a3);char CNPCAttribute_GetPowerRank(CNPCAttribute *self, unsigned short a2, unsigned char *a3);
-void TargetInfo_ctor(TargetInfo *self);
-void NPCGroupInfo_ctor(NPCGroupInfo *self);
-char NPCGroupInfo_CreateNPC(NPCGroupInfo *self, int a2);int NPCGroupInfo_GetNPCCount(NPCGroupInfo *self);
-void NPCGroupInfo_dtor(NPCGroupInfo *self, char a2);int CAI_GetAttackPerc(CAI *self, unsigned int a2, unsigned char a3, CMemAccess *a4);int CAI_GetPowerID(CAI *self, unsigned int a2, unsigned char a3, CMemAccess *a4);int CAI_GetPowerType(CAI *self, unsigned int a2, unsigned char a3, CMemAccess *a4);int CAI_ProcessNPC(CAI *self);
+// FIXME FWD: void TargetInfo_ctor(TargetInfo *self);
+// FIXME FWD: void NPCGroupInfo_ctor(NPCGroupInfo *self);
+// FIXME FWD: char NPCGroupInfo_CreateNPC(NPCGroupInfo *self, int a2);int NPCGroupInfo_GetNPCCount(NPCGroupInfo *self);
+// FIXME FWD: void NPCGroupInfo_dtor(NPCGroupInfo *self, char a2);int CAI_GetAttackPerc(CAI *self, unsigned int a2, unsigned char a3, CMemAccess *a4);int CAI_GetPowerID(CAI *self, unsigned int a2, unsigned char a3, CMemAccess *a4);int CAI_GetPowerType(CAI *self, unsigned int a2, unsigned char a3, CMemAccess *a4);int CAI_ProcessNPC(CAI *self);
 // bool CAI_OnTarget(long double a1, int a2_dup, char a3_dup, int a4, int a5, char a6, int a7, int a8, unsigned short a9);CAI *CAI_SetGravDist(CAI *self, unsigned int a2);int CAI_GetGrav(void* a1, int a2_dup, float, float, float, int a3, void*); // idbchar CAI_GetWayPointEndCoord(CAI *self, NPCInfo *a2, CVector *a3);
-char CAI_GetDestCoord(CAI *self, NPCInfo *a2, CScene *a3, CVector *a4);
+// FIXME FWD: char CAI_GetDestCoord(CAI *self, NPCInfo *a2, CScene *a3, CVector *a4);
 float *CAI_GetExtent(CAI *self, unsigned int a2, float *a3, float *a4, float *a5);char CAI_DoStuck(int a1, int a2_dup, int a3_dup, float a4_dup, int a5);char CAI_CollideWithPartner(CAI *a1, int a2_dup, ...);CAI *CAI_ShowColl(CAI *self);
 CAI *CAI_HideColl(CAI *self);
 NPCInfo *CAI_ResetStuckCheck(CAI *self, NPCInfo *a2);
 NPCInfo *CAI_MoveToVector(CAI *self, unsigned int a2, float a3, float a4, float a5, unsigned char a6, float a7);char CAI_MoveToSpawnPoint(CAI *self, unsigned int a2, unsigned int a3, unsigned int a4, unsigned char a5, float a6);char CAI_MoveToChar(CAI *self, unsigned int a2, unsigned int a3, unsigned char a4, float a5);unsigned int CAI_ReloadNPCAttrib(CAI *self, unsigned int a2, CMemAccess *a3);NPCInfo *CAI_Arrived(CAI *self, unsigned int a2);unsigned int CAI_DoStuckNonCombat(CAI *self, NPCInfo *a2);
-char CAI_Move(CAI *self, unsigned int a2);char CAI_GetTargetCoord(CAI *self, unsigned int a2, CVector *a3, unsigned char *a4, float *a5);char CAI_CheckPriorty(CAI *self, unsigned int a2);char CAI_ScanEnemy(CAI *self, unsigned int a2);char CAI_PassiveScan(CAI *self, unsigned int a2);char CAI_StrafeNPC(CAI *a1, unsigned int a2, int a2_2, int a4_dup, int a5);char CAI_AddPos(int a1, int a2_2, int a3_dup, int a4_dup, int a5);int CAI_MoveNPC(CAI *a1, unsigned int a2, char a3_dup, int a2_2, int a5, float a6, char a7);short CAI_RotateTowardsDest(int a1, int a2_dup, float a3_dup, float a4_dup, float a5);// int CAI_RangeCheck(long double a1, int a2_dup, unsigned int a3, ...);int CAI_ChangeStance(CAI *self, unsigned int a2, unsigned short a3, unsigned char a4, unsigned char a5);unsigned int CAI_DesignateMovement(CAI *self, unsigned int a2);int CAI_LockOnTarget(CAI *self, unsigned int a2, unsigned int a3);void *CAI_RunTask(CAI *self, NPCInfo *a2, CTaskMgr *a3, unsigned int a4, unsigned int a5, unsigned int a6);// int CAI_ReCheckRange(long double a1, CAI *self, unsigned int a3);char CAI_RecalcCoord(CAI *self, NPCInfo *a2);bool CAI_ProceedTarAss(CAI *self, NPCInfo *a2, CNPCAttribute *a3, unsigned int a4);int CAI_AggroCount(CAI *self, unsigned int a2, unsigned int a3);char CAI_IsAggroed(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);int CAI_ClearAggro(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);char *CAI_ReleaseTarget(CAI *self, unsigned int a2, unsigned int a3);CAI *CAI_CheckGuard(CAI *self, unsigned int a2);CAI *CAI_ClearGuard(CAI *self);
-char CAI_ActiveScan(CAI *self, unsigned int a2);int CAI_ExecCombat(CAI *self, unsigned int a2);int CAI_InitializeRandomLocation(int a1, int a2_dup, int a3_dup, float a4_dup, float a5, float a6, short a7);bool CAI_EscapeLure(CAI *self, unsigned int a2);NPCInfo *CAI_GetRandomLocation(CAI *self, unsigned int a2);// float *CAI_NPCQuadEdgeLoc(float *a1, int a2_dup, unsigned char a3, int a3_2, float a5, float a6, float a7, float a8, float a9);unsigned int CAI_PickHomeLocation(CAI *self, unsigned int a2);// unsigned int CAI_GetSpawnPoint(long double a1, int a2_dup, int a3_dup, int a4, char a5, int a6, int a7, DWORD *a8, float a9);// char CAI_SeekWayPoint(long double a1, CAI *self, unsigned int a3);int CAI_CheckNPCState(CAI *self, unsigned int a2);NPCInfo *CAI_DoCountDeduct(CAI *self, NPCInfo *a2);NPCInfo *CAI_RemoveEntity(CAI *self, unsigned int a2, CMemAccess *a3);NPCInfo *CAI_RemovedNPC(CAI *self, unsigned int a2, CMemAccess *a3);CAI *CAI_SetSceneID(CAI *self, unsigned int a2);int CAI_CheckSpawnPointStatus(CAI *self, unsigned int a2);char CAI_DoNPCDisappear(CAI *self, unsigned int a2);CAI *CAI_ShowAttackMessage(CAI *self);
+// FIXME FWD: char CAI_Move(CAI *self, unsigned int a2);char CAI_GetTargetCoord(CAI *self, unsigned int a2, CVector *a3, unsigned char *a4, float *a5);char CAI_CheckPriorty(CAI *self, unsigned int a2);char CAI_ScanEnemy(CAI *self, unsigned int a2);char CAI_PassiveScan(CAI *self, unsigned int a2);char CAI_StrafeNPC(CAI *a1, unsigned int a2, int a2_2, int a4_dup, int a5);char CAI_AddPos(int a1, int a2_2, int a3_dup, int a4_dup, int a5);int CAI_MoveNPC(CAI *a1, unsigned int a2, char a3_dup, int a2_2, int a5, float a6, char a7);short CAI_RotateTowardsDest(int a1, int a2_dup, float a3_dup, float a4_dup, float a5);// int CAI_RangeCheck(long double a1, int a2_dup, unsigned int a3, ...);int CAI_ChangeStance(CAI *self, unsigned int a2, unsigned short a3, unsigned char a4, unsigned char a5);unsigned int CAI_DesignateMovement(CAI *self, unsigned int a2);int CAI_LockOnTarget(CAI *self, unsigned int a2, unsigned int a3);void *CAI_RunTask(CAI *self, NPCInfo *a2, CTaskMgr *a3, unsigned int a4, unsigned int a5, unsigned int a6);// int CAI_ReCheckRange(long double a1, CAI *self, unsigned int a3);char CAI_RecalcCoord(CAI *self, NPCInfo *a2);bool CAI_ProceedTarAss(CAI *self, NPCInfo *a2, CNPCAttribute *a3, unsigned int a4);int CAI_AggroCount(CAI *self, unsigned int a2, unsigned int a3);char CAI_IsAggroed(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);int CAI_ClearAggro(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);char *CAI_ReleaseTarget(CAI *self, unsigned int a2, unsigned int a3);CAI *CAI_CheckGuard(CAI *self, unsigned int a2);CAI *CAI_ClearGuard(CAI *self);
+// FIXME FWD: char CAI_ActiveScan(CAI *self, unsigned int a2);int CAI_ExecCombat(CAI *self, unsigned int a2);int CAI_InitializeRandomLocation(int a1, int a2_dup, int a3_dup, float a4_dup, float a5, float a6, short a7);bool CAI_EscapeLure(CAI *self, unsigned int a2);NPCInfo *CAI_GetRandomLocation(CAI *self, unsigned int a2);// float *CAI_NPCQuadEdgeLoc(float *a1, int a2_dup, unsigned char a3, int a3_2, float a5, float a6, float a7, float a8, float a9);unsigned int CAI_PickHomeLocation(CAI *self, unsigned int a2);// unsigned int CAI_GetSpawnPoint(long double a1, int a2_dup, int a3_dup, int a4, char a5, int a6, int a7, DWORD *a8, float a9);// char CAI_SeekWayPoint(long double a1, CAI *self, unsigned int a3);int CAI_CheckNPCState(CAI *self, unsigned int a2);NPCInfo *CAI_DoCountDeduct(CAI *self, NPCInfo *a2);NPCInfo *CAI_RemoveEntity(CAI *self, unsigned int a2, CMemAccess *a3);NPCInfo *CAI_RemovedNPC(CAI *self, unsigned int a2, CMemAccess *a3);CAI *CAI_SetSceneID(CAI *self, unsigned int a2);int CAI_CheckSpawnPointStatus(CAI *self, unsigned int a2);char CAI_DoNPCDisappear(CAI *self, unsigned int a2);CAI *CAI_ShowAttackMessage(CAI *self);
 CAI *CAI_HideAttackMessage(CAI *self);
 short CAI_DoCombat(CAI *self, unsigned int a2);char CAI_AICycle(CAI *self, unsigned int a2);int CAI_Startup(CAI *, void*); // idb
-char CAI_LineOfSight();
+// FIXME FWD: char CAI_LineOfSight();
 pthread_mutex_t *NPCInfo_ctor(pthread_mutex_t *mutex);
-void NPCInfo_dtor(NPCInfo *self, char a2);int CAI_Process(CAI *self);
-int CAI_DebugSpawnPt(CAI *self, unsigned int a2);int CAI_DebugNPC(CAI *self, unsigned int a2);CScene *CAI_ClearCollCache(CAI *self);
+// FIXME FWD: void NPCInfo_dtor(NPCInfo *self, char a2);int CAI_Process(CAI *self);
+// FIXME FWD: int CAI_DebugSpawnPt(CAI *self, unsigned int a2);int CAI_DebugNPC(CAI *self, unsigned int a2);CScene *CAI_ClearCollCache(CAI *self);
 CAI *CAI_SetID(CAI *self, unsigned int a2);CAI *CAI_ClearID(CAI *self);
-BYTE *CAI_TakeNPC(CAI *self, unsigned int a2);int CAI_GetNPCCount(CAI *self);
-BYTE *CAI_ReleaseNPC(CAI *self, unsigned int a2);int CAI_SetNPCPos(CAI *self, unsigned int a2);CAI *CAI_SetNPCX(CAI *self, unsigned int a2, float a3_dup);CAI *CAI_SetNPCY(CAI *self, unsigned int a2, float a3_dup);CAI *CAI_SetNPCZ(CAI *self, unsigned int a2, float a3);CAI *CAI_SetSpawnPeriod(CAI *self, unsigned int a2);int CAI_ScanSpawnPt(CAI *self);
-int CAI_ActivateSpawnpt(CAI *self, unsigned int a2, int a2_2, unsigned int a4, CMemAccess *a5);unsigned int *CAI_GetSpawnNPC(CAI *self, unsigned int a2, unsigned int a3, unsigned int *a4, unsigned int *a5);unsigned char *CAI_ActivateSpawnPt(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4, unsigned int a5, unsigned char *a6, void *s, unsigned char *a8, unsigned int a9);void CAI_ActivateSpawnPtGrp(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);void CAI_ResetTickSpawnGrp(CAI *self, unsigned int a2, unsigned int a3);void CAI_DeleteSpawnedNPCGrp(CAI *self, unsigned int a2, unsigned int a3);int CAI_DeleteSpawnedNPC(CAI *self, unsigned int a2, unsigned int a3);int CAI_GetSpawnPtCnt(CAI *self, unsigned int a2, unsigned int a3);char CAI_CheckSpawnLiving(CAI *self, unsigned int a2, unsigned int a3);CAI *CAI_SetSpawnID(CAI *self, unsigned int a2);int CAI_CascadeSPCheck(CAI *self);int CAI_ShowSpawn(CAI *self);
+// FIXME FWD: BYTE *CAI_TakeNPC(CAI *self, unsigned int a2);int CAI_GetNPCCount(CAI *self);
+// FIXME FWD: BYTE *CAI_ReleaseNPC(CAI *self, unsigned int a2);int CAI_SetNPCPos(CAI *self, unsigned int a2);CAI *CAI_SetNPCX(CAI *self, unsigned int a2, float a3_dup);CAI *CAI_SetNPCY(CAI *self, unsigned int a2, float a3_dup);CAI *CAI_SetNPCZ(CAI *self, unsigned int a2, float a3);CAI *CAI_SetSpawnPeriod(CAI *self, unsigned int a2);int CAI_ScanSpawnPt(CAI *self);
+// FIXME FWD: int CAI_ActivateSpawnpt(CAI *self, unsigned int a2, int a2_2, unsigned int a4, CMemAccess *a5);unsigned int *CAI_GetSpawnNPC(CAI *self, unsigned int a2, unsigned int a3, unsigned int *a4, unsigned int *a5);unsigned char *CAI_ActivateSpawnPt(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4, unsigned int a5, unsigned char *a6, void *s, unsigned char *a8, unsigned int a9);void CAI_ActivateSpawnPtGrp(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);void CAI_ResetTickSpawnGrp(CAI *self, unsigned int a2, unsigned int a3);void CAI_DeleteSpawnedNPCGrp(CAI *self, unsigned int a2, unsigned int a3);int CAI_DeleteSpawnedNPC(CAI *self, unsigned int a2, unsigned int a3);int CAI_GetSpawnPtCnt(CAI *self, unsigned int a2, unsigned int a3);char CAI_CheckSpawnLiving(CAI *self, unsigned int a2, unsigned int a3);CAI *CAI_SetSpawnID(CAI *self, unsigned int a2);int CAI_CascadeSPCheck(CAI *self);int CAI_ShowSpawn(CAI *self);
 CAI *CAI_HideSpawn(CAI *self);
 CAI *CAI_OverrideSuicide(CAI *self, unsigned int a2);CAI *CAI_OverrideScan(CAI *self, unsigned int a2);CAI *CAI_OverrideSuicideRange(CAI *self, unsigned int a2);CAI *CAI_OverrideScanRange(CAI *self, unsigned int a2);char CAI_SetQuestOwner(CAI *self, unsigned int a2, unsigned int a3, unsigned int a4);char CAI_SetNoDeath(CAI *self, unsigned int a2, unsigned int a3);CSpawnPoint *CSpawnPoint_SetPriortyTarget(CSpawnPoint *self, unsigned int a2);CSpawnPoint *CSpawnPoint_ClearPriortyTarget(CSpawnPoint *self);
 unsigned int CAI_AllocateSpawnPt(CAI *self, CScene *a2, VKY_SCENE_tPoint *a3);
-int CAI_ReloadSpawnPt(CAI *self, unsigned int a2, CMemAccess *a3);int CAI_ReloadSpawnDataAll(CAI *self, CMemAccess *a2);
-int CAI_ReloadSpawnData(CAI *self, unsigned int a2, CMemAccess *a3);long double CAI_GetDirectionByAttID(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);int CAI_ReloadNPCDataAll(CAI *self);
-char *CAI_ReloadAttrib(CAI *self, unsigned int a2);unsigned int CAI_SetNPCForceRetreat(CAI *self, CSpawnPoint *a2);
+// FIXME FWD: int CAI_ReloadSpawnPt(CAI *self, unsigned int a2, CMemAccess *a3);int CAI_ReloadSpawnDataAll(CAI *self, CMemAccess *a2);
+// FIXME FWD: int CAI_ReloadSpawnData(CAI *self, unsigned int a2, CMemAccess *a3);long double CAI_GetDirectionByAttID(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);int CAI_ReloadNPCDataAll(CAI *self);
+// FIXME FWD: char *CAI_ReloadAttrib(CAI *self, unsigned int a2);unsigned int CAI_SetNPCForceRetreat(CAI *self, CSpawnPoint *a2);
 long double CAI_GetDirectionByCharID(CAI *self, unsigned int a2);int CAI_AllocateLoot(void* a1, int a2_2, int a3_dup, int a4_dup, CScene *, int a5, int a6, void*); // idbunsigned int CAI_AllocateLootExt1(int a1, unsigned int a2, int a2_2, unsigned char a4);unsigned int CAI_AllocateLootComplete(int a1, int a2_dup, int a3_dup, int a4_dup, CScene *a5, int a6, int a7, int a8);int CAI_AllocateLoot(void* a1, int a2_dup, int a3_dup, int a4_dup, CScene *, int a5, int a6, int a7, int a8, int a9, void*); // idbint CAI_AllocateDummyNPC(CAI *self, CScene *a2);int CAI_SpawnedNPC(CAI *self, unsigned int a2, float a3_dup, float a4_dup, float a5, unsigned int a6, unsigned short a7, CMemAccess *a8);int CAI_AllocateNPC(CAI *self, CSpawnPoint *a2, float a3, float a4_dup, float a5, unsigned int a6, CMemAccess *a7, unsigned int a8, bool a9, CScene *a10, unsigned int a11, unsigned short a12);int CAI_GetFreeIndex(CAI *self, unsigned int a2);int CAI_GetTopTenList(CAI *self, unsigned int a2);int CAI_GetIndex(CAI *self, unsigned int a2, unsigned int a3);int CAI_GetMaxDamage(CAI *self, unsigned int a2, unsigned int *a3, unsigned char *a4);int CAI_GetMinDamage(CAI *self, unsigned int a2, unsigned int *a3, unsigned char *a4);int comparepart(const void *, void*); // idb
 bool CAI_ProceedWithAggro(CAI *self, NPCInfo *a2, unsigned int a3);void CAI_GetNPCPartner(int a1, unsigned int a2, void *base, int a2_2, CMemAccess *a5, float a6);int CAI_RefreshTopTarget(CAI *self, unsigned int a2, CMemAccess *a3);int CAI_GetTopTarget(CAI *self, unsigned int a2);char *CAI_Manual_Loot(CAI *self, unsigned int a2, unsigned int a3, CMemAccess *a4);unsigned int CAI_SetDropLootFlag(CAI *self, unsigned int a2, unsigned char a3);int CAI_AIGetClanRating(CAI *self, unsigned int a2, unsigned int a3);CAI *CAI_ShowChangeMove(CAI *self);CAI *CAI_HideChangeMove(CAI *self);
-int CAI_GetScriptCount(CAI *self);
-int CAI_GetClanParty(CAI *self, unsigned int a2, float a3, VKY_SCENE_tObjectHandle **a4, int *a5);void NPCPool_ctor(NPCPool *self);
-int NPCPool_GetNPCSlotCount(NPCPool *self);
-char NPCPool_CreateNPCSlots(NPCPool *self, int a2_dup);void NPCPool_dtor(NPCPool *self, char a2);int NPCPool_PutNPC(NPCPool *self, NPCInfo *a2, bool a3);int NPCPool_GetFreeNPC(NPCPool *self);
-void NPCPoolMgr_ctor(NPCPoolMgr *self);
+// FIXME FWD: int CAI_GetScriptCount(CAI *self);
+// FIXME FWD: int CAI_GetClanParty(CAI *self, unsigned int a2, float a3, VKY_SCENE_tObjectHandle **a4, int *a5);void NPCPool_ctor(NPCPool *self);
+// FIXME FWD: int NPCPool_GetNPCSlotCount(NPCPool *self);
+// FIXME FWD: char NPCPool_CreateNPCSlots(NPCPool *self, int a2_dup);void NPCPool_dtor(NPCPool *self, char a2);int NPCPool_PutNPC(NPCPool *self, NPCInfo *a2, bool a3);int NPCPool_GetFreeNPC(NPCPool *self);
+// FIXME FWD: void NPCPoolMgr_ctor(NPCPoolMgr *self);
 bool NPCPoolMgr_CreatePool(NPCPoolMgr *self, int a2_dup);void NPCPoolMgr_dtor(NPCPoolMgr *self, char a2_dup);int NPCPoolMgr_GetPool(NPCPoolMgr *self, unsigned int a2);int CAI_SetSpawnOnStat(CAI *self, unsigned char a2, unsigned int a3, unsigned int a4, unsigned int a5);int CAI_SetSpawnMax(CAI *self, unsigned char a2, unsigned int a3, unsigned int a4, unsigned int a5);int CAI_GetSpawnPtDetail(void* a1, int a2_dup, int a3_dup, int a4_dup, CMemAccess *); // idbint CAI_GetSpawnPt(void*, float, float, float, int a2_dup, float, void*); // idbint CAI_GetSpawnStat(CAI *self, unsigned int *a2, unsigned int *a3);
-char CAI_SetSpawnPtByGroup(CAI *self, unsigned int a2, unsigned int a3, unsigned char a4);bool CAI_ProceedAggro(CAI *self, unsigned int a2, unsigned short a3, unsigned short a4);int CAI_CheckCallForHelp(CAI *self, unsigned int a2);void _static_initialization_and_destruction_0_16(int a1, int a2_dup);
-DWORD CVector_GetMagnitude(CVector *self); // idb
-int __eq(const CVector *s1, const CVector *s2);
+// FIXME FWD: char CAI_SetSpawnPtByGroup(CAI *self, unsigned int a2, unsigned int a3, unsigned char a4);bool CAI_ProceedAggro(CAI *self, unsigned int a2, unsigned short a3, unsigned short a4);int CAI_CheckCallForHelp(CAI *self, unsigned int a2);void _static_initialization_and_destruction_0_16(int a1, int a2_dup);
+// FIXME FWD: DWORD CVector_GetMagnitude(CVector *self); // idb
+// FIXME FWD: int __eq(const CVector *s1, const CVector *s2);
 long double VDot(const CVector *a1, const CVector *a2);
-void CVector_Normalize(CVector *self);
+// FIXME FWD: void CVector_Normalize(CVector *self);
 const CVector *__pl(const CVector *a1, const CVector *a2, float *a3);
 const CVector *__ml(const CVector *a1, const CVector *a2, float *a3);
 CVector *CVector___ml(CVector *self, float a2_dup, float a3);CVector *CVector___aml(CVector *self, float a2_dup);const CVector *CMatrix_SetTranslate(CMatrix *self, const CVector *a2);
 CMatrix *CMatrix_SetTranslate(CMatrix *self, float a2, float a3, float a4);const CMatrix *CMatrix_SetRotation(CMatrix *self, const CMatrix *a2);
-char *CMatrix___vc(CMatrix *self, int a2);const CMatrix *__ml(const CMatrix *a1, const CVector *a2, float *a3);
-int CVKY_CollisionList_GetNPCData(CVKY_CollisionList *self);
-char *CVKY_CollisionList_GetNPCCount(CVKY_CollisionList *self);
-void tVKY_CollisionInfo_ctor(tVKY_CollisionInfo *self);
-void CSceneSharedData_ctor(CSceneSharedData *self);
-void CSceneSharedData_dtor(CSceneSharedData *self, char a2);void stLoc_ctor(stLoc *self);
-DWORD *CGEN_NiceLinkList_CPathFinder__CGEN_NiceLinkList(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_CPathFinder__dtor_CGEN_NiceLinkList(int *a1, char a2);DWORD *CGEN_NiceLinkList_CPathFinder__GetHead(DWORD *a1, DWORD *a2);
-int CGEN_NiceLinkList_CPathFinder__GetNext(int a1, int a2_dup);DWORD *CGEN_NiceLinkList_CPathFinder__AddHead(DWORD *a1, int a2);int CGEN_NiceLinkList_CPathFinder__Clear(int *a1);
-int CGEN_NiceLinkList_CPathFinder__CNode_ctor(int a1);void /* __noreturn */ err_exit(char *); // idb
+// FIXME FWD: char *CMatrix___vc(CMatrix *self, int a2);const CMatrix *__ml(const CMatrix *a1, const CVector *a2, float *a3);
+// FIXME FWD: int CVKY_CollisionList_GetNPCData(CVKY_CollisionList *self);
+// FIXME FWD: char *CVKY_CollisionList_GetNPCCount(CVKY_CollisionList *self);
+// FIXME FWD: void tVKY_CollisionInfo_ctor(tVKY_CollisionInfo *self);
+// FIXME FWD: void CSceneSharedData_ctor(CSceneSharedData *self);
+// FIXME FWD: void CSceneSharedData_dtor(CSceneSharedData *self, char a2);void stLoc_ctor(stLoc *self);
+// FIXME FWD: DWORD *CGEN_NiceLinkList_CPathFinder__CGEN_NiceLinkList(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_CPathFinder__dtor_CGEN_NiceLinkList(int *a1, char a2);DWORD *CGEN_NiceLinkList_CPathFinder__GetHead(DWORD *a1, DWORD *a2);
+// FIXME FWD: int CGEN_NiceLinkList_CPathFinder__GetNext(int a1, int a2_dup);DWORD *CGEN_NiceLinkList_CPathFinder__AddHead(DWORD *a1, int a2);int CGEN_NiceLinkList_CPathFinder__Clear(int *a1);
+// FIXME FWD: int CGEN_NiceLinkList_CPathFinder__CNode_ctor(int a1);void /* __noreturn */ err_exit(char *); // idb
 void /* __noreturn */ berr_exit(char *); // idb
-int islinefeed(char *a1, int a2);int readPubKey(char *a1);
-int readPrivKey(char *a1);
-void *EncryptData(char *s, int *a2, int *a3, char *a4, char *a5);
-char *DecryptData(char *a1, char *a2, char *a3);
-int outenc(char *a1, char *a2, int *a3);
-int encode(char *s, char *a2);
-int outdec(char *a1, char *a2, int a3, int *a4);int decode(char *s, char *a2);
-char *inet_ntoa_safe_thread(char *s, int a2_dup);int tcp_connect(char *name, short a2);
-int SendData(int a1, char *a2, short a3);DWORD *negindex(DWORD *a1, int a2_dup);DWORD *luaA_index(DWORD *a1, int a2_dup);DWORD *luaA_indexAcceptable(DWORD *a1, int a2_dup);int luaA_pushobject(DWORD *a1, DWORD *a2);
-int lua_checkstack(DWORD *a1, int a2_dup);int lua_xmove(int a1, int a2_dup, int a3);int lua_atpanic(int a1, int a2);DWORD *lua_newthread(DWORD *a1);
-int lua_gettop(int a1);int lua_settop(int a1, int a2_dup);DWORD *lua_remove(DWORD *a1, int a2_dup);int lua_insert(DWORD *a1, int a2_dup);int lua_replace(DWORD *a1, int a2_dup);int lua_pushvalue(DWORD *a1, int a2_dup);int lua_type(DWORD *a1, int a2_dup);const char *lua_typename(int a1, int a2_dup);int lua_iscfunction(DWORD *a1, int a2_dup);int lua_isnumber(DWORD *a1, int a2_dup);int lua_isstring(DWORD *a1, int a2_dup);int lua_isuserdata(DWORD *a1, int a2_dup);int lua_rawequal(DWORD *a1, int a2_dup, int a3_dup);int lua_equal(DWORD *a1, int a2_dup, int a3_dup);int lua_lessthan(DWORD *a1, int a2_dup, int a3);long double lua_tonumber(DWORD *a1, int a2_dup);int lua_toboolean(DWORD *a1, int a2_dup);int lua_tostring(DWORD *a1, int a2_dup);int lua_strlen(DWORD *a1, int a2_dup);int lua_tocfunction(DWORD *a1, int a2_dup);int lua_touserdata(DWORD *a1, int a2_dup);int lua_tothread(DWORD *a1, int a2_dup);int lua_topointer(DWORD *a1, int a2);int lua_pushnil(int a1);int lua_pushnumber(void*, double); // idb
-int ***lua_pushlstring(int a1, void *src, size_t n);int ***lua_pushstring(int a1, void *a2);int lua_pushvfstring(int a1, char *s, int a2_dup);int lua_pushfstring(int a1, char *s, int a2_dup);DWORD *lua_pushcclosure(int a1, int a2_dup, unsigned int a3);bool lua_pushboolean(int a1, int a2_dup);int lua_pushlightuserdata(int a1, int a2_dup);int lua_gettable(DWORD *a1, int a2_dup);int lua_rawget(DWORD *a1, int a2_dup);int lua_rawgeti(DWORD *a1, int a2_dup, int a3_dup);DWORD *lua_newtable(int a1);int lua_getmetatable(DWORD *a1, int a2_dup);int lua_getfenv(DWORD *a1, int a2_dup);char lua_settable(DWORD *a1, int a2_dup);int lua_rawset(DWORD *a1, int a2_dup);int lua_rawseti(DWORD *a1, int a2_dup, int a3_dup);int lua_setmetatable(DWORD *a1, int a2_dup);int lua_setfenv(DWORD *a1, int a2_dup);char lua_call(int a1, int a2_dup, int a3_dup);char f_call(int a1, int a2_dup);int lua_pcall(DWORD *a1, int a2_dup, int a3_dup, int a4);char f_Ccall(DWORD *a1, DWORD *a2);
-int lua_cpcall(int a1, int a2_dup, int a3_dup);int lua_load(int a1, int a2_dup, int a3_dup, void *a4);int lua_dump(int a1, int a2, int a3);int lua_getgcthreshold(int a1);int lua_getgccount(int a1);char lua_setgcthreshold(int a1, unsigned int a2);const char *lua_version();
+// FIXME FWD: int islinefeed(char *a1, int a2);int readPubKey(char *a1);
+// FIXME FWD: int readPrivKey(char *a1);
+// FIXME FWD: void *EncryptData(char *s, int *a2, int *a3, char *a4, char *a5);
+// FIXME FWD: char *DecryptData(char *a1, char *a2, char *a3);
+// FIXME FWD: int outenc(char *a1, char *a2, int *a3);
+// FIXME FWD: int encode(char *s, char *a2);
+// FIXME FWD: int outdec(char *a1, char *a2, int a3, int *a4);int decode(char *s, char *a2);
+// FIXME FWD: char *inet_ntoa_safe_thread(char *s, int a2_dup);int tcp_connect(char *name, short a2);
+// FIXME FWD: int SendData(int a1, char *a2, short a3);DWORD *negindex(DWORD *a1, int a2_dup);DWORD *luaA_index(DWORD *a1, int a2_dup);DWORD *luaA_indexAcceptable(DWORD *a1, int a2_dup);int luaA_pushobject(DWORD *a1, DWORD *a2);
+// FIXME FWD: int lua_checkstack(DWORD *a1, int a2_dup);int lua_xmove(int a1, int a2_dup, int a3);int lua_atpanic(int a1, int a2);DWORD *lua_newthread(DWORD *a1);
+// FIXME FWD: int lua_gettop(int a1);int lua_settop(int a1, int a2_dup);DWORD *lua_remove(DWORD *a1, int a2_dup);int lua_insert(DWORD *a1, int a2_dup);int lua_replace(DWORD *a1, int a2_dup);int lua_pushvalue(DWORD *a1, int a2_dup);int lua_type(DWORD *a1, int a2_dup);const char *lua_typename(int a1, int a2_dup);int lua_iscfunction(DWORD *a1, int a2_dup);int lua_isnumber(DWORD *a1, int a2_dup);int lua_isstring(DWORD *a1, int a2_dup);int lua_isuserdata(DWORD *a1, int a2_dup);int lua_rawequal(DWORD *a1, int a2_dup, int a3_dup);int lua_equal(DWORD *a1, int a2_dup, int a3_dup);int lua_lessthan(DWORD *a1, int a2_dup, int a3);long double lua_tonumber(DWORD *a1, int a2_dup);int lua_toboolean(DWORD *a1, int a2_dup);int lua_tostring(DWORD *a1, int a2_dup);int lua_strlen(DWORD *a1, int a2_dup);int lua_tocfunction(DWORD *a1, int a2_dup);int lua_touserdata(DWORD *a1, int a2_dup);int lua_tothread(DWORD *a1, int a2_dup);int lua_topointer(DWORD *a1, int a2);int lua_pushnil(int a1);int lua_pushnumber(void*, double); // idb
+// FIXME FWD: int ***lua_pushlstring(int a1, void *src, size_t n);int ***lua_pushstring(int a1, void *a2);int lua_pushvfstring(int a1, char *s, int a2_dup);int lua_pushfstring(int a1, char *s, int a2_dup);DWORD *lua_pushcclosure(int a1, int a2_dup, unsigned int a3);bool lua_pushboolean(int a1, int a2_dup);int lua_pushlightuserdata(int a1, int a2_dup);int lua_gettable(DWORD *a1, int a2_dup);int lua_rawget(DWORD *a1, int a2_dup);int lua_rawgeti(DWORD *a1, int a2_dup, int a3_dup);DWORD *lua_newtable(int a1);int lua_getmetatable(DWORD *a1, int a2_dup);int lua_getfenv(DWORD *a1, int a2_dup);char lua_settable(DWORD *a1, int a2_dup);int lua_rawset(DWORD *a1, int a2_dup);int lua_rawseti(DWORD *a1, int a2_dup, int a3_dup);int lua_setmetatable(DWORD *a1, int a2_dup);int lua_setfenv(DWORD *a1, int a2_dup);char lua_call(int a1, int a2_dup, int a3_dup);char f_call(int a1, int a2_dup);int lua_pcall(DWORD *a1, int a2_dup, int a3_dup, int a4);char f_Ccall(DWORD *a1, DWORD *a2);
+// FIXME FWD: int lua_cpcall(int a1, int a2_dup, int a3_dup);int lua_load(int a1, int a2_dup, int a3_dup, void *a4);int lua_dump(int a1, int a2, int a3);int lua_getgcthreshold(int a1);int lua_getgccount(int a1);char lua_setgcthreshold(int a1, unsigned int a2);const char *lua_version();
 void /* __noreturn */ lua_error(DWORD *a1);
-int lua_next(DWORD *a1, int a2_dup);char lua_concat(DWORD *a1, int a2_dup);BYTE *lua_newuserdata(int a1, int a2);int lua_pushupvalues(DWORD *a1);
-void *aux_upvalue(DWORD *a1, int a2_dup, int a3_dup, DWORD *a4);void *lua_getupvalue(DWORD *a1, int a2_dup, int a3_dup);void *lua_setupvalue(DWORD *a1, int a2, int a3);int currentpc(int a1);int currentline(DWORD *a1);
-int luaG_inithooks(int a1);int lua_sethook(int a1, int a2_dup, int a3_dup, int a4);int lua_gethook(int a1);int lua_gethookmask(int a1);int lua_gethookcount(int a1);int lua_getstack(int a1, int a2_dup, int a3_dup);int getluaproto(int a1);int lua_getlocal(DWORD *a1, int a2_dup, int a3_dup);BYTE *lua_setlocal(int a1, int a2, int a3);char *funcinfo(int a1, int a2_dup);int travglobals(int a1, DWORD *a2);DWORD *info_tailcall(int a1, int a2_dup);int auxgetinfo(int a1, BYTE *a2, DWORD *a3, DWORD *a4, DWORD *a5);int lua_getinfo(void*, char *s, void*); // idb
-int precheck(DWORD *a1);
-int checkopenop(int a1, int a2_dup);int checkRK(int a1, int a2_dup);int luaG_symbexec(int a1, int a2_dup, int a3_dup);int luaG_checkcode(int a1);void *kname(int a1, int a2_dup);const char *getobjname(int a1, int a2_dup, DWORD *a3);const char *getfuncname(int a1, DWORD *a2);int isinstack(unsigned int *a1, int a2_dup);void /* __noreturn */ luaG_typeerror(int a1, int a2_dup, const char *a3);void /* __noreturn */ luaG_concaterror(int a1, DWORD *a2, int a3_dup);void /* __noreturn */ luaG_aritherror(int a1, DWORD *a2, int a3_dup);void /* __noreturn */ luaG_ordererror(int a1, DWORD *a2, DWORD *a3);char addinfo(int a1);void /* __noreturn */ luaG_errormsg(DWORD *a1);
+// FIXME FWD: int lua_next(DWORD *a1, int a2_dup);char lua_concat(DWORD *a1, int a2_dup);BYTE *lua_newuserdata(int a1, int a2);int lua_pushupvalues(DWORD *a1);
+// FIXME FWD: void *aux_upvalue(DWORD *a1, int a2_dup, int a3_dup, DWORD *a4);void *lua_getupvalue(DWORD *a1, int a2_dup, int a3_dup);void *lua_setupvalue(DWORD *a1, int a2, int a3);int currentpc(int a1);int currentline(DWORD *a1);
+// FIXME FWD: int luaG_inithooks(int a1);int lua_sethook(int a1, int a2_dup, int a3_dup, int a4);int lua_gethook(int a1);int lua_gethookmask(int a1);int lua_gethookcount(int a1);int lua_getstack(int a1, int a2_dup, int a3_dup);int getluaproto(int a1);int lua_getlocal(DWORD *a1, int a2_dup, int a3_dup);BYTE *lua_setlocal(int a1, int a2, int a3);char *funcinfo(int a1, int a2_dup);int travglobals(int a1, DWORD *a2);DWORD *info_tailcall(int a1, int a2_dup);int auxgetinfo(int a1, BYTE *a2, DWORD *a3, DWORD *a4, DWORD *a5);int lua_getinfo(void*, char *s, void*); // idb
+// FIXME FWD: int precheck(DWORD *a1);
+// FIXME FWD: int checkopenop(int a1, int a2_dup);int checkRK(int a1, int a2_dup);int luaG_symbexec(int a1, int a2_dup, int a3_dup);int luaG_checkcode(int a1);void *kname(int a1, int a2_dup);const char *getobjname(int a1, int a2_dup, DWORD *a3);const char *getfuncname(int a1, DWORD *a2);int isinstack(unsigned int *a1, int a2_dup);void /* __noreturn */ luaG_typeerror(int a1, int a2_dup, const char *a3);void /* __noreturn */ luaG_concaterror(int a1, DWORD *a2, int a3_dup);void /* __noreturn */ luaG_aritherror(int a1, DWORD *a2, int a3_dup);void /* __noreturn */ luaG_ordererror(int a1, DWORD *a2, DWORD *a3);char addinfo(int a1);void /* __noreturn */ luaG_errormsg(DWORD *a1);
 void /* __noreturn */ luaG_runerror(DWORD *a1, char *s, ...);
-int ***seterrorobj(int a1, int a2_dup, DWORD *a3);void /* __noreturn */ luaD_throw(int a1, int a2_dup);int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3_dup, void*), int a4);int restore_stack_limit(int a1);int correctstack(DWORD *a1, int a2_dup);int luaD_reallocstack(DWORD *a1, int a2_dup);char *luaD_reallocCI(int a1, int a2_dup);int luaD_growstack(DWORD *a1, int a2_dup);char *luaD_growCI(int a1);int luaD_callhook(int a1, int a2_dup, int a3_dup);DWORD *adjust_varargs(DWORD *a1, int a2_dup, int a3_dup);char *tryfuncTM(DWORD *a1, DWORD *a2);
-int luaD_precall(int a1, DWORD *a2);int callrethooks(int a1, int a2_dup);int luaD_poscall(int a1, int a2_dup, int a3_dup);char luaD_call(int a1, DWORD *a2, int a3);DWORD *resume(DWORD *a1, int *a2);
-int resume_error(DWORD *a1, void *src);
-int lua_resume(int a1, int a2_dup);int lua_yield(int a1, int a2);int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a4, int a5, int a6);int f_parser(DWORD *a1, int *a2);
-int luaD_protectedparser(int a1, int a2_dup, int a3_dup);int DumpBlock(int a1, int a2_dup, int a3_dup);int DumpByte(char a1, int a2_dup);int DumpInt(char a1, int a2_dup);int DumpSize(char a1, int a2_dup);int DumpNumber(char a1, int a2_dup, int a3_dup);int DumpString(int a1, int a2_dup);int DumpCode(int a1, int a2_dup);int DumpLocals(int a1, int a2_dup);int DumpLines(int a1, int a2_dup);int DumpUpvalues(int a1, int a2_dup);int DumpConstants(DWORD *a1, int a2_dup);int DumpFunction(int a1, int a2_dup, int a3_dup);int DumpHeader(int a1);int luaU_dump(int a1, int a2_dup, int a3_dup, int a4);BYTE *luaF_newCclosure(int a1, int a2_dup);BYTE *luaF_newLclosure(int a1, int a2_dup, DWORD *a3);DWORD *luaF_findupval(int a1, unsigned int a2);void luaF_close(int a1, unsigned int a2);DWORD *luaF_newproto(int a1);void *luaF_freeproto(int a1, void **ptr);void *luaF_freeclosure(int a1, BYTE *ptr);int luaF_getlocalname(int a1, int a2_dup, int a3_dup);int reallymarkobject(int *a1, int a2_dup);int marktmu(int *a1);
-int luaC_separateudata(int a1);int *removekey(int *a1);
-unsigned int traversetable(int *a1, int a2);int traverseproto(int *a1, DWORD *a2);
-int traverseclosure(int *a1, int a2_dup);int checkstacksizes(int a1, int a2);int traversestack(int *a1, DWORD *a2);
-void propagatemarks(int *a1);
-int valismarked(int *a1);
-void cleartablekeys(int a1);void cleartablevalues(int a1);void *freeobj(int a1, unsigned char *ptr);int sweeplist(int a1, unsigned char **a2, int a2_dup);DWORD *sweepstrings(int a1, int a2_dup);int checkSizes(int a1, int a2_dup);void do1gcTM(int a1, int a2_dup);char luaC_callGCTM(int a1);int luaC_sweep(int a1, int a2_dup);int markroot(int *a1, int a2_dup);int mark(int a1);char luaC_collectgarbage(int a1);int luaC_link(int a1, int a2_dup, unsigned char a3);void *luaM_growaux(DWORD *a1, void *ptr, int *a3, int a2_dup, int a5, char *a6);void *luaM_realloc(int a1, void *ptr, int a2_dup, size_t size);unsigned int luaO_int2fb(unsigned int a1);int luaO_log2(unsigned int a1);int luaO_rawequalObj(DWORD *a1, DWORD *a2);
-int luaO_str2d(const char *nptr, double *a2);
-int pushstr(DWORD *a1, void *src);
-int luaO_pushvfstring(void*, char *s, void*); // idb
-int luaO_pushfstring(void*, char *s, void*); // idb
-char *luaO_chunkid(char *dest, const char *s, size_t n);
-int next(int a1);int lookahead(int a1);void /* __noreturn */ error_expected(int a1, int a2_dup);int testnext(int a1, int a2_dup);int check(int a1, int a2_dup);int check_match(int a1, int a2_dup, int a3_dup, int a4_dup);int str_checkname(int a1);DWORD *init_exp(DWORD *a1, int a2_dup, int a3_dup);DWORD *codestring(int a1, DWORD *a2, int a3_dup);DWORD *checkname(int a1, DWORD *a2);int luaI_registerlocalvar(int a1, int a2_dup);int new_localvar(int a1, int a2_dup, int a3_dup);int adjustlocalvars(int a1, int a2_dup);int removevars(int a1, int a2_dup);int new_localvarstr(int a1, void *src, int a2_dup);int create_local(int a1, void *a2);int indexupvalue(int *a1, int a2_dup, DWORD *a3);int searchvar(DWORD *a1, int a2_dup);DWORD *markupval(int a1, int a2_dup);DWORD *singlevaraux(int *a1, int a2_dup, DWORD *a3, int a4);int singlevar(int a1, DWORD *a2, int a3_dup);int adjust_assign(int a1, int a2_dup, int a3_dup, int *a4);int code_params(int a1, int a2_dup, int a3_dup);int enterblock(int a1, DWORD *a2, int a3_dup);void leaveblock(int *a1);
-int pushclosure(int a1, int *a2, DWORD *a3);int open_func(DWORD *a1, DWORD *a2);
-int close_func(int a1);int luaY_parser(int a1, int a2_dup, int a3);int luaY_field(int a1, DWORD *a2);int luaY_index(int a1, DWORD *a2);int recfield(int a1, int a2_dup);int closelistfield(int *a1, DWORD *a2);
-void lastlistfield(int *a1, DWORD *a2);
-int listfield(int a1, int a2);int constructor(int a1, DWORD *a2);int parlist(int a1);int body(DWORD *a1, DWORD *a2, int a3, int a4);int explist1(int a1, DWORD *a2);int funcargs(DWORD *a1, DWORD *a2);
-int prefixexp(DWORD *a1, DWORD *a2);
-int primaryexp(DWORD *a1, DWORD *a2);
-int simpleexp(int a1, DWORD *a2);int getunopr(int a1);int getbinopr(int a1);int subexpr(int a1, int *a2, int a3_dup);int expr(int a1, int *a2);int block_follow(int a1);void block(int a1);int check_conflict(int a1, DWORD *a2, int a3_dup);DWORD *assignment(DWORD *a1, DWORD *a2, int a3_dup);void cond(int a1, int *a2);void whilestat(int a1, int a2_dup);void repeatstat(int a1, int a2_dup);int exp1(int a1);void forbody(int a1, int a2_dup, int a3_dup, int a4, int a5);void fornum(int a1, int a2_dup, int a3);void forlist(int a1, int a2_dup);void forstat(int a1, int a2_dup);void test_then_block(int a1, int *a2);int ifstat(int a1, int a2_dup);int localfunc(DWORD *a1);
-int localstat(int a1);int funcname(int a1, DWORD *a2);int funcstat(int a1, int a2_dup);DWORD *exprstat(DWORD *a1);
-int retstat(int a1);void breakstat(int a1);int statement(DWORD *a1);
-int chunk(DWORD *a1);
-int default_panic();
-void *mallocstate(int a1);void *freestate(int a1, void *ptr);int stack_init(int a1, int a2_dup);void *freestack(int a1, int a2);int f_luaopen(DWORD *a1);
-int preinit_state(int a1);void *close_state(void *ptr);
-DWORD *luaE_newthread(DWORD *a1);
-void *luaE_freethread(int a1, void *ptr);DWORD *lua_open();
-char callallgcTM(int a1);void *lua_close(int a1);void *luaS_freeall(int a1);int luaS_resize(int a1, int a2_dup);DWORD *newlstr(int a1, void *src, size_t n, int a2_dup);int ***luaS_newlstr(int a1, void *src, size_t n);BYTE *luaS_newudata(int a1, int a2_dup);unsigned int hashnum(int a1, double a2_dup);unsigned int luaH_mainposition(int a1, int a2_dup);int arrayindex(int a1);unsigned int luaH_index(DWORD *a1, int a2_dup, DWORD *a3);int luaH_next(DWORD *a1, int a2_dup, DWORD *a3);int *computesizes(int *a1, int a2_dup, int *a3, int *a4);int *numuse(int a1, int *a2, int *a3);char *setarrayvector(int a1, int a2_dup, int a3_dup);int setnodevector(int a1, int a2_dup, int a3_dup);int resize(int a1, int a2_dup, int a3_dup, int a4_dup);int rehash(int a1, int a2_dup);DWORD *luaH_new(int a1, int a2_dup, int a3_dup);void *luaH_free(int a1, void *ptr);DWORD *newkey(int a1, int a2_dup, DWORD *a3);DWORD *luaH_getany(int a1, DWORD *a2);void *luaH_getnum(int a1, int a2_dup);DWORD *luaH_getstr(int a1, int a2_dup);DWORD *luaH_get(int a1, DWORD *a2);DWORD *luaH_set(int a1, int a2_dup, DWORD *a3);void *luaH_setnum(int a1, int a2_dup, int a3_dup);int luaT_init(int a1);DWORD *luaT_gettm(int a1, char a2_dup, int a3_dup);DWORD *luaT_gettmbyobj(int a1, DWORD *a2, int a3_dup);void /* __noreturn */ unexpectedEOZ(int a1);int ezgetc(int a1);size_t ezread(int a1, void *dest, size_t n);int LoadBlock(void*, void *dest, size_t n); // idb
-char *LoadVector(int a1, void *dest, int a2, int a3);int LoadInt(int a1);int LoadSize(int a1);long double LoadNumber(int a1);int ***LoadString(int *a1);
-char *LoadCode(int *a1, int a2_dup);char *LoadLocals(int *a1, int a2_dup);char *LoadLines(int *a1, int a2_dup);DWORD *LoadUpvalues(int *a1, int a2);DWORD *LoadConstants(int *a1, DWORD *a2);
-DWORD *LoadFunction(int *a1, int a2_dup);void LoadSignature(int a1);int TestSize(int a1, int a2_dup, const char *a3);int LoadHeader(DWORD **a1);
-DWORD *LoadChunk(int *a1);
-DWORD *luaU_undump(int a1, int a2, int a3);int luaU_endianness();
-DWORD *luaV_tonumber(DWORD *a1, int a2_dup);int luaV_tostring(int a1, int a2);char traceexec(int a1);char callTMres(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4);
-char callTM(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4, DWORD *a5);
-DWORD *luaV_index(int a1, int a2, DWORD *a3, int a4_dup);DWORD *luaV_getnotable(int a1, DWORD *a2, int a3_dup, int a4_dup);DWORD *luaV_gettable(int a1, DWORD *a2, DWORD *a3, int a4);char luaV_settable(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4);
-int call_binTM(DWORD *a1, DWORD *a2, DWORD *a3, int a4_dup, int a5);DWORD *get_compTM(int a1, int a2_dup, int a3_dup, int a4_dup);int call_orderTM(int a1, DWORD *a2, DWORD *a3, int a4);int luaV_strcmp(int a1, int a2_dup);int luaV_lessthan(int a1, DWORD *a2, DWORD *a3);int luaV_lessequal(int a1, DWORD *a2, DWORD *a3);int luaV_equalval(int a1, int a2_dup, int a3_dup);int ***luaV_concat(DWORD *a1, int a2_dup, int a3_dup);int Arith(DWORD *a1, int a2_dup, DWORD *a3, DWORD *a4, int a5);DWORD *luaV_execute(int a1);int luaZ_fill(int a1);int luaZ_lookahead(DWORD *a1);
-DWORD *luaZ_init(DWORD *a1, int a2_dup, int a3_dup, int a4);size_t luaZ_read(int a1, void *dest, size_t n);int luaZ_openspace(void* a1, int a2_dup, size_t size); // idbint luaK_nil(DWORD *a1, int a2, int a3_dup);int luaK_jump(int *a1);
-int luaK_condjump(int *a1, int a2_dup, int a3_dup, int a4_dup, int a5);int luaK_fixjump(int *a1, int a2_dup, int a3_dup);int luaK_getlabel(int a1);int luaK_getjump(int a1, int a2_dup);int getjumpcontrol(int a1, int a2_dup);int need_value(int a1, int a2_dup, int a3_dup);unsigned int patchtestreg(unsigned int *a1, int a2_dup);void luaK_patchlistaux(int *a1, int a2, int a3_dup, int a4, int a5, int a6, int a7);void luaK_dischargejpc(int *a1);
-void luaK_patchlist(int *a1, int a2_dup, int a3_dup);void luaK_patchtohere(int *a1, int a2_dup);void luaK_concat(int *a1, int *a2, int a3);int luaK_checkstack(int *a1, int a2_dup);int luaK_reserveregs(int *a1, int a2_dup);int freereg(int a1, int a2_dup);DWORD *freeexp(int a1, DWORD *a2);int addk(int *a1, DWORD *a2, DWORD *a3);
-int luaK_stringK(int *a1, int a2);int luaK_numberK(void*, double); // idb
-int nil_constant(int *a1);
-int luaK_setcallreturns(int a1, DWORD *a2, int a3_dup);int luaK_dischargevars(int a1, DWORD *a2);int code_label(int a1, int a2_dup, int a3_dup, int a4);int discharge2reg(DWORD *a1, DWORD *a2, int a3);int discharge2anyreg(int *a1, DWORD *a2);
-int luaK_exp2reg(int *a1, DWORD *a2, int a3);int luaK_exp2nextreg(int *a1, DWORD *a2);
-int luaK_exp2anyreg(int *a1, DWORD *a2);
-int luaK_exp2val(int *a1, DWORD *a2);
-int luaK_exp2RK(int *a1, DWORD *a2);
-DWORD *luaK_storevar(int *a1, int *a2, DWORD *a3);
-DWORD *luaK_self(int *a1, DWORD *a2, DWORD *a3);
+// FIXME FWD: int ***seterrorobj(int a1, int a2_dup, DWORD *a3);void /* __noreturn */ luaD_throw(int a1, int a2_dup);int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3_dup, void*), int a4);int restore_stack_limit(int a1);int correctstack(DWORD *a1, int a2_dup);int luaD_reallocstack(DWORD *a1, int a2_dup);char *luaD_reallocCI(int a1, int a2_dup);int luaD_growstack(DWORD *a1, int a2_dup);char *luaD_growCI(int a1);int luaD_callhook(int a1, int a2_dup, int a3_dup);DWORD *adjust_varargs(DWORD *a1, int a2_dup, int a3_dup);char *tryfuncTM(DWORD *a1, DWORD *a2);
+// FIXME FWD: int luaD_precall(int a1, DWORD *a2);int callrethooks(int a1, int a2_dup);int luaD_poscall(int a1, int a2_dup, int a3_dup);char luaD_call(int a1, DWORD *a2, int a3);DWORD *resume(DWORD *a1, int *a2);
+// FIXME FWD: int resume_error(DWORD *a1, void *src);
+// FIXME FWD: int lua_resume(int a1, int a2_dup);int lua_yield(int a1, int a2);int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a4, int a5, int a6);int f_parser(DWORD *a1, int *a2);
+// FIXME FWD: int luaD_protectedparser(int a1, int a2_dup, int a3_dup);int DumpBlock(int a1, int a2_dup, int a3_dup);int DumpByte(char a1, int a2_dup);int DumpInt(char a1, int a2_dup);int DumpSize(char a1, int a2_dup);int DumpNumber(char a1, int a2_dup, int a3_dup);int DumpString(int a1, int a2_dup);int DumpCode(int a1, int a2_dup);int DumpLocals(int a1, int a2_dup);int DumpLines(int a1, int a2_dup);int DumpUpvalues(int a1, int a2_dup);int DumpConstants(DWORD *a1, int a2_dup);int DumpFunction(int a1, int a2_dup, int a3_dup);int DumpHeader(int a1);int luaU_dump(int a1, int a2_dup, int a3_dup, int a4);BYTE *luaF_newCclosure(int a1, int a2_dup);BYTE *luaF_newLclosure(int a1, int a2_dup, DWORD *a3);DWORD *luaF_findupval(int a1, unsigned int a2);void luaF_close(int a1, unsigned int a2);DWORD *luaF_newproto(int a1);void *luaF_freeproto(int a1, void **ptr);void *luaF_freeclosure(int a1, BYTE *ptr);int luaF_getlocalname(int a1, int a2_dup, int a3_dup);int reallymarkobject(int *a1, int a2_dup);int marktmu(int *a1);
+// FIXME FWD: int luaC_separateudata(int a1);int *removekey(int *a1);
+// FIXME AMBIG: unsigned int traversetable(int *a1, int a2);int traverseproto(int *a1, DWORD *a2);
+// FIXME FWD: int traverseclosure(int *a1, int a2_dup);int checkstacksizes(int a1, int a2);int traversestack(int *a1, DWORD *a2);
+// FIXME FWD: void propagatemarks(int *a1);
+// FIXME FWD: int valismarked(int *a1);
+// FIXME FWD: void cleartablekeys(int a1);void cleartablevalues(int a1);void *freeobj(int a1, unsigned char *ptr);int sweeplist(int a1, unsigned char **a2, int a2_dup);DWORD *sweepstrings(int a1, int a2_dup);int checkSizes(int a1, int a2_dup);void do1gcTM(int a1, int a2_dup);char luaC_callGCTM(int a1);int luaC_sweep(int a1, int a2_dup);int markroot(int *a1, int a2_dup);int mark(int a1);char luaC_collectgarbage(int a1);int luaC_link(int a1, int a2_dup, unsigned char a3);void *luaM_growaux(DWORD *a1, void *ptr, int *a3, int a2_dup, int a5, char *a6);void *luaM_realloc(int a1, void *ptr, int a2_dup, size_t size);unsigned int luaO_int2fb(unsigned int a1);int luaO_log2(unsigned int a1);int luaO_rawequalObj(DWORD *a1, DWORD *a2);
+// FIXME FWD: int luaO_str2d(const char *nptr, double *a2);
+// FIXME FWD: int pushstr(DWORD *a1, void *src);
+// FIXME FWD: int luaO_pushvfstring(void*, char *s, void*); // idb
+// FIXME FWD: int luaO_pushfstring(void*, char *s, void*); // idb
+// FIXME FWD: char *luaO_chunkid(char *dest, const char *s, size_t n);
+// FIXME FWD: int next(int a1);int lookahead(int a1);void /* __noreturn */ error_expected(int a1, int a2_dup);int testnext(int a1, int a2_dup);int check(int a1, int a2_dup);int check_match(int a1, int a2_dup, int a3_dup, int a4_dup);int str_checkname(int a1);DWORD *init_exp(DWORD *a1, int a2_dup, int a3_dup);DWORD *codestring(int a1, DWORD *a2, int a3_dup);DWORD *checkname(int a1, DWORD *a2);int luaI_registerlocalvar(int a1, int a2_dup);int new_localvar(int a1, int a2_dup, int a3_dup);int adjustlocalvars(int a1, int a2_dup);int removevars(int a1, int a2_dup);int new_localvarstr(int a1, void *src, int a2_dup);int create_local(int a1, void *a2);int indexupvalue(int *a1, int a2_dup, DWORD *a3);int searchvar(DWORD *a1, int a2_dup);DWORD *markupval(int a1, int a2_dup);DWORD *singlevaraux(int *a1, int a2_dup, DWORD *a3, int a4);int singlevar(int a1, DWORD *a2, int a3_dup);int adjust_assign(int a1, int a2_dup, int a3_dup, int *a4);int code_params(int a1, int a2_dup, int a3_dup);int enterblock(int a1, DWORD *a2, int a3_dup);void leaveblock(int *a1);
+// FIXME FWD: int pushclosure(int a1, int *a2, DWORD *a3);int open_func(DWORD *a1, DWORD *a2);
+// FIXME FWD: int close_func(int a1);int luaY_parser(int a1, int a2_dup, int a3);int luaY_field(int a1, DWORD *a2);int luaY_index(int a1, DWORD *a2);int recfield(int a1, int a2_dup);int closelistfield(int *a1, DWORD *a2);
+// FIXME FWD: void lastlistfield(int *a1, DWORD *a2);
+// FIXME FWD: int listfield(int a1, int a2);int constructor(int a1, DWORD *a2);int parlist(int a1);int body(DWORD *a1, DWORD *a2, int a3, int a4);int explist1(int a1, DWORD *a2);int funcargs(DWORD *a1, DWORD *a2);
+// FIXME FWD: int prefixexp(DWORD *a1, DWORD *a2);
+// FIXME FWD: int primaryexp(DWORD *a1, DWORD *a2);
+// FIXME FWD: int simpleexp(int a1, DWORD *a2);int getunopr(int a1);int getbinopr(int a1);int subexpr(int a1, int *a2, int a3_dup);int expr(int a1, int *a2);int block_follow(int a1);void block(int a1);int check_conflict(int a1, DWORD *a2, int a3_dup);DWORD *assignment(DWORD *a1, DWORD *a2, int a3_dup);void cond(int a1, int *a2);void whilestat(int a1, int a2_dup);void repeatstat(int a1, int a2_dup);int exp1(int a1);void forbody(int a1, int a2_dup, int a3_dup, int a4, int a5);void fornum(int a1, int a2_dup, int a3);void forlist(int a1, int a2_dup);void forstat(int a1, int a2_dup);void test_then_block(int a1, int *a2);int ifstat(int a1, int a2_dup);int localfunc(DWORD *a1);
+// FIXME FWD: int localstat(int a1);int funcname(int a1, DWORD *a2);int funcstat(int a1, int a2_dup);DWORD *exprstat(DWORD *a1);
+// FIXME FWD: int retstat(int a1);void breakstat(int a1);int statement(DWORD *a1);
+// FIXME FWD: int chunk(DWORD *a1);
+// FIXME FWD: int default_panic();
+// FIXME FWD: void *mallocstate(int a1);void *freestate(int a1, void *ptr);int stack_init(int a1, int a2_dup);void *freestack(int a1, int a2);int f_luaopen(DWORD *a1);
+// FIXME FWD: int preinit_state(int a1);void *close_state(void *ptr);
+// FIXME FWD: DWORD *luaE_newthread(DWORD *a1);
+// FIXME FWD: void *luaE_freethread(int a1, void *ptr);DWORD *lua_open();
+// FIXME FWD: char callallgcTM(int a1);void *lua_close(int a1);void *luaS_freeall(int a1);int luaS_resize(int a1, int a2_dup);DWORD *newlstr(int a1, void *src, size_t n, int a2_dup);int ***luaS_newlstr(int a1, void *src, size_t n);BYTE *luaS_newudata(int a1, int a2_dup);unsigned int hashnum(int a1, double a2_dup);unsigned int luaH_mainposition(int a1, int a2_dup);int arrayindex(int a1);unsigned int luaH_index(DWORD *a1, int a2_dup, DWORD *a3);int luaH_next(DWORD *a1, int a2_dup, DWORD *a3);int *computesizes(int *a1, int a2_dup, int *a3, int *a4);int *numuse(int a1, int *a2, int *a3);char *setarrayvector(int a1, int a2_dup, int a3_dup);int setnodevector(int a1, int a2_dup, int a3_dup);int resize(int a1, int a2_dup, int a3_dup, int a4_dup);int rehash(int a1, int a2_dup);DWORD *luaH_new(int a1, int a2_dup, int a3_dup);void *luaH_free(int a1, void *ptr);DWORD *newkey(int a1, int a2_dup, DWORD *a3);DWORD *luaH_getany(int a1, DWORD *a2);void *luaH_getnum(int a1, int a2_dup);DWORD *luaH_getstr(int a1, int a2_dup);DWORD *luaH_get(int a1, DWORD *a2);DWORD *luaH_set(int a1, int a2_dup, DWORD *a3);void *luaH_setnum(int a1, int a2_dup, int a3_dup);int luaT_init(int a1);DWORD *luaT_gettm(int a1, char a2_dup, int a3_dup);DWORD *luaT_gettmbyobj(int a1, DWORD *a2, int a3_dup);void /* __noreturn */ unexpectedEOZ(int a1);int ezgetc(int a1);size_t ezread(int a1, void *dest, size_t n);int LoadBlock(void*, void *dest, size_t n); // idb
+// FIXME FWD: char *LoadVector(int a1, void *dest, int a2, int a3);int LoadInt(int a1);int LoadSize(int a1);long double LoadNumber(int a1);int ***LoadString(int *a1);
+// FIXME FWD: char *LoadCode(int *a1, int a2_dup);char *LoadLocals(int *a1, int a2_dup);char *LoadLines(int *a1, int a2_dup);DWORD *LoadUpvalues(int *a1, int a2);DWORD *LoadConstants(int *a1, DWORD *a2);
+// FIXME FWD: DWORD *LoadFunction(int *a1, int a2_dup);void LoadSignature(int a1);int TestSize(int a1, int a2_dup, const char *a3);int LoadHeader(DWORD **a1);
+// FIXME FWD: DWORD *LoadChunk(int *a1);
+// FIXME FWD: DWORD *luaU_undump(int a1, int a2, int a3);int luaU_endianness();
+// FIXME FWD: DWORD *luaV_tonumber(DWORD *a1, int a2_dup);int luaV_tostring(int a1, int a2);char traceexec(int a1);char callTMres(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4);
+// FIXME FWD: char callTM(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4, DWORD *a5);
+// FIXME FWD: DWORD *luaV_index(int a1, int a2, DWORD *a3, int a4_dup);DWORD *luaV_getnotable(int a1, DWORD *a2, int a3_dup, int a4_dup);DWORD *luaV_gettable(int a1, DWORD *a2, DWORD *a3, int a4);char luaV_settable(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4);
+// FIXME FWD: int call_binTM(DWORD *a1, DWORD *a2, DWORD *a3, int a4_dup, int a5);DWORD *get_compTM(int a1, int a2_dup, int a3_dup, int a4_dup);int call_orderTM(int a1, DWORD *a2, DWORD *a3, int a4);int luaV_strcmp(int a1, int a2_dup);int luaV_lessthan(int a1, DWORD *a2, DWORD *a3);int luaV_lessequal(int a1, DWORD *a2, DWORD *a3);int luaV_equalval(int a1, int a2_dup, int a3_dup);int ***luaV_concat(DWORD *a1, int a2_dup, int a3_dup);int Arith(DWORD *a1, int a2_dup, DWORD *a3, DWORD *a4, int a5);DWORD *luaV_execute(int a1);int luaZ_fill(int a1);int luaZ_lookahead(DWORD *a1);
+// FIXME FWD: DWORD *luaZ_init(DWORD *a1, int a2_dup, int a3_dup, int a4);size_t luaZ_read(int a1, void *dest, size_t n);int luaZ_openspace(void* a1, int a2_dup, size_t size); // idbint luaK_nil(DWORD *a1, int a2, int a3_dup);int luaK_jump(int *a1);
+// FIXME FWD: int luaK_condjump(int *a1, int a2_dup, int a3_dup, int a4_dup, int a5);int luaK_fixjump(int *a1, int a2_dup, int a3_dup);int luaK_getlabel(int a1);int luaK_getjump(int a1, int a2_dup);int getjumpcontrol(int a1, int a2_dup);int need_value(int a1, int a2_dup, int a3_dup);unsigned int patchtestreg(unsigned int *a1, int a2_dup);void luaK_patchlistaux(int *a1, int a2, int a3_dup, int a4, int a5, int a6, int a7);void luaK_dischargejpc(int *a1);
+// FIXME FWD: void luaK_patchlist(int *a1, int a2_dup, int a3_dup);void luaK_patchtohere(int *a1, int a2_dup);void luaK_concat(int *a1, int *a2, int a3);int luaK_checkstack(int *a1, int a2_dup);int luaK_reserveregs(int *a1, int a2_dup);int freereg(int a1, int a2_dup);DWORD *freeexp(int a1, DWORD *a2);int addk(int *a1, DWORD *a2, DWORD *a3);
+// FIXME FWD: int luaK_stringK(int *a1, int a2);int luaK_numberK(void*, double); // idb
+// FIXME FWD: int nil_constant(int *a1);
+// FIXME FWD: int luaK_setcallreturns(int a1, DWORD *a2, int a3_dup);int luaK_dischargevars(int a1, DWORD *a2);int code_label(int a1, int a2_dup, int a3_dup, int a4);int discharge2reg(DWORD *a1, DWORD *a2, int a3);int discharge2anyreg(int *a1, DWORD *a2);
+// FIXME FWD: int luaK_exp2reg(int *a1, DWORD *a2, int a3);int luaK_exp2nextreg(int *a1, DWORD *a2);
+// FIXME FWD: int luaK_exp2anyreg(int *a1, DWORD *a2);
+// FIXME FWD: int luaK_exp2val(int *a1, DWORD *a2);
+// FIXME FWD: int luaK_exp2RK(int *a1, DWORD *a2);
+// FIXME FWD: DWORD *luaK_storevar(int *a1, int *a2, DWORD *a3);
+// FIXME FWD: DWORD *luaK_self(int *a1, DWORD *a2, DWORD *a3);
 unsigned int invertjump(int a1, int a2);int jumponcond(int *a1, DWORD *a2, int a3);void luaK_goiftrue(int *a1, int *a2);
-void luaK_goiffalse(int *a1, int *a2);
-int codenot(int a1, DWORD *a2);int luaK_indexed(int *a1, DWORD *a2, DWORD *a3);
-int luaK_prefix(int *a1, int a2_dup, DWORD *a3);void luaK_infix(int *a1, int a2_dup, int *a3);int codebinop(int *a1, DWORD *a2, int a3_dup, int a4_dup, int a5);int luaK_posfix(int *a1, int a2_dup, DWORD *a3, DWORD *a4);int luaK_fixline(DWORD *a1, int a2_dup);int luaK_code(int a1, int a2_dup, int a3_dup);int luaK_codeABC(int a1, int a2_dup, int a3_dup, int a4_dup, int a5);int luaK_codeABx(int a1, int a2_dup, int a3_dup, int a4_dup);int ***luaX_init(int a1);int luaX_checklimit(int a1, int a2_dup, int a3_dup, int a4_dup);void /* __noreturn */ luaX_errorline(int a1);void /* __noreturn */ luaX_error(int a1);void /* __noreturn */ luaX_syntaxerror(int a1);int luaX_token2str(int a1, int a2_dup);void /* __noreturn */ luaX_lexerror(int a1, int a2_dup, int a3_dup);int inclinenumber(int *a1);
-int luaX_setinput(int a1, int *a2, DWORD *a3, int a4);int readname(int a1);int read_numeral(void* a1, int a2_dup, double *); // idbint ***read_long_string(int *a1, int ***a2);
-int ***read_string(int *a1, int a2, int ***a3);int luaX_lex(void*, double *); // idb
-void /* __noreturn */ luaL_argerror(DWORD *a1, int a2_dup, const char *a3);void /* __noreturn */ luaL_typerror(DWORD *a1, int a2_dup, int a3_dup);void /* __noreturn */ tag_error(DWORD *a1, int a2, int a3_dup);int ***luaL_where(int a1, int a2_dup);void /* __noreturn */ luaL_error(DWORD *a1, char *a2, ...);
-int luaL_findstring(const char *s2, const char *const *a2);
-int luaL_newmetatable(DWORD *a1, void *a2);
-int luaL_getmetatable(DWORD *a1, void *a2);
-int luaL_checkudata(void* a1, int a2_dup, char *s2); // idbint luaL_checkstack(DWORD *a1, int a2_dup, const char *a3);int luaL_checktype(DWORD *a1, int a2_dup, int a3_dup);int luaL_checkany(DWORD *a1, int a2_dup);int luaL_checklstring(DWORD *a1, int a2_dup, int *a3);int luaL_optlstring(DWORD *a1, int a2_dup, const char *a3, int *a4);long double luaL_checknumber(DWORD *a1, int a2_dup);long double luaL_optnumber(int a1, int a2_dup, double a3_dup);int luaL_getmetafield(DWORD *a1, int a2, void *a3);int luaL_callmeta(DWORD *a1, unsigned int a2, void *a3);int luaL_openlib(DWORD *a1, void *a2, DWORD *a3, signed int a4);int checkint(DWORD *a1, int a2_dup);int getsizes(DWORD *a1);
-int luaL_setn(DWORD *a1, unsigned int a2, int a2_2);int luaL_getn(DWORD *a1, unsigned int a2);int emptybuffer(DWORD *a1);int adjuststack(int a1);int luaL_prepbuffer(DWORD *a1);
-char luaL_addlstring(DWORD *a1, char *a2, int a3);char luaL_addstring(DWORD *a1, char *a2);
-char luaL_pushresult(int a1);int luaL_addvalue(void **a1);
-DWORD *luaL_buffinit(int a1, DWORD *a2);int luaL_ref(DWORD *a1, unsigned int a2);void luaL_unref(DWORD *a1, unsigned int a2, int a2_2);FILE **getF(int a1, FILE **a2, size_t *a3);int errfile(DWORD *a1, int a2_dup);int luaL_loadfile(void*, char *filename); // idbint getS(int a1, DWORD *a2, DWORD *a3);int luaL_loadbuffer(int a1, int a2_dup, int a3_dup, void *a4);void callalert(DWORD *a1, int a2_dup);int aux_do(DWORD *a1, int a2_dup);int lua_dofile(void*, char *filename); // idb
-int lua_dobuffer(DWORD *a1, int a2, int a3, void *a4);int lua_dostring(DWORD *a1, char *a2);
-int luaB_print(DWORD *a1);
-int luaB_tonumber(DWORD *a1);
+// FIXME FWD: void luaK_goiffalse(int *a1, int *a2);
+// FIXME FWD: int codenot(int a1, DWORD *a2);int luaK_indexed(int *a1, DWORD *a2, DWORD *a3);
+// FIXME FWD: int luaK_prefix(int *a1, int a2_dup, DWORD *a3);void luaK_infix(int *a1, int a2_dup, int *a3);int codebinop(int *a1, DWORD *a2, int a3_dup, int a4_dup, int a5);int luaK_posfix(int *a1, int a2_dup, DWORD *a3, DWORD *a4);int luaK_fixline(DWORD *a1, int a2_dup);int luaK_code(int a1, int a2_dup, int a3_dup);int luaK_codeABC(int a1, int a2_dup, int a3_dup, int a4_dup, int a5);int luaK_codeABx(int a1, int a2_dup, int a3_dup, int a4_dup);int ***luaX_init(int a1);int luaX_checklimit(int a1, int a2_dup, int a3_dup, int a4_dup);void /* __noreturn */ luaX_errorline(int a1);void /* __noreturn */ luaX_error(int a1);void /* __noreturn */ luaX_syntaxerror(int a1);int luaX_token2str(int a1, int a2_dup);void /* __noreturn */ luaX_lexerror(int a1, int a2_dup, int a3_dup);int inclinenumber(int *a1);
+// FIXME FWD: int luaX_setinput(int a1, int *a2, DWORD *a3, int a4);int readname(int a1);int read_numeral(void* a1, int a2_dup, double *); // idbint ***read_long_string(int *a1, int ***a2);
+// FIXME FWD: int ***read_string(int *a1, int a2, int ***a3);int luaX_lex(void*, double *); // idb
+// FIXME AMBIG: void /* __noreturn */ luaL_argerror(DWORD *a1, int a2_dup, const char *a3);void /* __noreturn */ luaL_typerror(DWORD *a1, int a2_dup, int a3_dup);void /* __noreturn */ tag_error(DWORD *a1, int a2, int a3_dup);int ***luaL_where(int a1, int a2_dup);void /* __noreturn */ luaL_error(DWORD *a1, char *a2, ...);
+// FIXME FWD: int luaL_findstring(const char *s2, const char *const *a2);
+// FIXME FWD: int luaL_newmetatable(DWORD *a1, void *a2);
+// FIXME FWD: int luaL_getmetatable(DWORD *a1, void *a2);
+// FIXME FWD: int luaL_checkudata(void* a1, int a2_dup, char *s2); // idbint luaL_checkstack(DWORD *a1, int a2_dup, const char *a3);int luaL_checktype(DWORD *a1, int a2_dup, int a3_dup);int luaL_checkany(DWORD *a1, int a2_dup);int luaL_checklstring(DWORD *a1, int a2_dup, int *a3);int luaL_optlstring(DWORD *a1, int a2_dup, const char *a3, int *a4);long double luaL_checknumber(DWORD *a1, int a2_dup);long double luaL_optnumber(int a1, int a2_dup, double a3_dup);int luaL_getmetafield(DWORD *a1, int a2, void *a3);int luaL_callmeta(DWORD *a1, unsigned int a2, void *a3);int luaL_openlib(DWORD *a1, void *a2, DWORD *a3, signed int a4);int checkint(DWORD *a1, int a2_dup);int getsizes(DWORD *a1);
+// FIXME FWD: int luaL_setn(DWORD *a1, unsigned int a2, int a2_2);int luaL_getn(DWORD *a1, unsigned int a2);int emptybuffer(DWORD *a1);int adjuststack(int a1);int luaL_prepbuffer(DWORD *a1);
+// FIXME FWD: char luaL_addlstring(DWORD *a1, char *a2, int a3);char luaL_addstring(DWORD *a1, char *a2);
+// FIXME FWD: char luaL_pushresult(int a1);int luaL_addvalue(void **a1);
+// FIXME FWD: DWORD *luaL_buffinit(int a1, DWORD *a2);int luaL_ref(DWORD *a1, unsigned int a2);void luaL_unref(DWORD *a1, unsigned int a2, int a2_2);FILE **getF(int a1, FILE **a2, size_t *a3);int errfile(DWORD *a1, int a2_dup);int luaL_loadfile(void*, char *filename); // idbint getS(int a1, DWORD *a2, DWORD *a3);int luaL_loadbuffer(int a1, int a2_dup, int a3_dup, void *a4);void callalert(DWORD *a1, int a2_dup);int aux_do(DWORD *a1, int a2_dup);int lua_dofile(void*, char *filename); // idb
+// FIXME FWD: int lua_dobuffer(DWORD *a1, int a2, int a3, void *a4);int lua_dostring(DWORD *a1, char *a2);
+// FIXME FWD: int luaB_print(DWORD *a1);
+// FIXME FWD: int luaB_tonumber(DWORD *a1);
 void /* __noreturn */ luaB_error(DWORD *a1);
-int luaB_getmetatable(DWORD *a1);
-int luaB_setmetatable(DWORD *a1);
-int getfunc(DWORD *a1);
-int aux_getfenv(DWORD *a1);
-int luaB_getfenv(DWORD *a1);
-int luaB_setfenv(DWORD *a1);
-int luaB_rawequal(DWORD *a1);
-int luaB_rawget(DWORD *a1);
-int luaB_rawset(DWORD *a1);
-int luaB_gcinfo(int a1);int luaB_collectgarbage(int a1);int luaB_type(DWORD *a1);
-int luaB_next(DWORD *a1);
-int luaB_pairs(DWORD *a1);
-int luaB_ipairs(DWORD *a1);
-int load_aux(DWORD *a1, int a2);int luaB_loadstring(DWORD *a1);
-int luaB_loadfile(DWORD *a1);
-int luaB_dofile(DWORD *a1);
-int luaB_assert(DWORD *a1);
-int luaB_unpack(DWORD *a1);
-int luaB_pcall(DWORD *a1);
-int luaB_xpcall(DWORD *a1);
-void luaB_tostring(DWORD *a1);
-void def_80B0BFA();
-int luaB_newproxy(DWORD *a1);
+// FIXME FWD: int luaB_getmetatable(DWORD *a1);
+// FIXME FWD: int luaB_setmetatable(DWORD *a1);
+// FIXME FWD: int getfunc(DWORD *a1);
+// FIXME FWD: int aux_getfenv(DWORD *a1);
+// FIXME FWD: int luaB_getfenv(DWORD *a1);
+// FIXME FWD: int luaB_setfenv(DWORD *a1);
+// FIXME FWD: int luaB_rawequal(DWORD *a1);
+// FIXME FWD: int luaB_rawget(DWORD *a1);
+// FIXME FWD: int luaB_rawset(DWORD *a1);
+// FIXME FWD: int luaB_gcinfo(int a1);int luaB_collectgarbage(int a1);int luaB_type(DWORD *a1);
+// FIXME FWD: int luaB_next(DWORD *a1);
+// FIXME FWD: int luaB_pairs(DWORD *a1);
+// FIXME FWD: int luaB_ipairs(DWORD *a1);
+// FIXME FWD: int load_aux(DWORD *a1, int a2);int luaB_loadstring(DWORD *a1);
+// FIXME FWD: int luaB_loadfile(DWORD *a1);
+// FIXME FWD: int luaB_dofile(DWORD *a1);
+// FIXME FWD: int luaB_assert(DWORD *a1);
+// FIXME FWD: int luaB_unpack(DWORD *a1);
+// FIXME FWD: int luaB_pcall(DWORD *a1);
+// FIXME FWD: int luaB_xpcall(DWORD *a1);
+// FIXME FWD: void luaB_tostring(DWORD *a1);
+// FIXME FWD: void def_80B0BFA();
+// FIXME FWD: int luaB_newproxy(DWORD *a1);
 const char *getpath(DWORD *a1);
-char *pushnextpath(int a1, char *s);char pushcomposename(DWORD *a1);
-int luaB_require(DWORD *a1);
-int auxresume(DWORD *a1, DWORD *a2, int a3);int luaB_coresume(DWORD *a1);
-int luaB_auxwrap(DWORD *a1);
-int luaB_cocreate(DWORD *a1);
-int luaB_cowrap(DWORD *a1);
-int luaB_yield(int a1);int luaB_costatus(DWORD *a1);
-int base_open(DWORD *a1);
-int luaopen_base(DWORD *a1);
-int pushresult(int a1, int a2_dup, int a3);int topfile(DWORD *a1, int a2_dup);int io_type(int a1);int tofile(DWORD *a1, int a2);DWORD *newfile(DWORD *a1);
-char registerfile(DWORD *a1, int a2, void *a3, void *a4);int aux_close(DWORD *a1);
-int io_close(DWORD *a1);
-int io_gc(DWORD *a1);
-int io_tostring(DWORD *a1);
-int io_open(DWORD *a1);
-int io_popen(DWORD *a1);
-int io_tmpfile(DWORD *a1);
-int getiofile(DWORD *a1, void *a2);
-int g_iofile(void* a1, int a2_dup, char *modes); // idbint io_input(int a1);int io_output(int a1);DWORD *aux_lines(DWORD *a1, int a2, int a3);int f_lines(DWORD *a1);
-int io_lines(DWORD *a1);
-int read_number(void*, FILE *stream); // idb
-int test_eof(int a1, _IO_FILE *fp);int read_line(int a1, FILE *stream);int read_chars(void*, FILE *stream, void*); // idb
-int g_read(void*, FILE *stream, void*); // idb
-int io_read(DWORD *a1);
-int f_read(DWORD *a1);
-int io_readline(DWORD *a1);
-int g_write(void*, FILE *stream, void*); // idb
-int io_write(DWORD *a1);
-int f_write(DWORD *a1);
-int f_seek(DWORD *a1);
-int io_flush(DWORD *a1);
-int f_flush(DWORD *a1);
-int createmeta(DWORD *a1);
-int io_execute(DWORD *a1);
-int io_remove(DWORD *a1);
-int io_rename(DWORD *a1);
+// FIXME FWD: char *pushnextpath(int a1, char *s);char pushcomposename(DWORD *a1);
+// FIXME FWD: int luaB_require(DWORD *a1);
+// FIXME FWD: int auxresume(DWORD *a1, DWORD *a2, int a3);int luaB_coresume(DWORD *a1);
+// FIXME FWD: int luaB_auxwrap(DWORD *a1);
+// FIXME FWD: int luaB_cocreate(DWORD *a1);
+// FIXME FWD: int luaB_cowrap(DWORD *a1);
+// FIXME FWD: int luaB_yield(int a1);int luaB_costatus(DWORD *a1);
+// FIXME FWD: int base_open(DWORD *a1);
+// FIXME FWD: int luaopen_base(DWORD *a1);
+// FIXME FWD: int pushresult(int a1, int a2_dup, int a3);int topfile(DWORD *a1, int a2_dup);int io_type(int a1);int tofile(DWORD *a1, int a2);DWORD *newfile(DWORD *a1);
+// FIXME FWD: char registerfile(DWORD *a1, int a2, void *a3, void *a4);int aux_close(DWORD *a1);
+// FIXME FWD: int io_close(DWORD *a1);
+// FIXME FWD: int io_gc(DWORD *a1);
+// FIXME FWD: int io_tostring(DWORD *a1);
+// FIXME FWD: int io_open(DWORD *a1);
+// FIXME FWD: int io_popen(DWORD *a1);
+// FIXME FWD: int io_tmpfile(DWORD *a1);
+// FIXME FWD: int getiofile(DWORD *a1, void *a2);
+// FIXME FWD: int g_iofile(void* a1, int a2_dup, char *modes); // idbint io_input(int a1);int io_output(int a1);DWORD *aux_lines(DWORD *a1, int a2, int a3);int f_lines(DWORD *a1);
+// FIXME FWD: int io_lines(DWORD *a1);
+// FIXME FWD: int read_number(void*, FILE *stream); // idb
+// FIXME FWD: int test_eof(int a1, _IO_FILE *fp);int read_line(int a1, FILE *stream);int read_chars(void*, FILE *stream, void*); // idb
+// FIXME FWD: int g_read(void*, FILE *stream, void*); // idb
+// FIXME FWD: int io_read(DWORD *a1);
+// FIXME FWD: int f_read(DWORD *a1);
+// FIXME FWD: int io_readline(DWORD *a1);
+// FIXME FWD: int g_write(void*, FILE *stream, void*); // idb
+// FIXME FWD: int io_write(DWORD *a1);
+// FIXME FWD: int f_write(DWORD *a1);
+// FIXME FWD: int f_seek(DWORD *a1);
+// FIXME FWD: int io_flush(DWORD *a1);
+// FIXME FWD: int f_flush(DWORD *a1);
+// FIXME FWD: int createmeta(DWORD *a1);
+// FIXME FWD: int io_execute(DWORD *a1);
+// FIXME FWD: int io_remove(DWORD *a1);
+// FIXME FWD: int io_rename(DWORD *a1);
 void /* __noreturn */ io_tmpname(DWORD *a1);
-int io_getenv(DWORD *a1);
-int io_clock(int a1);int setfield(DWORD *a1, void *a2, int a3_dup);int setboolfield(DWORD *a1, void *a2, int a3);int getboolfield(DWORD *a1, void *a2);
-int getfield(DWORD *a1, void *a2, int a3);int io_date(DWORD *a1);
-int io_time(DWORD *a1);
-int io_difftime(DWORD *a1);
-int io_setloc(DWORD *a1);
+// FIXME FWD: int io_getenv(DWORD *a1);
+// FIXME FWD: int io_clock(int a1);int setfield(DWORD *a1, void *a2, int a3_dup);int setboolfield(DWORD *a1, void *a2, int a3);int getboolfield(DWORD *a1, void *a2);
+// FIXME FWD: int getfield(DWORD *a1, void *a2, int a3);int io_date(DWORD *a1);
+// FIXME FWD: int io_time(DWORD *a1);
+// FIXME FWD: int io_difftime(DWORD *a1);
+// FIXME FWD: int io_setloc(DWORD *a1);
 void /* __noreturn */ io_exit(int a1);int luaopen_io(DWORD *a1);
-int math_abs(DWORD *a1);
-int math_sin(DWORD *a1);
-int math_cos(DWORD *a1);
-int math_tan(DWORD *a1);
-int math_asin(DWORD *a1);
-int math_acos(DWORD *a1);
-int math_atan(DWORD *a1);
-int math_atan2(DWORD *a1);
-int math_ceil(DWORD *a1);
-int math_floor(DWORD *a1);
-int math_mod(DWORD *a1);
-int math_sqrt(DWORD *a1);
-int math_pow(DWORD *a1);
-int math_log(DWORD *a1);
-int math_log10(DWORD *a1);
-int math_exp(DWORD *a1);
-int math_deg(DWORD *a1);
-int math_rad(DWORD *a1);
-int math_frexp(DWORD *a1);
-int math_ldexp(DWORD *a1);
-int math_min(DWORD *a1);
-int math_max(DWORD *a1);
-int math_random(DWORD *a1);
-int math_randomseed(DWORD *a1);
-int luaopen_math(DWORD *a1);
-int str_len(DWORD *a1);
-int posrelat(int a1, unsigned int a2);int str_sub(DWORD *a1);
-int str_lower(DWORD *a1);
-int str_upper(DWORD *a1);
-int str_rep(DWORD *a1);
-int str_byte(DWORD *a1);
-int str_char(DWORD *a1);
-int writer(int a1, char *a2, int a3, DWORD *a4);int str_dump(DWORD *a1);
-int check_capture(int a1, int a2_dup);int capture_to_close(int a1);int luaI_classend(int a1, BYTE *a2);int match_class(int a1, int a2_dup);int matchbracketclass(int a1, const char *a2, const char *a3);int luaI_singlematch(int a1, const char *a2, const char *a3);int matchbalance(int a1, BYTE *a2, char *a3);BYTE *max_expand(int a1, int a2_dup, char *a3, char *a4);BYTE *min_expand(int a1, int a2_dup, char *a3, int a4_dup);BYTE *start_capture(int a1, int a2_dup, char *a3, int a4_dup);BYTE *end_capture(int a1, int a2_dup, char *a3);int match_capture(int a1, const void *a2, int a2_dup);BYTE *match(int a1, int a2_dup, char *a3);const char *lmemfind(const char *s, unsigned int a2, const char *a3, unsigned int a4);int ***push_onecapture(DWORD *a1, int a2_dup);int push_captures(DWORD *a1, void *a2, int a3_dup);int str_find(DWORD *a1);
-int gfind_aux(DWORD *a1);
-int gfind(DWORD *a1);
-char add_s(DWORD *a1, void **a2, void *a3, int a2_dup);int str_gsub(DWORD *a1);
+// FIXME FWD: int math_abs(DWORD *a1);
+// FIXME FWD: int math_sin(DWORD *a1);
+// FIXME FWD: int math_cos(DWORD *a1);
+// FIXME FWD: int math_tan(DWORD *a1);
+// FIXME FWD: int math_asin(DWORD *a1);
+// FIXME FWD: int math_acos(DWORD *a1);
+// FIXME FWD: int math_atan(DWORD *a1);
+// FIXME FWD: int math_atan2(DWORD *a1);
+// FIXME FWD: int math_ceil(DWORD *a1);
+// FIXME FWD: int math_floor(DWORD *a1);
+// FIXME FWD: int math_mod(DWORD *a1);
+// FIXME FWD: int math_sqrt(DWORD *a1);
+// FIXME FWD: int math_pow(DWORD *a1);
+// FIXME FWD: int math_log(DWORD *a1);
+// FIXME FWD: int math_log10(DWORD *a1);
+// FIXME FWD: int math_exp(DWORD *a1);
+// FIXME FWD: int math_deg(DWORD *a1);
+// FIXME FWD: int math_rad(DWORD *a1);
+// FIXME FWD: int math_frexp(DWORD *a1);
+// FIXME FWD: int math_ldexp(DWORD *a1);
+// FIXME FWD: int math_min(DWORD *a1);
+// FIXME FWD: int math_max(DWORD *a1);
+// FIXME FWD: int math_random(DWORD *a1);
+// FIXME FWD: int math_randomseed(DWORD *a1);
+// FIXME FWD: int luaopen_math(DWORD *a1);
+// FIXME FWD: int str_len(DWORD *a1);
+// FIXME FWD: int posrelat(int a1, unsigned int a2);int str_sub(DWORD *a1);
+// FIXME FWD: int str_lower(DWORD *a1);
+// FIXME FWD: int str_upper(DWORD *a1);
+// FIXME FWD: int str_rep(DWORD *a1);
+// FIXME FWD: int str_byte(DWORD *a1);
+// FIXME FWD: int str_char(DWORD *a1);
+// FIXME FWD: int writer(int a1, char *a2, int a3, DWORD *a4);int str_dump(DWORD *a1);
+// FIXME FWD: int check_capture(int a1, int a2_dup);int capture_to_close(int a1);int luaI_classend(int a1, BYTE *a2);int match_class(int a1, int a2_dup);int matchbracketclass(int a1, const char *a2, const char *a3);int luaI_singlematch(int a1, const char *a2, const char *a3);int matchbalance(int a1, BYTE *a2, char *a3);BYTE *max_expand(int a1, int a2_dup, char *a3, char *a4);BYTE *min_expand(int a1, int a2_dup, char *a3, int a4_dup);BYTE *start_capture(int a1, int a2_dup, char *a3, int a4_dup);BYTE *end_capture(int a1, int a2_dup, char *a3);int match_capture(int a1, const void *a2, int a2_dup);BYTE *match(int a1, int a2_dup, char *a3);const char *lmemfind(const char *s, unsigned int a2, const char *a3, unsigned int a4);int ***push_onecapture(DWORD *a1, int a2_dup);int push_captures(DWORD *a1, void *a2, int a3_dup);int str_find(DWORD *a1);
+// FIXME FWD: int gfind_aux(DWORD *a1);
+// FIXME FWD: int gfind(DWORD *a1);
+// FIXME FWD: char add_s(DWORD *a1, void **a2, void *a3, int a2_dup);int str_gsub(DWORD *a1);
 unsigned int luaI_addquoted(DWORD *a1, unsigned int *a2, int a2_dup);char *scanformat(int a1, char *src, int a2_dup, int a3);int str_format(DWORD *a1);
-int luaopen_string(DWORD *a1);
-int SetElderBrother(int a1);int AddYoungerBrother(int a1);int RemoveYoungerBrother(int a1);int GetElderBrother(int a1);int ClearAllYoungerBrothers(int a1);int InviteYoungerBrother(DWORD *a1);
-int IsBrother(int a1);int SendBrotherhoodReply(DWORD *a1);
-int CreateParty(int a1);int GetPartyCount(int a1);int SetPartyID(int a1);int GetPartyID(int a1);int AddToParty(int a1);int RemoveFromParty(int a1);int IsPartyMember(int a1);int GetPartyMembers(int a1);int InviteIntoParty(int a1);int SendPartyReply(int a1);int GetClanID(int a1);int GetClanLeader(int a1);int GetClanMinisters(int a1);int GetClanMembers(int a1);int GetAllClanMembers(int a1);int GetClanStatus(int a1);int AddBarredClan(int a1);int AddToClan(int a1);int IsClanMember(int a1);int IsBarredFromClan(int a1);int SendAllyClan(int a1);int InviteIntoClan(int a1);int GetBarredClanList();
-int SendClanReply(int a1);int SetClanStatus(int a1);int RemoveFromClan(int a1);int RemoveBarredClan(int a1);int GetClanRating(int a1);int SetClanRating(int a1);int GetClanRelics(int a1);int StoreRelic(int a1);int RemoveRelic(int a1);int SendRelic(int a1);int GetYoungerBrother(int a1);int GetRelicFlags(int a1);int SetRelicFlag(int a1);int GetClanRelationship(int a1);int AddToBountyList();
-int RemoveFromBountyList();
-int GetBountyList();
-int GetClanType(int a1);int SetClanType(int a1);int SetClanQuit(int a1);int GetClanQuit(int a1);int RestoreRelic(DWORD *a1);
-int ReturnRelic(int a1, int a2_dup);int FindRelic(DWORD *a1, int a2_dup);int AddRelic(DWORD *a1, int a2);int GetClanPrestige(int a1);int SetClanPrestige(int a1);int SendDuelOffer(int a1);int IsFriendly(DWORD *a1);
-int IsFriendly_F(unsigned int a1, unsigned int a2, int a2_2);int GetAffiliation(int a1);int SetAffiliation(CMemAccess **a1);int SetAffiliation_F(int a1, unsigned int a2, unsigned char a3, int a2_2, CMemAccess **a5);int GetAllyList(int a1);int QuitClan();int QuitClan_F(int a1, int a2_dup, int a3_dup);int SetPKPoints(int a1);int GetPKPoints(int a1);int GetBuffType(int a1);int GetBuffData(int a1);int AddGuildBuff(int a1);int RemoveGuildBuff(int a1);int GetGuildBuff(int a1);int AddClanBuff(int a1);int RemoveClanBuff(int a1);int GetClanBuff(int a1);int ModifyPKWarning(int a1);int GetPKWarning(int a1);int GetClanGold(int a1);int SetClanGold(int a1);int SetWaitPeriod(int a1);int GetWaitPeriod(int a1);int GetExWaitPeriod(int a1);int SendClanTreasury(DWORD *a1);
-int SendPrestigeLog(int a1);int LogPrestige(int a1);int LogClanActivity(int a1);int SendClanActivityLog(int a1);int RemoveFromGuildList(int a1);CMatrix *_static_initialization_and_destruction_0_17(int a1, int a2);
-int GetAllStances(int a1);int AddStance(int a1);int RemoveStance(int a1);int GetStanceAdvantage(int a1);int GetCurrentStance(int a1);int SetCurrentStance(int a1);int GetStanceRank(int a1);int SetStanceRank(int a1);int AddStanceRank(int a1);int GetStancePoints(int a1);int SetStancePoints(int a1);int GetAllPowers(int a1);int AddPower(int a1);int RemovePower(int a1);int GetPowerPoints(int a1);int SetPowerPoints(int a1);int SetPowerRank(int a1);int AddPowerRank(int a1);int GetPowerRank(int a1);int GetPowerData(int a1);int FindEffects(int a1);int GetEffectData(int a1);int GetEffects(int a1);int AddEffect(DWORD *a1);
-int AddEffect_F(int a1, unsigned short a2, unsigned char a3, short a4, int a2_2);int SendEffectIcon(DWORD *a1);int RemoveEffect(int a1);int ApplyEffect(DWORD *a1);
-int ApplyEffect_F(int a1, int a2, unsigned char a3, int a3_2);int GetActiveWeapon(int a1);int SetActiveWeapon(int a1);int GetAttackMode(int a1);int SetAttackMode(int a1);int SendCombatFeedback(DWORD *a1);int SendCombatFeedback_F(int a1, unsigned int a2, int a2_2, char a4, char a5, int a6);int GetMoveData(int a1);int GetStanceData(int a1);int GetAttackModeAttackModifier(int a1);int GetAttackModeBlockChance(int a1);int GetAttackModeDefenseModifier(int a1);int GetAttackModeDamageModifier(int a1);int GetCurrentWeaponSpeed(int a1);int GetDuelStats(int a1);int SetDuelStats(int a1);int GetLastDuelID(int a1);int SetLastDuelID(int a1);int StartWager(DWORD *a1);int EndWager(DWORD *a1);
-int SetPowerCoolDown(int a1);int GetCumulativeEffects(int a1);int AddToChainPower(int a1);int RemoveFromChainPower(int a1);int GetChainPowers(int a1);int GetNumChainPowers(int a1);int SetNumChainPowers(int a1);int SetReadyWeapon(int a1);int GetReadyWeapon(int a1);int CalculateConstDamage(int a1);int SendPowerCooldown(DWORD *a1);
-int SendChainPowerCooldown(DWORD *a1);
+// FIXME FWD: int luaopen_string(DWORD *a1);
+// FIXME FWD: int SetElderBrother(int a1);int AddYoungerBrother(int a1);int RemoveYoungerBrother(int a1);int GetElderBrother(int a1);int ClearAllYoungerBrothers(int a1);int InviteYoungerBrother(DWORD *a1);
+// FIXME FWD: int IsBrother(int a1);int SendBrotherhoodReply(DWORD *a1);
+// FIXME FWD: int CreateParty(int a1);int GetPartyCount(int a1);int SetPartyID(int a1);int GetPartyID(int a1);int AddToParty(int a1);int RemoveFromParty(int a1);int IsPartyMember(int a1);int GetPartyMembers(int a1);int InviteIntoParty(int a1);int SendPartyReply(int a1);int GetClanID(int a1);int GetClanLeader(int a1);int GetClanMinisters(int a1);int GetClanMembers(int a1);int GetAllClanMembers(int a1);int GetClanStatus(int a1);int AddBarredClan(int a1);int AddToClan(int a1);int IsClanMember(int a1);int IsBarredFromClan(int a1);int SendAllyClan(int a1);int InviteIntoClan(int a1);int GetBarredClanList();
+// FIXME FWD: int SendClanReply(int a1);int SetClanStatus(int a1);int RemoveFromClan(int a1);int RemoveBarredClan(int a1);int GetClanRating(int a1);int SetClanRating(int a1);int GetClanRelics(int a1);int StoreRelic(int a1);int RemoveRelic(int a1);int SendRelic(int a1);int GetYoungerBrother(int a1);int GetRelicFlags(int a1);int SetRelicFlag(int a1);int GetClanRelationship(int a1);int AddToBountyList();
+// FIXME FWD: int RemoveFromBountyList();
+// FIXME FWD: int GetBountyList();
+// FIXME FWD: int GetClanType(int a1);int SetClanType(int a1);int SetClanQuit(int a1);int GetClanQuit(int a1);int RestoreRelic(DWORD *a1);
+// FIXME FWD: int ReturnRelic(int a1, int a2_dup);int FindRelic(DWORD *a1, int a2_dup);int AddRelic(DWORD *a1, int a2);int GetClanPrestige(int a1);int SetClanPrestige(int a1);int SendDuelOffer(int a1);int IsFriendly(DWORD *a1);
+// FIXME FWD: int IsFriendly_F(unsigned int a1, unsigned int a2, int a2_2);int GetAffiliation(int a1);int SetAffiliation(CMemAccess **a1);int SetAffiliation_F(int a1, unsigned int a2, unsigned char a3, int a2_2, CMemAccess **a5);int GetAllyList(int a1);int QuitClan();int QuitClan_F(int a1, int a2_dup, int a3_dup);int SetPKPoints(int a1);int GetPKPoints(int a1);int GetBuffType(int a1);int GetBuffData(int a1);int AddGuildBuff(int a1);int RemoveGuildBuff(int a1);int GetGuildBuff(int a1);int AddClanBuff(int a1);int RemoveClanBuff(int a1);int GetClanBuff(int a1);int ModifyPKWarning(int a1);int GetPKWarning(int a1);int GetClanGold(int a1);int SetClanGold(int a1);int SetWaitPeriod(int a1);int GetWaitPeriod(int a1);int GetExWaitPeriod(int a1);int SendClanTreasury(DWORD *a1);
+// FIXME FWD: int SendPrestigeLog(int a1);int LogPrestige(int a1);int LogClanActivity(int a1);int SendClanActivityLog(int a1);int RemoveFromGuildList(int a1);CMatrix *_static_initialization_and_destruction_0_17(int a1, int a2);
+// FIXME FWD: int GetAllStances(int a1);int AddStance(int a1);int RemoveStance(int a1);int GetStanceAdvantage(int a1);int GetCurrentStance(int a1);int SetCurrentStance(int a1);int GetStanceRank(int a1);int SetStanceRank(int a1);int AddStanceRank(int a1);int GetStancePoints(int a1);int SetStancePoints(int a1);int GetAllPowers(int a1);int AddPower(int a1);int RemovePower(int a1);int GetPowerPoints(int a1);int SetPowerPoints(int a1);int SetPowerRank(int a1);int AddPowerRank(int a1);int GetPowerRank(int a1);int GetPowerData(int a1);int FindEffects(int a1);int GetEffectData(int a1);int GetEffects(int a1);int AddEffect(DWORD *a1);
+// FIXME FWD: int AddEffect_F(int a1, unsigned short a2, unsigned char a3, short a4, int a2_2);int SendEffectIcon(DWORD *a1);int RemoveEffect(int a1);int ApplyEffect(DWORD *a1);
+// FIXME FWD: int ApplyEffect_F(int a1, int a2, unsigned char a3, int a3_2);int GetActiveWeapon(int a1);int SetActiveWeapon(int a1);int GetAttackMode(int a1);int SetAttackMode(int a1);int SendCombatFeedback(DWORD *a1);int SendCombatFeedback_F(int a1, unsigned int a2, int a2_2, char a4, char a5, int a6);int GetMoveData(int a1);int GetStanceData(int a1);int GetAttackModeAttackModifier(int a1);int GetAttackModeBlockChance(int a1);int GetAttackModeDefenseModifier(int a1);int GetAttackModeDamageModifier(int a1);int GetCurrentWeaponSpeed(int a1);int GetDuelStats(int a1);int SetDuelStats(int a1);int GetLastDuelID(int a1);int SetLastDuelID(int a1);int StartWager(DWORD *a1);int EndWager(DWORD *a1);
+// FIXME FWD: int SetPowerCoolDown(int a1);int GetCumulativeEffects(int a1);int AddToChainPower(int a1);int RemoveFromChainPower(int a1);int GetChainPowers(int a1);int GetNumChainPowers(int a1);int SetNumChainPowers(int a1);int SetReadyWeapon(int a1);int GetReadyWeapon(int a1);int CalculateConstDamage(int a1);int SendPowerCooldown(DWORD *a1);
+// FIXME FWD: int SendChainPowerCooldown(DWORD *a1);
 CMatrix *_static_initialization_and_destruction_0_18(int a1, int a2);
-int GEN_CLinkList_VKY_SCENE_tObjectHandle__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__GEN_CLinkList(DWORD *a1, int a2);DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__Clear(DWORD *a1);
-DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__Reset(DWORD *a1);
-int DoEffect(int a1);int GetDamageType_F(int a1, int a2_dup, int a3_dup, int a4_dup);int CheckSplit_F(unsigned int a1, unsigned int a2, int a2_2, int a4_dup, int a5);int CheckScatter_F(unsigned int a1, unsigned int a2, int a2_2, int a4_dup, int a5);int CheckArmorHit_F(int a1, int a2_2, int a3_2);int CheckDurability_F(int a1, int a2_2, int a3_2, int a4_dup);int CheckStun2_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckSlow2_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckEntangle2_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckConfusion_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckBlind_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckCanAttackWarNPC_F(int a1, unsigned int a2, int a2_2);int CheckIfCanPK_F(int a1, int a2_2, int a3_2);int IsInClanRelicZone_F(int a1, int a2_2);int CheckWarSystem_F(int a1, int a2_2, int a3_2);int SetPKWarning_F(int a1, int a2_2, int a3_2, int a4_dup);int CheckInterruptSprint_F(int a1, int a2_2, unsigned int a3, int a3_2);int CheckPKPenalty_F(int a1, int a2_2, int a3_dup);long double CheckPKPointResult_F(int a1, int a2_2, int a3_dup);int CheckWarRules_F(int a1, int a2_2, int a3_dup);int CheckRemoveFromClan_F(int a1, unsigned int a2, int a2_2);int RemoveFromClan_F(int a1, CMemAccess **a2);int ChangeClanRating_F(int a1, unsigned int a2, char a3_dup, int a2_2);int IsInWarScene_F(int a1, int a2_2);unsigned int SendFeedbackMsg_F(int a1, unsigned int a2, short a3_dup, short a4, int a2_2);long double CheckGuard_F(int a1, int a2_2, int a3_dup);long double GetRangeToEntity_F(int a1, int a2_2, int a3_dup);int GetClanWarData_F(unsigned short a1, unsigned short a2, int a2_2);int CheckInterruptPower_F(int a1, int a2_dup, int a3_dup);int CheckTeam_F(int a1, int a2_dup, int a3_dup);CMatrix *_static_initialization_and_destruction_0_19(int a1, int a2_dup);int GetEventStance(int a1);int GetEventSkill(int a1);int GetEventItem(int a1);int GetEventEntity1(int a1);int GetEventEntity2(int a1);int GetEventZones(int a1);int GetEventMode(int a1);int GetEventLocation1(int a1);int GetEventLocation2(int a1);int GetEventQuantity(int a1);int GetEventQuantity2(int a1);int GetEventFlag(int a1);int GetEventPower(int a1);int GetEventLabel(int a1);int GetEventValue(int a1);int GetEventSceneID(int a1);int GetEventItemList(int a1);int GetEventRange(int a1);int GetEventTreasure(int a1);int GetEventAction(int a1);int GetEventType(int a1);int GetEventSet(int a1);int GetGMParams(int a1);CMatrix *_static_initialization_and_destruction_0_20(int a1, int a2_dup);
-int RollDice(DWORD *a1);
-int RollDice_F(int a1, int a2, int a3);int GetCharacter(int a1);int GetEntityType(DWORD *a1);
-int GetEntityState(int a1);int SetEntityState(int a1);int GetQuestState(int a1);int SetQuestState(int a1);int SetTarget(int a1);int GetTarget(int a1);int GetRangeToEntity(int a1);int SetAnimation(int a1);int RemoveEntity(DWORD *a1);
-int SetPlayerScratchData(DWORD *a1);
-int GetPlayerScratchData(int a1);int GetTickcount(int a1);int GetEntityPosition(int a1);int PlayEffect(DWORD *a1);
-int PlayEffect_F(void* a1, int a2, float, float, float, int a3, void*); // idbint GetModelID(int a1);int SetModelID(int a1);int RandomizeModel(int a1);int SendMessage(DWORD *a1);
-void SendMultiStrings(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_VKY_SCENE_tObjectHandle__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__GEN_CLinkList(DWORD *a1, int a2);DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__Clear(DWORD *a1);
+// FIXME FWD: DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__Reset(DWORD *a1);
+// FIXME FWD: int DoEffect(int a1);int GetDamageType_F(int a1, int a2_dup, int a3_dup, int a4_dup);int CheckSplit_F(unsigned int a1, unsigned int a2, int a2_2, int a4_dup, int a5);int CheckScatter_F(unsigned int a1, unsigned int a2, int a2_2, int a4_dup, int a5);int CheckArmorHit_F(int a1, int a2_2, int a3_2);int CheckDurability_F(int a1, int a2_2, int a3_2, int a4_dup);int CheckStun2_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckSlow2_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckEntangle2_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckConfusion_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckBlind_F(unsigned int a1, unsigned char a2, int a2_2, short a4_dup, int a5);int CheckCanAttackWarNPC_F(int a1, unsigned int a2, int a2_2);int CheckIfCanPK_F(int a1, int a2_2, int a3_2);int IsInClanRelicZone_F(int a1, int a2_2);int CheckWarSystem_F(int a1, int a2_2, int a3_2);int SetPKWarning_F(int a1, int a2_2, int a3_2, int a4_dup);int CheckInterruptSprint_F(int a1, int a2_2, unsigned int a3, int a3_2);int CheckPKPenalty_F(int a1, int a2_2, int a3_dup);long double CheckPKPointResult_F(int a1, int a2_2, int a3_dup);int CheckWarRules_F(int a1, int a2_2, int a3_dup);int CheckRemoveFromClan_F(int a1, unsigned int a2, int a2_2);int RemoveFromClan_F(int a1, CMemAccess **a2);int ChangeClanRating_F(int a1, unsigned int a2, char a3_dup, int a2_2);int IsInWarScene_F(int a1, int a2_2);unsigned int SendFeedbackMsg_F(int a1, unsigned int a2, short a3_dup, short a4, int a2_2);long double CheckGuard_F(int a1, int a2_2, int a3_dup);long double GetRangeToEntity_F(int a1, int a2_2, int a3_dup);int GetClanWarData_F(unsigned short a1, unsigned short a2, int a2_2);int CheckInterruptPower_F(int a1, int a2_dup, int a3_dup);int CheckTeam_F(int a1, int a2_dup, int a3_dup);CMatrix *_static_initialization_and_destruction_0_19(int a1, int a2_dup);int GetEventStance(int a1);int GetEventSkill(int a1);int GetEventItem(int a1);int GetEventEntity1(int a1);int GetEventEntity2(int a1);int GetEventZones(int a1);int GetEventMode(int a1);int GetEventLocation1(int a1);int GetEventLocation2(int a1);int GetEventQuantity(int a1);int GetEventQuantity2(int a1);int GetEventFlag(int a1);int GetEventPower(int a1);int GetEventLabel(int a1);int GetEventValue(int a1);int GetEventSceneID(int a1);int GetEventItemList(int a1);int GetEventRange(int a1);int GetEventTreasure(int a1);int GetEventAction(int a1);int GetEventType(int a1);int GetEventSet(int a1);int GetGMParams(int a1);CMatrix *_static_initialization_and_destruction_0_20(int a1, int a2_dup);
+// FIXME FWD: int RollDice(DWORD *a1);
+// FIXME FWD: int RollDice_F(int a1, int a2, int a3);int GetCharacter(int a1);int GetEntityType(DWORD *a1);
+// FIXME FWD: int GetEntityState(int a1);int SetEntityState(int a1);int GetQuestState(int a1);int SetQuestState(int a1);int SetTarget(int a1);int GetTarget(int a1);int GetRangeToEntity(int a1);int SetAnimation(int a1);int RemoveEntity(DWORD *a1);
+// FIXME FWD: int SetPlayerScratchData(DWORD *a1);
+// FIXME FWD: int GetPlayerScratchData(int a1);int GetTickcount(int a1);int GetEntityPosition(int a1);int PlayEffect(DWORD *a1);
+// FIXME FWD: int PlayEffect_F(void* a1, int a2, float, float, float, int a3, void*); // idbint GetModelID(int a1);int SetModelID(int a1);int RandomizeModel(int a1);int SendMessage(DWORD *a1);
+// FIXME FWD: void SendMultiStrings(DWORD *a1);
 // void sub_80E7B80(int a1);// void sub_80E7C90(int a1);// void sub_80E7DA0(int a1);// void sub_80E7EB0(int a1);// void sub_80E7FC0(int a1);// void sub_80E80D0(int a1);// void sub_80E81E0(int a1);// void sub_80E82F0(int a1);void SendZoneMessage(DWORD *a1);
 // void sub_80E86A0(int a1);// void sub_80E87C0(int a1);// void sub_80E88E0(int a1);// void sub_80E8A00(int a1);// void sub_80E8B30(int a1);// void sub_80E8C60(int a1);// void sub_80E8D90(int a1);// void sub_80E8EC0(int a1);// void sub_80E8FF0(int a1);// void sub_80E9120(int a1);// int def_80E8466(int a1);void SendGenMessage(DWORD *a1);
 // void sub_80E9BB0(int a1);// void sub_80E9CD0(int a1);// void sub_80E9DF0(int a1);// void sub_80E9F10(int a1);// void sub_80EA040(int a1);// void sub_80EA170(int a1);// void sub_80EA2A0(int a1);// void sub_80EA3D0(int a1);// void sub_80EA500(int a1);// void sub_80EA630(int a1);int SendNPCMessageVar(DWORD *a1);
-int SendNPCMessage(DWORD *a1);
-int GetObjectLabel(int a1);int GetCharacterFacing(int a1);int GetEntitiesAtCoord(int a1);// int sub_80EC4C0(int a1);void GetEntitiesInArea(int a1);// void def_80ECE8B(int a1);// int def_80ED2CD(int a1);int GetEntitiesInCone(int a1);// int def_80EE1FE(int a1);int GetPlayersInScene(int a1);int CheckFacingToTarget(int a1);int ActivateWeather();
-int SaveCharacter(int a1);int ExecuteScript(DWORD *a1);
-int ExecuteScript_F(unsigned int a1, int a2, int a3, int a4, DWORD *a5);int GetScriptParams(int a1);int GetZoneKillFlag(int a1);int SetZoneKillFlag(int a1);int GetSceneZoneFlag(int a1);int SetVisualFlag(int a1);int SetVFXFlag(DWORD *a1);
-int SetVFXFlag_F(unsigned int a1, int a2, int a3, int a4);int GetVFXFlag(int a1);int GetLoginInterval(int a1);int GetTimer(int a1);int SetCurrentMovementSpeed(DWORD *a1);
-int SendGenericHint(int a1);int GetIsChar(DWORD *a1);
-int SendGenBuffer(int a1);int SendSysMessage(int a1);int BroadcastMessage(int a1);int GetLastKillerID(int a1);int SetLastKillerID(int a1);int SetLastResTime(int a1);int GetLastResTime();
-int VerifyCharExists(int a1);int CheckCharOnline(int a1);int SendUICommand(DWORD *a1);
-int CheckOptions(int a1);int SetGMOptions(int a1);int GetGMOptions(int a1);int GetGMAccess(int a1);// void def_80F23FF(int a1);int SetServerScratchData(int a1);int GetServerScratchData(int a1);int BootPlayer(int a1);int IsSceneOnServer(int a1);int ShowTutorialTrade(DWORD *a1);
-int AddTutorialItem(DWORD *a1);
-int SetTutorialGold(DWORD *a1);
-int SetTutorialCheck(DWORD *a1);
-int ForceMove(int a1);int SeedRandomizer(DWORD *a1);
-int SendCameraCommand(DWORD *a1);
-int SendFakeMerchantList(DWORD *a1);
-int SendGMTagFlag(DWORD *a1);
-int GetGameEvent(int a1);int SetGameEvent(int a1);int GetGameEventStatus(int a1);int CheckCanTarget(int a1);int SetSObjModelID(int a1);int SetSObjData(int a1);int GetSObjData(int a1);int SetGameStats(int a1);int GameTime(int a1);int SendConstEffects(DWORD *a1);
-int SetAnimationQueue(int a1);int MuteChar(int a1);int IsValidChar(int a1);int LuaAssert(DWORD *a1);
-int SendGenMessage_F(int a1, short a2_dup, char a3_dup, int a4_dup, int *a5, int a6);int SetCurrentMovementSpeed_F(int a1, char a2_dup, int a3_dup);int SetScratchData_F(int a1, int a2, int a3, int a4_dup);int AddCharToGMHelp(int a1);int RemoveCharFromGMHelp(int a1);int CheckEntityInBox(int a1);int ResetHeroTimer(int a1);int GetHeroCounter(int a1);int SetHeroCounter(int a1);CMatrix *_static_initialization_and_destruction_0_21(int a1, int a2_dup);
-int CreateGuild(int a1);int DeleteGuild(int a1);int ModifyGuildData(int a1);int GetGuildData(int a1);int GetGuildList(int a1);int SendGuildReply(int a1);int CheckGuildName(int a1);int SendGuildCreate(DWORD *a1);
-int GetFreeGuilds(int a1);int SetAlly(int a1);int SetClanToGuild_F(int a1, int a2_dup, int a3);int InviteIntoGuild(int a1);CMatrix *_static_initialization_and_destruction_0_22(int a1, int a2_dup);
-int SetTeamID(int a1);int GetTeamID(int a1);int StartIGREvent(int a1);int StopIGREvent(int a1);int GetIGRTime(int a1);int SetIGRGenData(int a1);int SetIGRType(int a1);int SetIGRTeams(int a1);int SetIGRDuration(int a1);int SetIGRStatus(int a1);int SetIGRResult(int a1);int SetIGRFlags(int a1);int GetIGRFlags(int a1);int SetIGRScore(int a1);int GetIGRScore(int a1);int GetIGRData(int a1);int GetIGRTeamData(int a1);int GetIGRScratch(int a1);int SetIGRScratch(int a1);int SendTeamChallenge(DWORD *a1);
+// FIXME FWD: int SendNPCMessage(DWORD *a1);
+// FIXME FWD: int GetObjectLabel(int a1);int GetCharacterFacing(int a1);int GetEntitiesAtCoord(int a1);// int sub_80EC4C0(int a1);void GetEntitiesInArea(int a1);// void def_80ECE8B(int a1);// int def_80ED2CD(int a1);int GetEntitiesInCone(int a1);// int def_80EE1FE(int a1);int GetPlayersInScene(int a1);int CheckFacingToTarget(int a1);int ActivateWeather();
+// FIXME FWD: int SaveCharacter(int a1);int ExecuteScript(DWORD *a1);
+// FIXME FWD: int ExecuteScript_F(unsigned int a1, int a2, int a3, int a4, DWORD *a5);int GetScriptParams(int a1);int GetZoneKillFlag(int a1);int SetZoneKillFlag(int a1);int GetSceneZoneFlag(int a1);int SetVisualFlag(int a1);int SetVFXFlag(DWORD *a1);
+// FIXME FWD: int SetVFXFlag_F(unsigned int a1, int a2, int a3, int a4);int GetVFXFlag(int a1);int GetLoginInterval(int a1);int GetTimer(int a1);int SetCurrentMovementSpeed(DWORD *a1);
+// FIXME FWD: int SendGenericHint(int a1);int GetIsChar(DWORD *a1);
+// FIXME FWD: int SendGenBuffer(int a1);int SendSysMessage(int a1);int BroadcastMessage(int a1);int GetLastKillerID(int a1);int SetLastKillerID(int a1);int SetLastResTime(int a1);int GetLastResTime();
+// FIXME FWD: int VerifyCharExists(int a1);int CheckCharOnline(int a1);int SendUICommand(DWORD *a1);
+// FIXME FWD: int CheckOptions(int a1);int SetGMOptions(int a1);int GetGMOptions(int a1);int GetGMAccess(int a1);// void def_80F23FF(int a1);int SetServerScratchData(int a1);int GetServerScratchData(int a1);int BootPlayer(int a1);int IsSceneOnServer(int a1);int ShowTutorialTrade(DWORD *a1);
+// FIXME FWD: int AddTutorialItem(DWORD *a1);
+// FIXME FWD: int SetTutorialGold(DWORD *a1);
+// FIXME FWD: int SetTutorialCheck(DWORD *a1);
+// FIXME FWD: int ForceMove(int a1);int SeedRandomizer(DWORD *a1);
+// FIXME FWD: int SendCameraCommand(DWORD *a1);
+// FIXME FWD: int SendFakeMerchantList(DWORD *a1);
+// FIXME FWD: int SendGMTagFlag(DWORD *a1);
+// FIXME FWD: int GetGameEvent(int a1);int SetGameEvent(int a1);int GetGameEventStatus(int a1);int CheckCanTarget(int a1);int SetSObjModelID(int a1);int SetSObjData(int a1);int GetSObjData(int a1);int SetGameStats(int a1);int GameTime(int a1);int SendConstEffects(DWORD *a1);
+// FIXME FWD: int SetAnimationQueue(int a1);int MuteChar(int a1);int IsValidChar(int a1);int LuaAssert(DWORD *a1);
+// FIXME FWD: int SendGenMessage_F(int a1, short a2_dup, char a3_dup, int a4_dup, int *a5, int a6);int SetCurrentMovementSpeed_F(int a1, char a2_dup, int a3_dup);int SetScratchData_F(int a1, int a2, int a3, int a4_dup);int AddCharToGMHelp(int a1);int RemoveCharFromGMHelp(int a1);int CheckEntityInBox(int a1);int ResetHeroTimer(int a1);int GetHeroCounter(int a1);int SetHeroCounter(int a1);CMatrix *_static_initialization_and_destruction_0_21(int a1, int a2_dup);
+// FIXME FWD: int CreateGuild(int a1);int DeleteGuild(int a1);int ModifyGuildData(int a1);int GetGuildData(int a1);int GetGuildList(int a1);int SendGuildReply(int a1);int CheckGuildName(int a1);int SendGuildCreate(DWORD *a1);
+// FIXME FWD: int GetFreeGuilds(int a1);int SetAlly(int a1);int SetClanToGuild_F(int a1, int a2_dup, int a3);int InviteIntoGuild(int a1);CMatrix *_static_initialization_and_destruction_0_22(int a1, int a2_dup);
+// FIXME FWD: int SetTeamID(int a1);int GetTeamID(int a1);int StartIGREvent(int a1);int StopIGREvent(int a1);int GetIGRTime(int a1);int SetIGRGenData(int a1);int SetIGRType(int a1);int SetIGRTeams(int a1);int SetIGRDuration(int a1);int SetIGRStatus(int a1);int SetIGRResult(int a1);int SetIGRFlags(int a1);int GetIGRFlags(int a1);int SetIGRScore(int a1);int GetIGRScore(int a1);int GetIGRData(int a1);int GetIGRTeamData(int a1);int GetIGRScratch(int a1);int SetIGRScratch(int a1);int SendTeamChallenge(DWORD *a1);
 CMatrix *_static_initialization_and_destruction_0_23(int a1, int a2);
-int GetGold(int a1);int SetGold(int a1);int GetStashGold(int a1);int SetStashGold(int a1);int AddItem(int a1);int RemoveItem(int a1);int DestroyItem(int a1);int GetRentalInfo(int a1);int GetAllItems(int a1);int GetAllCarriedItems(int a1);int GetAllStashedItems(int a1);int GetBodyItems(int a1);int GetIdentified(int a1);int GetInventoryItems(int a1);int GetSidePocket(int a1);int GetItemCount(int a1);int GetItemData(int a1);int GetItemInSlot(int a1);int GetQuickItems(int a1);int GetWeaponItems(int a1);int SetIdentified(int a1);int MoveSlot(int a1);int FindUniqueItem(int a1);int GetUniqueItemSet(int a1);int GetUniqueItemData(int a1);int GetUniqueItemID(int a1);int SetUniqueRevertToID(int a1);int SetUniqueCharID(int a1);int ResetUniqueTime(int a1);int GetCurrentWeight(DWORD *a1);
-int CalculateWeightAllowance_F(int a1, int a2);int GetWeightAllowance(DWORD *a1);
-int SendInventoryItems(int a1);int GetTradingData(int a1);int GetTreasureRarity(int a1);int GetTreasureData(int a1);int SendMerchantInventory(int a1);int SendHeroInventory(DWORD *a1);
-int GetTradeGold(int a1);int SetTradeGold(int a1);int GetTradeAgreement(int a1);int SetTradeAgreement(int a1);int SendTradeRequest(DWORD *a1);
-int SendTradeData(int a1);int StartTrade(DWORD *a1);
-int EndTrade(DWORD *a1);
-int SendMerchantStances(int a1);int SendMerchantPowers(int a1);int SendMerchantSkills(int a1);int ClearLoot(int a1);int SendLoot(int a1);int SendStash(int a1);int ClearStash(int a1);int AddAttachment(int a1);int RemoveAttachment(int a1);int GenerateTreasure(DWORD *a1);
-int AddComponent(int a1);int RemoveComponent(int a1);int GetComponent(int a1);int GetLegendaryStatus(int a1);int SetLegendaryStatus(int a1);int SendEvaluateResponse(int a1);int SendSidePocket(int a1);int SendCurrentWeight(DWORD *a1);
-int GetUniqueItemByLabel(int a1);int GetUniqueItemByNPCAttr(int a1);int FindItems(int a1);int SendMouseItem(int a1);int RefreshAuctionList(int a1, int a2, int a3, int a4);int AddItemToAuction(int a1);int RemoveCurrentAuctionItems(int a1);int ReturnItemFromOldAuction(int a1);int RemoveOldAuctionItems(int a1);int BidOnItem(int a1);int SendAuctionItems(int a1);int SellItemOnAuction(int a1);int GetAuctionData(int a1);int GetOldAuctionData(int a1);int GetAuctionItem(int a1);int RestoreUniqueItem(int a1);int SetArmor(int a1);int CheckRelic(int a1);int CheckUniqueItem(int a1);int SendIdentifyPrice(DWORD *a1);
-int GetDurability(int a1);int SetDurability(int a1);int ClearDiscounts(int a1);int AddDiscount(int a1);int GetDiscounts(int a1);// int sub_8110C48(int a1);int ApplyDiscounts(int a1);int CheckWeight(DWORD *a1);
-int CheckWeight_F(int a1, int a2, int a3);int SendItemBreakIcon(DWORD *a1);
-int SendItemBreakIcon_F(int a1, char a2_dup, char a3_dup, int a4_dup);int ApplySetEffects(int a1);int RemoveSetEffects(int a1);int ReApplyAllSetEffects(int a1);int CalculateCurrentWeight_F(int a1, int a2_dup);int SendCurrentWeight_F(int a1, short a2, short a3, int a4);int AddSetEffects_F();
-int RemoveSetEffects_F();
-int GetSetEffects_F();
-int DoSetEffects(DWORD *a1);
-int DoSetEffects_F(int a1, int a2_dup, int a3);int RefreshVisualFlag(int a1, int a2_dup);int ModifyItemXP(int a1);int GetItemXP(int a1);int GetItemLevel(int a1);int SetItemLevel(int a1);int GetUniqueItems(int a1);int SetDecayCounter(int a1);CMatrix *_static_initialization_and_destruction_0_24(int a1, int a2);
-int GetLevel(int a1);int GetLevelCap(int a1);int SetLevel(int a1);int GetMulPerc(int a1);int GetXP(int a1);int SetXP(DWORD *a1);
-int SetXP_F(int a1, unsigned int a2, int a2_2, int a4, int a5);int GetStanceProgression(int a1);int GetLevelAdvancement(int a1);int GetTemplate(int a1);int ToggleTemplate(int a1);int GetXPPerDamage(DWORD *a1);int AddToXPPool(int a1);int GetTemplateAdv(int a1);CMatrix *_static_initialization_and_destruction_0_25(int a1, int a2_dup);
-int Abs(DWORD *a1);
-int DoubleWord(DWORD *a1);
-int Div(DWORD *a1);
-int GetHiValue(DWORD *a1);
-int GetLowValue(DWORD *a1);
-int RoundUp(DWORD *a1);
-int RoundDown(DWORD *a1);
-int LShift(DWORD *a1);
-int RShift(DWORD *a1);
-int GetHexDigit(DWORD *a1);
+// FIXME FWD: int GetGold(int a1);int SetGold(int a1);int GetStashGold(int a1);int SetStashGold(int a1);int AddItem(int a1);int RemoveItem(int a1);int DestroyItem(int a1);int GetRentalInfo(int a1);int GetAllItems(int a1);int GetAllCarriedItems(int a1);int GetAllStashedItems(int a1);int GetBodyItems(int a1);int GetIdentified(int a1);int GetInventoryItems(int a1);int GetSidePocket(int a1);int GetItemCount(int a1);int GetItemData(int a1);int GetItemInSlot(int a1);int GetQuickItems(int a1);int GetWeaponItems(int a1);int SetIdentified(int a1);int MoveSlot(int a1);int FindUniqueItem(int a1);int GetUniqueItemSet(int a1);int GetUniqueItemData(int a1);int GetUniqueItemID(int a1);int SetUniqueRevertToID(int a1);int SetUniqueCharID(int a1);int ResetUniqueTime(int a1);int GetCurrentWeight(DWORD *a1);
+// FIXME FWD: int CalculateWeightAllowance_F(int a1, int a2);int GetWeightAllowance(DWORD *a1);
+// FIXME FWD: int SendInventoryItems(int a1);int GetTradingData(int a1);int GetTreasureRarity(int a1);int GetTreasureData(int a1);int SendMerchantInventory(int a1);int SendHeroInventory(DWORD *a1);
+// FIXME FWD: int GetTradeGold(int a1);int SetTradeGold(int a1);int GetTradeAgreement(int a1);int SetTradeAgreement(int a1);int SendTradeRequest(DWORD *a1);
+// FIXME FWD: int SendTradeData(int a1);int StartTrade(DWORD *a1);
+// FIXME FWD: int EndTrade(DWORD *a1);
+// FIXME FWD: int SendMerchantStances(int a1);int SendMerchantPowers(int a1);int SendMerchantSkills(int a1);int ClearLoot(int a1);int SendLoot(int a1);int SendStash(int a1);int ClearStash(int a1);int AddAttachment(int a1);int RemoveAttachment(int a1);int GenerateTreasure(DWORD *a1);
+// FIXME FWD: int AddComponent(int a1);int RemoveComponent(int a1);int GetComponent(int a1);int GetLegendaryStatus(int a1);int SetLegendaryStatus(int a1);int SendEvaluateResponse(int a1);int SendSidePocket(int a1);int SendCurrentWeight(DWORD *a1);
+// FIXME FWD: int GetUniqueItemByLabel(int a1);int GetUniqueItemByNPCAttr(int a1);int FindItems(int a1);int SendMouseItem(int a1);int RefreshAuctionList(int a1, int a2, int a3, int a4);int AddItemToAuction(int a1);int RemoveCurrentAuctionItems(int a1);int ReturnItemFromOldAuction(int a1);int RemoveOldAuctionItems(int a1);int BidOnItem(int a1);int SendAuctionItems(int a1);int SellItemOnAuction(int a1);int GetAuctionData(int a1);int GetOldAuctionData(int a1);int GetAuctionItem(int a1);int RestoreUniqueItem(int a1);int SetArmor(int a1);int CheckRelic(int a1);int CheckUniqueItem(int a1);int SendIdentifyPrice(DWORD *a1);
+// FIXME FWD: int GetDurability(int a1);int SetDurability(int a1);int ClearDiscounts(int a1);int AddDiscount(int a1);int GetDiscounts(int a1);// int sub_8110C48(int a1);int ApplyDiscounts(int a1);int CheckWeight(DWORD *a1);
+// FIXME FWD: int CheckWeight_F(int a1, int a2, int a3);int SendItemBreakIcon(DWORD *a1);
+// FIXME FWD: int SendItemBreakIcon_F(int a1, char a2_dup, char a3_dup, int a4_dup);int ApplySetEffects(int a1);int RemoveSetEffects(int a1);int ReApplyAllSetEffects(int a1);int CalculateCurrentWeight_F(int a1, int a2_dup);int SendCurrentWeight_F(int a1, short a2, short a3, int a4);int AddSetEffects_F();
+// FIXME FWD: int RemoveSetEffects_F();
+// FIXME FWD: int GetSetEffects_F();
+// FIXME FWD: int DoSetEffects(DWORD *a1);
+// FIXME FWD: int DoSetEffects_F(int a1, int a2_dup, int a3);int RefreshVisualFlag(int a1, int a2_dup);int ModifyItemXP(int a1);int GetItemXP(int a1);int GetItemLevel(int a1);int SetItemLevel(int a1);int GetUniqueItems(int a1);int SetDecayCounter(int a1);CMatrix *_static_initialization_and_destruction_0_24(int a1, int a2);
+// FIXME FWD: int GetLevel(int a1);int GetLevelCap(int a1);int SetLevel(int a1);int GetMulPerc(int a1);int GetXP(int a1);int SetXP(DWORD *a1);
+// FIXME FWD: int SetXP_F(int a1, unsigned int a2, int a2_2, int a4, int a5);int GetStanceProgression(int a1);int GetLevelAdvancement(int a1);int GetTemplate(int a1);int ToggleTemplate(int a1);int GetXPPerDamage(DWORD *a1);int AddToXPPool(int a1);int GetTemplateAdv(int a1);CMatrix *_static_initialization_and_destruction_0_25(int a1, int a2_dup);
+// FIXME FWD: int Abs(DWORD *a1);
+// FIXME FWD: int DoubleWord(DWORD *a1);
+// FIXME FWD: int Div(DWORD *a1);
+// FIXME FWD: int GetHiValue(DWORD *a1);
+// FIXME FWD: int GetLowValue(DWORD *a1);
+// FIXME FWD: int RoundUp(DWORD *a1);
+// FIXME FWD: int RoundDown(DWORD *a1);
+// FIXME FWD: int LShift(DWORD *a1);
+// FIXME FWD: int RShift(DWORD *a1);
+// FIXME FWD: int GetHexDigit(DWORD *a1);
 CMatrix *_static_initialization_and_destruction_0_26(int a1, int a2);
-int GetElementalAdvantage(int a1);int SetElementalAdvantage(int a1);int GetGender(int a1);int SetGender(int a1);int GetReSpecPoints(int a1);int SetReSpecPoints(int a1);CMatrix *_static_initialization_and_destruction_0_27(int a1, int a2);
-int AIGetByAttID(unsigned int a1, int a2_dup);int AIGetByCharID(unsigned int a1, int a2);int SetDoRemove(DWORD *a1);
-int SetNPCRange(DWORD *a1);
-int IsNPCExist(DWORD *a1);
-int GetLoot(DWORD *a1);
-int SetNPCAttackType(DWORD *a1);
-void *AIRunTask(int a1, int a2, int a3, int a4, int a5);int GetAttackPerc(DWORD *a1);
+// FIXME FWD: int GetElementalAdvantage(int a1);int SetElementalAdvantage(int a1);int GetGender(int a1);int SetGender(int a1);int GetReSpecPoints(int a1);int SetReSpecPoints(int a1);CMatrix *_static_initialization_and_destruction_0_27(int a1, int a2);
+// FIXME FWD: int AIGetByAttID(unsigned int a1, int a2_dup);int AIGetByCharID(unsigned int a1, int a2);int SetDoRemove(DWORD *a1);
+// FIXME FWD: int SetNPCRange(DWORD *a1);
+// FIXME FWD: int IsNPCExist(DWORD *a1);
+// FIXME FWD: int GetLoot(DWORD *a1);
+// FIXME FWD: int SetNPCAttackType(DWORD *a1);
+// FIXME FWD: void *AIRunTask(int a1, int a2, int a3, int a4, int a5);int GetAttackPerc(DWORD *a1);
 // int sub_811A320(int a1);int GetDetectHiddenRate(DWORD *a1);
-int GetPowerID(DWORD *a1);
+// FIXME FWD: int GetPowerID(DWORD *a1);
 // int sub_811A740(int a1);int GetPowType(DWORD *a1);
 // int def_811A837(int a1);int GetMeleeRange(DWORD *a1);
-int GetNPCPowerData(DWORD *a1);
-int GetPowerRange(DWORD *a1);
+// FIXME FWD: int GetNPCPowerData(DWORD *a1);
+// FIXME FWD: int GetPowerRange(DWORD *a1);
 // int def_811C33E(int a1);int AIRefreshTopTarget(unsigned int a1, int a2_dup);int AIDoCountDeduct(int a1, int a2_dup);int AIRemoveEntity(unsigned int a1, int a2);int RemoveNPC(DWORD *a1);
-int GetAnimStanceID(DWORD *a1);
+// FIXME FWD: int GetAnimStanceID(DWORD *a1);
 bool AIProceedWithAggro(int a1, unsigned int a2, int a2_2);bool AIProceedAggro(int a1, short a2_2, short a3_dup, int a4_dup);bool TargetAttackable_F(int a1, unsigned int a2, int a2_2);int TargetAttackable(DWORD *a1);char AISetCurrentHitPoints(unsigned int a1, unsigned int a2, int a2_2, unsigned int a4, char a5, char a6, char a7, char a8, int a9);int aicomparepart(const void *a1, const void *a2);int AIGetNPCPartner(void* a1, int a2_dup, int a3_dup, float, void*); // idbint AIAggroCount(int a1, int a2_2, int a3_dup);int AISetPartnerAggro(unsigned int a1, int a2_2, int a3, int a4_dup);char AISetCurrentMissPoints(unsigned int a1, unsigned int a2, unsigned int a3, int a2_2);int SetNPCMiss(DWORD *a1);int SetNPCHitPoints(DWORD *a1);
-int GetNPCTreasure(DWORD *a1);
-int GetNPCAggressiveFlag(DWORD *a1);
-int GetInvisibilityPerc(DWORD *a1);
-int GetNPCItemCount(DWORD *a1);
-int SetNPCItemCount(DWORD *a1);
-int SetNPCAggressiveFlag(DWORD *a1);
-int GetNameID(DWORD *a1);
-int TransferQuestLoot(int a1);// int sub_8121388(int a1);// int sub_81213B7(int a1);int GetIsSNPC(DWORD *a1);
-int GetNPCClanInfo(DWORD *a1);
-int GetItemFromLoot(DWORD *a1);
-int TransferLoot(int a1);int AIAllocateLoot(void* a1, int a2_dup, int a3_dup, CScene *, int a4_dup, int a5, int a6, int a7, int a8, void*); // idbint AIAllocateLoot(void* a1, int a2, int a3, CScene *, int a4, int a5, void*); // idbint DropLoot(int a1);int ExecuteNPCScript(DWORD *a1);
-int GetNPCAttrib(DWORD *a1);
-char AIIsAggroed(int a1, int a2, int a3);int IsAggroed(DWORD *a1);
-int AIClearAggro(int a1, int a2, int a3);int ClearAggro(DWORD *a1);
+// FIXME FWD: int GetNPCTreasure(DWORD *a1);
+// FIXME FWD: int GetNPCAggressiveFlag(DWORD *a1);
+// FIXME FWD: int GetInvisibilityPerc(DWORD *a1);
+// FIXME FWD: int GetNPCItemCount(DWORD *a1);
+// FIXME FWD: int SetNPCItemCount(DWORD *a1);
+// FIXME FWD: int SetNPCAggressiveFlag(DWORD *a1);
+// FIXME FWD: int GetNameID(DWORD *a1);
+// FIXME FWD: int TransferQuestLoot(int a1);// int sub_8121388(int a1);// int sub_81213B7(int a1);int GetIsSNPC(DWORD *a1);
+// FIXME FWD: int GetNPCClanInfo(DWORD *a1);
+// FIXME FWD: int GetItemFromLoot(DWORD *a1);
+// FIXME FWD: int TransferLoot(int a1);int AIAllocateLoot(void* a1, int a2_dup, int a3_dup, CScene *, int a4_dup, int a5, int a6, int a7, int a8, void*); // idbint AIAllocateLoot(void* a1, int a2, int a3, CScene *, int a4, int a5, void*); // idbint DropLoot(int a1);int ExecuteNPCScript(DWORD *a1);
+// FIXME FWD: int GetNPCAttrib(DWORD *a1);
+// FIXME FWD: char AIIsAggroed(int a1, int a2, int a3);int IsAggroed(DWORD *a1);
+// FIXME FWD: int AIClearAggro(int a1, int a2, int a3);int ClearAggro(DWORD *a1);
 long double AIGetDirectionByAttID(unsigned int a1, int a2_dup, int a3_dup);int AIAllocateNPC(void*, float, float, float, int a2_dup, int a3_dup, char, int a4_dup, int a5, int a6, void*); // idbint AIActivateSpawnpt(int a1, int a2_dup, int a3_dup, int a4_dup);int AIActivateSpawnPt(void* a1, int a2, int a3, int a4, void *s, int a5, int a6, void*); // idbint ActivateQuestPtWorld(int a1);int ActivateQuestPt(DWORD *a1);
-int GetNPCFromSpawn(int a1);int DeleteSpawnNPC(int a1);void AIActivateSpawnPtGrp(int a1, int a2, int a3);int ActivateSpawnGrp(DWORD *a1);
-int DeleteSpawnNPCGrp(int a1);int ResetSpawnGrpTimer(int a1);int AIReplaceSpawnedAttrib(int a1, int a2, int a3, int a4);int ReplaceSpawnAttrib(DWORD *a1);
-int AIResetSpawnedAttrib(int a1, int a2_dup, int a3_dup);int ResetSpawnAttrib(int a1);void AIReplaceSpawnedGrpAttrib(int a1, int a2, int a3_dup, int a4);int ReplaceSpawnGrpAttrib(DWORD *a1);
-int AIResetSpawnedGrpAttrib(unsigned int a1, int a2, int a3, int a4);int ResetSpawnGrpAttrib(int a1);int GetQuestOwner(DWORD *a1);
-int ResetQuestOwner(DWORD *a1);
-int GetNPCScriptID(DWORD *a1);
-int GetSpawnPtCnt(int a1);int CheckSpawnLiving(int a1);int SetQuestOwner(int a1);int IsPiss(DWORD *a1);
-int SetNoDeath(int a1);int IsGuard(DWORD *a1);
-int DropLootExt1(DWORD *a1);
-int GetNPCResistance(DWORD *a1);
-int IsNPCDead(DWORD *a1);
-void AISetSpawnPermanentStatus(int a1, char a2_dup, int a3_dup);int SetSpawnLiveStatus(int a1);int SetSpawnPtStatus(int a1);int ResetNPCData(int a1);int AISpawnedNPC(void*, float, float, float, int a2, int a3_dup, void*); // idbint SpawnNPC(DWORD *a1);
-int SetSpawnOnFlag(int a1);int SetSpawnMaxFlag(int a1);int AIManual_Loot(unsigned int a1, int a2, int a3);int ManualDropLoot(DWORD *a1);
-int GetSpawnStatistics(int a1);int GetSpawnData(DWORD *a1);
-int AIGetSpawnPtDetail(int a1, int a2, int a3, int a4);int GetSpawnDetail(DWORD *a1);
-int GetNPCRotate(DWORD *a1);
-int GetNPCData(DWORD *a1);
-int SetTargetList(DWORD *a1);
-int DoClanRating(int a1);int RetrieveScanList(DWORD *a1);
-int RetrieveTargetList(DWORD *a1);
-int aicomparespawnpt(const void *, void*); // idb
-int aicomparenpc(const void *, void*); // idb
-int GetNPCCoord(DWORD *a1);
-int GetSpawnPtCoord(DWORD *a1);
-int RetrieveSpawnPtByValue(DWORD *a1);
-int RetrieveNPCByValue(DWORD *a1);
-int SetNPCDropLootFlag(int a1);int MoveNPCToChar(int a1);int MoveNPCToSpawnPt(int a1);int MoveNPCToCoord(int a1);char AISetSpawnPtByGroup(int a1, int a2_dup, char a3_dup, int a4_dup);int RedoSpawnGrp(int a1);char AIModifyNPCData(int a1, int a2, int a3, int a4);int SetNPCData(DWORD *a1);
-int AIGetNPCData(unsigned int a1, int a2, int a3);int RetrieveNPCData(DWORD *a1);
-char AISetNPCInstanceData(unsigned int a1, int a2, int a3, int a4);int ModifyNPCInstanceData(DWORD *a1);
-int AIGetNPCInstanceData(unsigned int a1, int a2, int a3);int RetrieveNPCInstanceData(DWORD *a1);
-int IsTrap(DWORD *a1);
-int IsDontAttack(DWORD *a1);
-int TeleportNPC(int a1);char AISetEntityState(int a1, unsigned int a2, char a3, int a2_2);int FindMonsterInScene(int a1);int GetBreakSprint(DWORD *a1);CMatrix *_static_initialization_and_destruction_0_28(int a1, int a2_dup);
-int GetAllBasePrimaryAttributes(int a1);int SetAllBasePrimaryAttributes(int a1);int GetBaseAgility(int a1);int SetBaseAgility(int a1);int GetBaseConstitution(int a1);int SetBaseConstitution(int a1);int GetBaseMind(int a1);int SetBaseMind(int a1);int GetBasePerception(int a1);int SetBasePerception(int a1);int GetBaseStrength(int a1);int SetBaseStrength(int a1);int GetCurrentStrength(DWORD *a1);
-int GetCurrentConstitution(DWORD *a1);
-int GetCurrentMind(DWORD *a1);
-int GetCurrentPerception(DWORD *a1);
-int GetCurrentAgility(DWORD *a1);
-int GetAttributePoints(int a1);int SetAttributePoints(int a1);int CalculateCurrentStrength(int a1, int a2_dup);int CalculateCurrentMind(int a1, int a2_dup);int CalculateCurrentPerception(int a1, int a2_dup);int CalculateCurrentConstitution(int a1, int a2_dup);int CalculateCurrentAgility(int a1, int a2_dup);CMatrix *_static_initialization_and_destruction_0_29(int a1, int a2);
-int SendJournal(DWORD *a1);
-int GetTaskState(int a1);int ClearQuest(int a1);int ClearLastQuest(int a1);int GenerateQuest(int a1);int AcceptQuest(int a1);int ReactToQuest(int a1);int SetQuestTreasure(int a1);int SetQuestGold(int a1);int RewardCharacterFunc(int a1, int a2_dup, int a3_dup, int a4_dup);int AddItemsToInventory(int a1, int a2_2, int a3_dup);int AddItemsToTempInventory(int a1, int a2_2, int a3_dup);int AddToSlotFunc(int a1, int a2_2, int a3_dup, char a4_dup, char a5);int AddToFreeInventorySlot(int a1, int a2_2, char a3_dup, int a4_dup);int SendQuestFluff(int a1, unsigned short a2, int a2_2, int a3_dup);int SendGenFluff(int a1, unsigned short a2, int a2_2, int a3_dup);int SetQuestLog(int a1, short a2_dup, DWORD *a3, int a4_dup);int PickGenTextDiff(unsigned short a1, unsigned short *a2);int CheckElapsedTime(int a1);int CheckItemsMatch(int a1, int a2_dup, int a3_dup);int CheckItem(int a1, int a2_dup, int a3_dup);int QuestGiverCheck(int a1, int a2_dup, int a3_dup, int a4);int GenTreasure(short a1, DWORD *a2);
-int GetSpawnPoints(void*, float, int a2_dup, void*); // idbint TurnOffSpawnPoints(int a1, float *a2, int a3_dup);int ChkDecEnemyInParty(int a1, int a2_dup, int a3_dup);int SendQuestJournal(int a1, int a2_dup);int SendTxtMsg(int a1, short a2_dup, int a3_dup);int SendQuestMsg(int a1, short a2_dup, int a3);int ClearTaskLog(int a1, int a2_dup);int GetChainTag(int a1);int CheckLastQuest(DWORD *a1, int a2_dup);int AddToLastQuest(int a1);CMatrix *_static_initialization_and_destruction_0_30(int a1, int a2_dup);
-int GetResourceClan(int a1);int GetResources(int a1);int GetResourcesType(int a1);int GetResourcesGroup(int a1);int GetResourceData(int a1);int SetResourceData(int a1);int GetResourceStats(int a1);int SetResourceClan(int a1);int GetClanResources(int a1);int GetResourceInClan(int a1);CMatrix *_static_initialization_and_destruction_0_31(int a1, int a2);
-int GetCurrentHitPoints(int a1);int SetCurrentHitPoints(int a1);int GetHitPointRegenerationRate(int a1);int SetHitPointRegenerationRate(int a1);int CalculateMaximumHitPoints(unsigned int a1, int a2);int GetMaximumHitPoints(DWORD *a1);
-int GetBaseMaximumHitPoints(int a1);int SetBaseMaximumHitPoints(int a1);int GetCurrentChiPoints(int a1);int SetCurrentChiPoints(int a1);int GetChiRegenerationRate(int a1);int SetChiRegenerationRate(int a1);int CalculateMaximumChiPoints(int a1, int a2);int GetMaximumChiPoints(DWORD *a1);
-int GetBaseMaximumChiPoints(int a1);int SetBaseMaximumChiPoints(int a1);int GetBaseDamage(int a1);int SetBaseDamage(int a1);int GetBaseAttackRating(int a1);int SetBaseAttackRating(int a1);int GetBaseDefenseRating(int a1);int SetBaseDefenseRating(int a1);int GetAllBaseResistances(int a1);int SetAllBaseResistances(int a1);int GetBaseColdResistance(int a1);int SetBaseColdResistance(int a1);int GetBaseFireResistance(int a1);int SetBaseFireResistance(int a1);int GetBaseLightningResistance(int a1);int SetBaseLightningResistance(int a1);int GetBasePhysicalResistance(int a1);int SetBasePhysicalResistance(int a1);int GetBasePoisonResistance(int a1);int SetBasePoisonResistance(int a1);int SetPrestige(int a1);int GetPrestige(int a1);int GetCurrentColdDamage(int a1);int GetCurrentColdResistance(DWORD *a1);
-int GetCurrentFireDamage(int a1);int GetCurrentFireResistance(DWORD *a1);
-int GetCurrentLightningDamage(int a1);int GetCurrentLightningResistance(DWORD *a1);
-int GetCurrentPhysicalDamage(int a1);int GetCurrentPhysicalResistance(DWORD *a1);
-int GetCurrentPoisonDamage(int a1);int GetCurrentPoisonResistance(DWORD *a1);
-int CalculateCurrentUnarmedDamage(int a1, DWORD *a2, DWORD *a3, int a4);int GetCurrentUnarmedDamage(DWORD *a1);
-int GetBaseUnarmedDamage(int a1);unsigned int SetBaseUnarmedDamage(int a1);int GetAllCurrentResistances(DWORD *a1);
-int GetAllCurrentResistances_F(int a1, WORD *a2, int a3);int GetCurrentAttackRating(DWORD *a1);
-int GetCurrentDefenseRating(DWORD *a1);
-int GetMovementMode(int a1);int SetMovementMode(int a1);int CalculateCurrentAttackRating(int a1, DWORD *a2, int a3_dup);int CalculateCurrentDefenseRating(int a1, DWORD *a2, int a3_dup);int CalculateCurrentPhysicalResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentFireResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentColdResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentPoisonResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentLightningResistance(int a1, WORD *a2, int a3);int GetCurrentBaseDamage(int a1);int SetTitle(int a1);int GetTitle(int a1);int GetCurrentDirectDamage(int a1);CMatrix *_static_initialization_and_destruction_0_32(int a1, int a2_dup);
-int GetSkillPoints(int a1);int SetSkillPoints(int a1);int GetSkillRank(int a1);int SetSkillRank(int a1);int AddSkillRank(int a1);int GetAllSkillRanks(int a1);int GetAllSkills(int a1);int GetSkillData(int a1);int GetRecipe(int a1);int SetSprintSpeed(DWORD *a1);
-int SendSkills(int a1);int SendResuscitateOffer(DWORD *a1);
-int SendGuardOffer(DWORD *a1);
-int SendGuardRange(DWORD *a1);
-int SendSkillCooldown(DWORD *a1);
+// FIXME FWD: int GetNPCFromSpawn(int a1);int DeleteSpawnNPC(int a1);void AIActivateSpawnPtGrp(int a1, int a2, int a3);int ActivateSpawnGrp(DWORD *a1);
+// FIXME FWD: int DeleteSpawnNPCGrp(int a1);int ResetSpawnGrpTimer(int a1);int AIReplaceSpawnedAttrib(int a1, int a2, int a3, int a4);int ReplaceSpawnAttrib(DWORD *a1);
+// FIXME FWD: int AIResetSpawnedAttrib(int a1, int a2_dup, int a3_dup);int ResetSpawnAttrib(int a1);void AIReplaceSpawnedGrpAttrib(int a1, int a2, int a3_dup, int a4);int ReplaceSpawnGrpAttrib(DWORD *a1);
+// FIXME FWD: int AIResetSpawnedGrpAttrib(unsigned int a1, int a2, int a3, int a4);int ResetSpawnGrpAttrib(int a1);int GetQuestOwner(DWORD *a1);
+// FIXME FWD: int ResetQuestOwner(DWORD *a1);
+// FIXME FWD: int GetNPCScriptID(DWORD *a1);
+// FIXME FWD: int GetSpawnPtCnt(int a1);int CheckSpawnLiving(int a1);int SetQuestOwner(int a1);int IsPiss(DWORD *a1);
+// FIXME FWD: int SetNoDeath(int a1);int IsGuard(DWORD *a1);
+// FIXME FWD: int DropLootExt1(DWORD *a1);
+// FIXME FWD: int GetNPCResistance(DWORD *a1);
+// FIXME FWD: int IsNPCDead(DWORD *a1);
+// FIXME FWD: void AISetSpawnPermanentStatus(int a1, char a2_dup, int a3_dup);int SetSpawnLiveStatus(int a1);int SetSpawnPtStatus(int a1);int ResetNPCData(int a1);int AISpawnedNPC(void*, float, float, float, int a2, int a3_dup, void*); // idbint SpawnNPC(DWORD *a1);
+// FIXME FWD: int SetSpawnOnFlag(int a1);int SetSpawnMaxFlag(int a1);int AIManual_Loot(unsigned int a1, int a2, int a3);int ManualDropLoot(DWORD *a1);
+// FIXME FWD: int GetSpawnStatistics(int a1);int GetSpawnData(DWORD *a1);
+// FIXME FWD: int AIGetSpawnPtDetail(int a1, int a2, int a3, int a4);int GetSpawnDetail(DWORD *a1);
+// FIXME FWD: int GetNPCRotate(DWORD *a1);
+// FIXME FWD: int GetNPCData(DWORD *a1);
+// FIXME FWD: int SetTargetList(DWORD *a1);
+// FIXME FWD: int DoClanRating(int a1);int RetrieveScanList(DWORD *a1);
+// FIXME FWD: int RetrieveTargetList(DWORD *a1);
+// FIXME FWD: int aicomparespawnpt(const void *, void*); // idb
+// FIXME FWD: int aicomparenpc(const void *, void*); // idb
+// FIXME FWD: int GetNPCCoord(DWORD *a1);
+// FIXME FWD: int GetSpawnPtCoord(DWORD *a1);
+// FIXME FWD: int RetrieveSpawnPtByValue(DWORD *a1);
+// FIXME FWD: int RetrieveNPCByValue(DWORD *a1);
+// FIXME FWD: int SetNPCDropLootFlag(int a1);int MoveNPCToChar(int a1);int MoveNPCToSpawnPt(int a1);int MoveNPCToCoord(int a1);char AISetSpawnPtByGroup(int a1, int a2_dup, char a3_dup, int a4_dup);int RedoSpawnGrp(int a1);char AIModifyNPCData(int a1, int a2, int a3, int a4);int SetNPCData(DWORD *a1);
+// FIXME FWD: int AIGetNPCData(unsigned int a1, int a2, int a3);int RetrieveNPCData(DWORD *a1);
+// FIXME FWD: char AISetNPCInstanceData(unsigned int a1, int a2, int a3, int a4);int ModifyNPCInstanceData(DWORD *a1);
+// FIXME FWD: int AIGetNPCInstanceData(unsigned int a1, int a2, int a3);int RetrieveNPCInstanceData(DWORD *a1);
+// FIXME FWD: int IsTrap(DWORD *a1);
+// FIXME FWD: int IsDontAttack(DWORD *a1);
+// FIXME FWD: int TeleportNPC(int a1);char AISetEntityState(int a1, unsigned int a2, char a3, int a2_2);int FindMonsterInScene(int a1);int GetBreakSprint(DWORD *a1);CMatrix *_static_initialization_and_destruction_0_28(int a1, int a2_dup);
+// FIXME FWD: int GetAllBasePrimaryAttributes(int a1);int SetAllBasePrimaryAttributes(int a1);int GetBaseAgility(int a1);int SetBaseAgility(int a1);int GetBaseConstitution(int a1);int SetBaseConstitution(int a1);int GetBaseMind(int a1);int SetBaseMind(int a1);int GetBasePerception(int a1);int SetBasePerception(int a1);int GetBaseStrength(int a1);int SetBaseStrength(int a1);int GetCurrentStrength(DWORD *a1);
+// FIXME FWD: int GetCurrentConstitution(DWORD *a1);
+// FIXME FWD: int GetCurrentMind(DWORD *a1);
+// FIXME FWD: int GetCurrentPerception(DWORD *a1);
+// FIXME FWD: int GetCurrentAgility(DWORD *a1);
+// FIXME FWD: int GetAttributePoints(int a1);int SetAttributePoints(int a1);int CalculateCurrentStrength(int a1, int a2_dup);int CalculateCurrentMind(int a1, int a2_dup);int CalculateCurrentPerception(int a1, int a2_dup);int CalculateCurrentConstitution(int a1, int a2_dup);int CalculateCurrentAgility(int a1, int a2_dup);CMatrix *_static_initialization_and_destruction_0_29(int a1, int a2);
+// FIXME FWD: int SendJournal(DWORD *a1);
+// FIXME FWD: int GetTaskState(int a1);int ClearQuest(int a1);int ClearLastQuest(int a1);int GenerateQuest(int a1);int AcceptQuest(int a1);int ReactToQuest(int a1);int SetQuestTreasure(int a1);int SetQuestGold(int a1);int RewardCharacterFunc(int a1, int a2_dup, int a3_dup, int a4_dup);int AddItemsToInventory(int a1, int a2_2, int a3_dup);int AddItemsToTempInventory(int a1, int a2_2, int a3_dup);int AddToSlotFunc(int a1, int a2_2, int a3_dup, char a4_dup, char a5);int AddToFreeInventorySlot(int a1, int a2_2, char a3_dup, int a4_dup);int SendQuestFluff(int a1, unsigned short a2, int a2_2, int a3_dup);int SendGenFluff(int a1, unsigned short a2, int a2_2, int a3_dup);int SetQuestLog(int a1, short a2_dup, DWORD *a3, int a4_dup);int PickGenTextDiff(unsigned short a1, unsigned short *a2);int CheckElapsedTime(int a1);int CheckItemsMatch(int a1, int a2_dup, int a3_dup);int CheckItem(int a1, int a2_dup, int a3_dup);int QuestGiverCheck(int a1, int a2_dup, int a3_dup, int a4);int GenTreasure(short a1, DWORD *a2);
+// FIXME FWD: int GetSpawnPoints(void*, float, int a2_dup, void*); // idbint TurnOffSpawnPoints(int a1, float *a2, int a3_dup);int ChkDecEnemyInParty(int a1, int a2_dup, int a3_dup);int SendQuestJournal(int a1, int a2_dup);int SendTxtMsg(int a1, short a2_dup, int a3_dup);int SendQuestMsg(int a1, short a2_dup, int a3);int ClearTaskLog(int a1, int a2_dup);int GetChainTag(int a1);int CheckLastQuest(DWORD *a1, int a2_dup);int AddToLastQuest(int a1);CMatrix *_static_initialization_and_destruction_0_30(int a1, int a2_dup);
+// FIXME FWD: int GetResourceClan(int a1);int GetResources(int a1);int GetResourcesType(int a1);int GetResourcesGroup(int a1);int GetResourceData(int a1);int SetResourceData(int a1);int GetResourceStats(int a1);int SetResourceClan(int a1);int GetClanResources(int a1);int GetResourceInClan(int a1);CMatrix *_static_initialization_and_destruction_0_31(int a1, int a2);
+// FIXME FWD: int GetCurrentHitPoints(int a1);int SetCurrentHitPoints(int a1);int GetHitPointRegenerationRate(int a1);int SetHitPointRegenerationRate(int a1);int CalculateMaximumHitPoints(unsigned int a1, int a2);int GetMaximumHitPoints(DWORD *a1);
+// FIXME FWD: int GetBaseMaximumHitPoints(int a1);int SetBaseMaximumHitPoints(int a1);int GetCurrentChiPoints(int a1);int SetCurrentChiPoints(int a1);int GetChiRegenerationRate(int a1);int SetChiRegenerationRate(int a1);int CalculateMaximumChiPoints(int a1, int a2);int GetMaximumChiPoints(DWORD *a1);
+// FIXME FWD: int GetBaseMaximumChiPoints(int a1);int SetBaseMaximumChiPoints(int a1);int GetBaseDamage(int a1);int SetBaseDamage(int a1);int GetBaseAttackRating(int a1);int SetBaseAttackRating(int a1);int GetBaseDefenseRating(int a1);int SetBaseDefenseRating(int a1);int GetAllBaseResistances(int a1);int SetAllBaseResistances(int a1);int GetBaseColdResistance(int a1);int SetBaseColdResistance(int a1);int GetBaseFireResistance(int a1);int SetBaseFireResistance(int a1);int GetBaseLightningResistance(int a1);int SetBaseLightningResistance(int a1);int GetBasePhysicalResistance(int a1);int SetBasePhysicalResistance(int a1);int GetBasePoisonResistance(int a1);int SetBasePoisonResistance(int a1);int SetPrestige(int a1);int GetPrestige(int a1);int GetCurrentColdDamage(int a1);int GetCurrentColdResistance(DWORD *a1);
+// FIXME FWD: int GetCurrentFireDamage(int a1);int GetCurrentFireResistance(DWORD *a1);
+// FIXME FWD: int GetCurrentLightningDamage(int a1);int GetCurrentLightningResistance(DWORD *a1);
+// FIXME FWD: int GetCurrentPhysicalDamage(int a1);int GetCurrentPhysicalResistance(DWORD *a1);
+// FIXME FWD: int GetCurrentPoisonDamage(int a1);int GetCurrentPoisonResistance(DWORD *a1);
+// FIXME FWD: int CalculateCurrentUnarmedDamage(int a1, DWORD *a2, DWORD *a3, int a4);int GetCurrentUnarmedDamage(DWORD *a1);
+// FIXME FWD: int GetBaseUnarmedDamage(int a1);unsigned int SetBaseUnarmedDamage(int a1);int GetAllCurrentResistances(DWORD *a1);
+// FIXME FWD: int GetAllCurrentResistances_F(int a1, WORD *a2, int a3);int GetCurrentAttackRating(DWORD *a1);
+// FIXME FWD: int GetCurrentDefenseRating(DWORD *a1);
+// FIXME FWD: int GetMovementMode(int a1);int SetMovementMode(int a1);int CalculateCurrentAttackRating(int a1, DWORD *a2, int a3_dup);int CalculateCurrentDefenseRating(int a1, DWORD *a2, int a3_dup);int CalculateCurrentPhysicalResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentFireResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentColdResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentPoisonResistance(int a1, WORD *a2, int a3_dup);int CalculateCurrentLightningResistance(int a1, WORD *a2, int a3);int GetCurrentBaseDamage(int a1);int SetTitle(int a1);int GetTitle(int a1);int GetCurrentDirectDamage(int a1);CMatrix *_static_initialization_and_destruction_0_32(int a1, int a2_dup);
+// FIXME FWD: int GetSkillPoints(int a1);int SetSkillPoints(int a1);int GetSkillRank(int a1);int SetSkillRank(int a1);int AddSkillRank(int a1);int GetAllSkillRanks(int a1);int GetAllSkills(int a1);int GetSkillData(int a1);int GetRecipe(int a1);int SetSprintSpeed(DWORD *a1);
+// FIXME FWD: int SendSkills(int a1);int SendResuscitateOffer(DWORD *a1);
+// FIXME FWD: int SendGuardOffer(DWORD *a1);
+// FIXME FWD: int SendGuardRange(DWORD *a1);
+// FIXME FWD: int SendSkillCooldown(DWORD *a1);
 CMatrix *_static_initialization_and_destruction_0_33(int a1, int a2);
-int Echo(int a1);int ALog(int a1);int Log(int a1);int SetReturnValue(DWORD *a1);
-int Random(int a1, int a2_dup);int SendToAllFunc(void* a1, int a2_dup, int a3_dup, int a4_dup, int a5, float); // idbunsigned short *wstrncpy(unsigned short *a1, unsigned short *a2, int a2_dup);int SendToAllU_F(void* a1, int a2_dup, int a3, int a4, int a5, float); // idbint AddEvent(int a1);int RemoveEvent();
-int ReloadEvents(int a1);int CreateEvent(int a1);int DeleteEvent(int a1);int ActivateEvent(int a1);int DeactivateEvent(int a1);int UpdateCharacter(int a1);int PurgeMemory(int a1);int GetCharIDFromHash(int a1, int a2);int CheckBits(DWORD *a1);
-int SetBits(DWORD *a1);
-int CheckSettings(int a1);int ValidateCredit(int a1);char SendCharLog_F(int a1, int a2_dup, int a3, int a4);int SendCharLog(int a1);int ResetEventSvc(int a1);int GetNoticeBoard(int a1);int GetNoticeBoardDetail(int a1);CMatrix *_static_initialization_and_destruction_0_34(int a1, int a2_dup);
-int CreateWarEvent(int a1);int GetWarEventData(int a1);int CheckWarEvent(DWORD *a1);
-int CheckClanEvents_F(int a1, unsigned int a2, int a2_2, DWORD *a4, char a5, int a6, int a7);int CheckCharEvents_F(int a1, unsigned int a2, int a2_2, DWORD *a4, char a5, int a6, int a7);int CheckUsed_F(int a1, int a2_dup);int AddUsed_F(int a1, int a2_dup);int SetWarScratchData(int a1);int GetWarScratchData(int a1);int GetValidGuilds(int a1);int GetValidClans(int a1);int SendWarID(DWORD *a1);int GetWarState(int a1);int SetWarEventState(int a1);int SetWarEventID(int a1);int GetWarEventID(int a1);int SetHeroPoints(int a1);int GetHeroPoints(int a1);int GetTypeOfScene(DWORD *a1);
-int TeleportToWar(int a1);int GetOldEvents(int a1);int SetWarTokens(int a1);int GetWarTokens(int a1);int BookFreeZone_F(int a1, DWORD *a2, int a3, int a4);int GetTypeOfScene_F(int a1, int a2_dup);int PurgeWarEvent_F(int a1, int a2_dup);int GetClanWarData(int a1);int GetClanWarStatus(int a1);int SetClanWar(int a1);int GetClanScratchData(int a1);int SetClanScratchData(int a1);int GetUpgradeData(int a1);int SendClanUpgrade(DWORD *a1);
-int UpdateArenaScore(int a1);int SendArenaScore(int a1);int GetAllWarEvents(int a1);int LogWarAction(int a1);int CreateWarScore(int a1);int GetWarScore(int a1);int SetWarScore(int a1);int AddExHeroPoints(int a1);CMatrix *_static_initialization_and_destruction_0_35(int a1, int a2);
-int ConfirmZone(int a1);int CancelZone(int a1);int GetSceneLabels(int a1);int SetValidScenes(int a1);int CheckZonePop(int a1);int GetScenePop(int a1);int GetScenesInMap(int a1);int GetScenes(int a1);int RandomSceneCoord(int a1);int GetSceneID(int a1);int GetBindSceneID(int a1);int GetZoneFlag(int a1);int SetZoneFlag(int a1);int IsInSameScene(int a1);int RespawnPlayer(int a1);int BindPlayer(int a1);int IsRespawning(int a1);int GetLastLabel(int a1);int IsStuck(int a1);int UnStick(int a1);int GMTeleport(int a1);int ReZonePlayer(int a1);int FindPlayer(int a1);int GetLastSceneID(int a1);int GetSceneScriptID(int a1);int FindStarter(int a1);CMatrix *_static_initialization_and_destruction_0_36(int a1, int a2);
-void CDBAccess_ctor(CDBAccess *self);
-void CDBAccess_dtor(CDBAccess *self, char a2);int CDBAccess_Init(CDBAccess *self, char *src, char *a3, char *a4, char *a5);
-int CDBAccess_SetInitParams(CDBAccess *self, char *src, char *a3, char *a4, char *a5);
-int CDBAccess_ReConnect(CDBAccess *self);
-int CDBAccess_Disconnect(CDBAccess *self);
-int CDBAccess_SQLQuery(CDBAccess *self, char *format, ...);
-int CDBAccess_FetchNextRow(CDBAccess *self);
-int CDBAccess_FetchNextRow(CDBAccess *self, char *a2, ...);
-int CDBAccess_GetLastInsertID(CDBAccess *self);
-int CDBAccess_BlobUpdate(int a1, int a2);int CDBAccess_BlobRead(CDBAccess *, void*); // idb
-int CDBAccess_BlobInsert(int a1, int a2);char *strmov(char *a1, const char *a2);
-void CLog_ctor(CLog *self);
-void CLog_dtor(CLog *self, char a2);char *CLog_SetLogFile(CLog *self, char *src);
-int CLog_SetProgName(CLog *self, char *ident, int a2_dup);int CLog_RegisterModule(CLog *self, int a2_dup, char *src);int CLog_SetFlags(CLog *self, int a2_dup, unsigned int a3);CLog *CLog_SetPriorityLevel(CLog *self, int a2_dup);CLog *CLog_SetOutput(CLog *self, int a2_dup);int CLog_Log(CLog *self, int a2_dup, char *a3, char *a4);FILE *CLog_Log(CLog *self, unsigned short *a2);
-int CLogFilter_Log(CLogFilter *self, int a2, char *format, ...);int CLogFilter_Log(CLogFilter *self, char *format, ...);
-FILE *CLogFilter_Log(CLogFilter *self, unsigned short *a2);
-int CLogFilter_LogFilename(CLogFilter *self);
-void CRcvPkt_ctor(CRcvPkt *self);
+// FIXME FWD: int Echo(int a1);int ALog(int a1);int Log(int a1);int SetReturnValue(DWORD *a1);
+// FIXME FWD: int Random(int a1, int a2_dup);int SendToAllFunc(void* a1, int a2_dup, int a3_dup, int a4_dup, int a5, float); // idbunsigned short *wstrncpy(unsigned short *a1, unsigned short *a2, int a2_dup);int SendToAllU_F(void* a1, int a2_dup, int a3, int a4, int a5, float); // idbint AddEvent(int a1);int RemoveEvent();
+// FIXME FWD: int ReloadEvents(int a1);int CreateEvent(int a1);int DeleteEvent(int a1);int ActivateEvent(int a1);int DeactivateEvent(int a1);int UpdateCharacter(int a1);int PurgeMemory(int a1);int GetCharIDFromHash(int a1, int a2);int CheckBits(DWORD *a1);
+// FIXME FWD: int SetBits(DWORD *a1);
+// FIXME FWD: int CheckSettings(int a1);int ValidateCredit(int a1);char SendCharLog_F(int a1, int a2_dup, int a3, int a4);int SendCharLog(int a1);int ResetEventSvc(int a1);int GetNoticeBoard(int a1);int GetNoticeBoardDetail(int a1);CMatrix *_static_initialization_and_destruction_0_34(int a1, int a2_dup);
+// FIXME FWD: int CreateWarEvent(int a1);int GetWarEventData(int a1);int CheckWarEvent(DWORD *a1);
+// FIXME FWD: int CheckClanEvents_F(int a1, unsigned int a2, int a2_2, DWORD *a4, char a5, int a6, int a7);int CheckCharEvents_F(int a1, unsigned int a2, int a2_2, DWORD *a4, char a5, int a6, int a7);int CheckUsed_F(int a1, int a2_dup);int AddUsed_F(int a1, int a2_dup);int SetWarScratchData(int a1);int GetWarScratchData(int a1);int GetValidGuilds(int a1);int GetValidClans(int a1);int SendWarID(DWORD *a1);int GetWarState(int a1);int SetWarEventState(int a1);int SetWarEventID(int a1);int GetWarEventID(int a1);int SetHeroPoints(int a1);int GetHeroPoints(int a1);int GetTypeOfScene(DWORD *a1);
+// FIXME FWD: int TeleportToWar(int a1);int GetOldEvents(int a1);int SetWarTokens(int a1);int GetWarTokens(int a1);int BookFreeZone_F(int a1, DWORD *a2, int a3, int a4);int GetTypeOfScene_F(int a1, int a2_dup);int PurgeWarEvent_F(int a1, int a2_dup);int GetClanWarData(int a1);int GetClanWarStatus(int a1);int SetClanWar(int a1);int GetClanScratchData(int a1);int SetClanScratchData(int a1);int GetUpgradeData(int a1);int SendClanUpgrade(DWORD *a1);
+// FIXME FWD: int UpdateArenaScore(int a1);int SendArenaScore(int a1);int GetAllWarEvents(int a1);int LogWarAction(int a1);int CreateWarScore(int a1);int GetWarScore(int a1);int SetWarScore(int a1);int AddExHeroPoints(int a1);CMatrix *_static_initialization_and_destruction_0_35(int a1, int a2);
+// FIXME FWD: int ConfirmZone(int a1);int CancelZone(int a1);int GetSceneLabels(int a1);int SetValidScenes(int a1);int CheckZonePop(int a1);int GetScenePop(int a1);int GetScenesInMap(int a1);int GetScenes(int a1);int RandomSceneCoord(int a1);int GetSceneID(int a1);int GetBindSceneID(int a1);int GetZoneFlag(int a1);int SetZoneFlag(int a1);int IsInSameScene(int a1);int RespawnPlayer(int a1);int BindPlayer(int a1);int IsRespawning(int a1);int GetLastLabel(int a1);int IsStuck(int a1);int UnStick(int a1);int GMTeleport(int a1);int ReZonePlayer(int a1);int FindPlayer(int a1);int GetLastSceneID(int a1);int GetSceneScriptID(int a1);int FindStarter(int a1);CMatrix *_static_initialization_and_destruction_0_36(int a1, int a2);
+// FIXME FWD: void CDBAccess_ctor(CDBAccess *self);
+// FIXME FWD: void CDBAccess_dtor(CDBAccess *self, char a2);int CDBAccess_Init(CDBAccess *self, char *src, char *a3, char *a4, char *a5);
+// FIXME FWD: int CDBAccess_SetInitParams(CDBAccess *self, char *src, char *a3, char *a4, char *a5);
+// FIXME FWD: int CDBAccess_ReConnect(CDBAccess *self);
+// FIXME FWD: int CDBAccess_Disconnect(CDBAccess *self);
+// FIXME FWD: int CDBAccess_SQLQuery(CDBAccess *self, char *format, ...);
+// FIXME FWD: int CDBAccess_FetchNextRow(CDBAccess *self);
+// FIXME FWD: int CDBAccess_FetchNextRow(CDBAccess *self, char *a2, ...);
+// FIXME FWD: int CDBAccess_GetLastInsertID(CDBAccess *self);
+// FIXME FWD: int CDBAccess_BlobUpdate(int a1, int a2);int CDBAccess_BlobRead(CDBAccess *, void*); // idb
+// FIXME FWD: int CDBAccess_BlobInsert(int a1, int a2);char *strmov(char *a1, const char *a2);
+// FIXME FWD: void CLog_ctor(CLog *self);
+// FIXME FWD: void CLog_dtor(CLog *self, char a2);char *CLog_SetLogFile(CLog *self, char *src);
+// FIXME FWD: int CLog_SetProgName(CLog *self, char *ident, int a2_dup);int CLog_RegisterModule(CLog *self, int a2_dup, char *src);int CLog_SetFlags(CLog *self, int a2_dup, unsigned int a3);CLog *CLog_SetPriorityLevel(CLog *self, int a2_dup);CLog *CLog_SetOutput(CLog *self, int a2_dup);int CLog_Log(CLog *self, int a2_dup, char *a3, char *a4);FILE *CLog_Log(CLog *self, unsigned short *a2);
+// FIXME FWD: int CLogFilter_Log(CLogFilter *self, int a2, char *format, ...);int CLogFilter_Log(CLogFilter *self, char *format, ...);
+// FIXME FWD: FILE *CLogFilter_Log(CLogFilter *self, unsigned short *a2);
+// FIXME FWD: int CLogFilter_LogFilename(CLogFilter *self);
+// FIXME FWD: void CRcvPkt_ctor(CRcvPkt *self);
 CRcvPkt *CRcvPkt_ctor(CRcvPkt *self, void*); // idb
-void CRcvPkt_dtor(CRcvPkt *self, char a2_dup);int CRcvPkt_QueuePacket(CRcvPkt *self, int a2);int CRcvPkt_GetNetObject(CRcvPkt *, void *dest); // idb
+// FIXME FWD: void CRcvPkt_dtor(CRcvPkt *self, char a2_dup);int CRcvPkt_QueuePacket(CRcvPkt *self, int a2);int CRcvPkt_GetNetObject(CRcvPkt *, void *dest); // idb
 CRcvPkt *CRcvPkt_FlushQueues(CRcvPkt *self);
-int CRcvPkt_LocateFree(CRcvPkt *self);
-int CRcvPkt_GetNextPacket(CRcvPkt *self);
-DWORD *CRcvPkt_FreePacket(DWORD *a1, int a2);int CRcvPkt_AllocDropList(CRcvPkt *self);
-void CSndPkt_ctor(CSndPkt *self);
+// FIXME FWD: int CRcvPkt_LocateFree(CRcvPkt *self);
+// FIXME FWD: int CRcvPkt_GetNextPacket(CRcvPkt *self);
+// FIXME FWD: DWORD *CRcvPkt_FreePacket(DWORD *a1, int a2);int CRcvPkt_AllocDropList(CRcvPkt *self);
+// FIXME FWD: void CSndPkt_ctor(CSndPkt *self);
 CSndPkt *CSndPkt_ctor(CSndPkt *self, void*); // idb
-void CSndPkt_dtor(CSndPkt *self, char a2);int CSndPkt_AddNetObject(CSndPkt *, void *src, void*); // idb
+// FIXME FWD: void CSndPkt_dtor(CSndPkt *self, char a2);int CSndPkt_AddNetObject(CSndPkt *, void *src, void*); // idb
 CSndPkt *CSndPkt_FlushQueues(CSndPkt *self);
-int CSndPkt_GetNextPacket(CSndPkt *self);
-int CSndPkt_DeletePacket(DWORD *a1, int a2);int CSndPkt_DeletePackets(CSndPkt *self, unsigned char *a2);
-int CSndPkt_DeletePacket(CSndPkt *self, unsigned char a2);int CSndPkt_RemovePacket(DWORD *a1, int a2_dup);int CSndPkt_AddSystemPacket(CSndPkt *self, unsigned char a2, void *src, size_t n);int CSndPkt_AddAckPkt(CSndPkt *self);
-int CSndPkt_AddUID(CSndPkt *self, unsigned char a2);int CSndPkt_ReQueueSent(CSndPkt *self);
-int CSndPkt_GetUID(CSndPkt *self);
+// FIXME FWD: int CSndPkt_GetNextPacket(CSndPkt *self);
+// FIXME FWD: int CSndPkt_DeletePacket(DWORD *a1, int a2);int CSndPkt_DeletePackets(CSndPkt *self, unsigned char *a2);
+// FIXME FWD: int CSndPkt_DeletePacket(CSndPkt *self, unsigned char a2);int CSndPkt_RemovePacket(DWORD *a1, int a2_dup);int CSndPkt_AddSystemPacket(CSndPkt *self, unsigned char a2, void *src, size_t n);int CSndPkt_AddAckPkt(CSndPkt *self);
+// FIXME FWD: int CSndPkt_AddUID(CSndPkt *self, unsigned char a2);int CSndPkt_ReQueueSent(CSndPkt *self);
+// FIXME FWD: int CSndPkt_GetUID(CSndPkt *self);
 CSndPkt *CSndPkt_SetPacketBreak(CSndPkt *self, int a2_dup);DWORD *CSndPkt_AddObjectData(int a1, DWORD *a2, int a3);int CSndPkt_AddObjectHeader(void* a1, int a2_dup, void *src); // idbDWORD *CSndPkt_LocateFree(CSndPkt *self);
-int CSndPkt_LocatePacket(CSndPkt *self, int a2_dup, unsigned char a3);DWORD *CSndPkt_AddNewPacket(CSndPkt *a1, void *src, int a2_dup);int CSndPkt_InsertPackets(int a1, int a2_dup);CSndPkt *CSndPkt_SetRetryInterval(CSndPkt *self, unsigned int a2);CSndPkt *CSndPkt_SetLimit(CSndPkt *self, unsigned int a2);int CSndPkt_AddPacketToSent(int a1, int a2_dup);int GetTickCount();
-void CMTimer_ctor(CMTimer *self);
-int CMTimer_GetTickCount(CMTimer *self);
-void CRC32_ctor(CRC32 *self);
-void CRC32_dtor(CRC32 *self, char a2);int CRC32_reflect(CRC32 *self, unsigned int a2, char a3);void CRC32_crc32_init(CRC32 *self);
+// FIXME FWD: int CSndPkt_LocatePacket(CSndPkt *self, int a2_dup, unsigned char a3);DWORD *CSndPkt_AddNewPacket(CSndPkt *a1, void *src, int a2_dup);int CSndPkt_InsertPackets(int a1, int a2_dup);CSndPkt *CSndPkt_SetRetryInterval(CSndPkt *self, unsigned int a2);CSndPkt *CSndPkt_SetLimit(CSndPkt *self, unsigned int a2);int CSndPkt_AddPacketToSent(int a1, int a2_dup);int GetTickCount();
+// FIXME FWD: void CMTimer_ctor(CMTimer *self);
+// FIXME FWD: int CMTimer_GetTickCount(CMTimer *self);
+// FIXME FWD: void CRC32_ctor(CRC32 *self);
+// FIXME FWD: void CRC32_dtor(CRC32 *self, char a2);int CRC32_reflect(CRC32 *self, unsigned int a2, char a3);void CRC32_crc32_init(CRC32 *self);
 unsigned int CRC32_crc32_calc(CRC32 *self, unsigned char *a2, int a2_dup);void CRC32_calculate(CRC32 *self, _IO_FILE *stream);
-int CRC32_get(CRC32 *self);
-int _lzo_ptr_linear(int a1);unsigned int _lzo_align_gap(int a1, unsigned int a2);int lzo_assert(int a1);const char *lzo_copyright();
-int lzo_version();
+// FIXME FWD: int CRC32_get(CRC32 *self);
+// FIXME FWD: int _lzo_ptr_linear(int a1);unsigned int _lzo_align_gap(int a1, unsigned int a2);int lzo_assert(int a1);const char *lzo_copyright();
+// FIXME FWD: int lzo_version();
 const char *lzo_version_string();
 const char *lzo_version_date();
 // DUP_DECL: const char *lzo_version_string();
 // DUP_DECL: const char *lzo_version_date();
-unsigned int lzo_adler32(int a1, unsigned char *a2, unsigned int a3);int lzo_memcmp(void *s1, void *s2, size_t n); // idb
-void *lzo_memcpy(void *dest, void *src, size_t n);
-void *lzo_memmove(void *dest, void *src, size_t n);
-void *lzo_memset(void *s, int a2, size_t n);int basic_integral_check();
-int basic_ptr_check();
-int ptr_check();
-int lzo_config_check();
-int schedule_insns_bug();
-int strength_reduce_bug(DWORD *a1);
-int _lzo_init2(int a1, int a2_dup, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10);int lzo1x_1_do_compress(unsigned char *a1, int a2_2, BYTE *a3, DWORD *a4, int a5);int lzo1x_1_compress(unsigned char *a1, unsigned int a2, BYTE *a3, DWORD *a4, int a2_2);int lzo1x_decompress(unsigned char *a1, int a2_dup, BYTE *a3, DWORD *a4);int lzo1x_decompress_safe(BYTE *a1, int a2_dup, unsigned int a3, DWORD *a4);void CIndoorScene_ctor(CIndoorScene *self);void CIndoorScene_dtor(CIndoorScene *self, char a2_dup);void CIndoorScene_Destroy(CIndoorScene *self);
-int CIndoorScene_LoadSceneMemory(CIndoorScene *self, unsigned char *a2, unsigned int a3);int CIndoorScene_ReadBrushChunk(CIndoorScene *self, unsigned char *a2, unsigned int a3, unsigned int a4);int CIndoorScene_ReadCollisionChunk(CIndoorScene *self, unsigned char *a2);
-int *CIndoorScene_FindGrid(CIndoorScene *self, const CVector *a2, int *a3, int *a4);
+// FIXME AMBIG: unsigned int lzo_adler32(int a1, unsigned char *a2, unsigned int a3);int lzo_memcmp(void *s1, void *s2, size_t n); // idb
+// FIXME FWD: void *lzo_memcpy(void *dest, void *src, size_t n);
+// FIXME FWD: void *lzo_memmove(void *dest, void *src, size_t n);
+// FIXME FWD: void *lzo_memset(void *s, int a2, size_t n);int basic_integral_check();
+// FIXME FWD: int basic_ptr_check();
+// FIXME FWD: int ptr_check();
+// FIXME FWD: int lzo_config_check();
+// FIXME FWD: int schedule_insns_bug();
+// FIXME FWD: int strength_reduce_bug(DWORD *a1);
+// FIXME FWD: int _lzo_init2(int a1, int a2_dup, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10);int lzo1x_1_do_compress(unsigned char *a1, int a2_2, BYTE *a3, DWORD *a4, int a5);int lzo1x_1_compress(unsigned char *a1, unsigned int a2, BYTE *a3, DWORD *a4, int a2_2);int lzo1x_decompress(unsigned char *a1, int a2_dup, BYTE *a3, DWORD *a4);int lzo1x_decompress_safe(BYTE *a1, int a2_dup, unsigned int a3, DWORD *a4);void CIndoorScene_ctor(CIndoorScene *self);void CIndoorScene_dtor(CIndoorScene *self, char a2_dup);void CIndoorScene_Destroy(CIndoorScene *self);
+// FIXME FWD: int CIndoorScene_LoadSceneMemory(CIndoorScene *self, unsigned char *a2, unsigned int a3);int CIndoorScene_ReadBrushChunk(CIndoorScene *self, unsigned char *a2, unsigned int a3, unsigned int a4);int CIndoorScene_ReadCollisionChunk(CIndoorScene *self, unsigned char *a2);
+// FIXME FWD: int *CIndoorScene_FindGrid(CIndoorScene *self, const CVector *a2, int *a3, int *a4);
 VKY_SCENE_tObjectHandle *CIndoorScene_MoveObject(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2, const CMatrix *a3);
 VKY_SCENE_tObjectHandle *CIndoorScene_PlaceObject(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2);
 VKY_SCENE_tObjectHandle *CIndoorScene_RemoveObject(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2);
-int CIndoorScene_AddPoint(CIndoorScene *self, VKY_SCENE_tPoint *a2);
-int CIndoorScene_RemovePoint(CIndoorScene *self, VKY_SCENE_tPoint *a2);
-int CIndoorScene_AddCollisionBox(CIndoorScene *self, VKY_SCENE_tBoundingBox *a2);
-int CIndoorScene_RemoveCollisionBox(CIndoorScene *self, VKY_SCENE_tBoundingBox *a2);
-int *CIndoorScene_GetNearestPoint(CIndoorScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tPoint **a4, int *a5);int CIndoorScene_GetExactNearestObject(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int CIndoorScene_GetExactNearestObject(void* a1, int a2_dup, float, int a3_dup, int a4_dup, int a5, void*); // idbint CIndoorScene_GetSortedNearestObject(void* a1, int a2_dup, float, void *base, int a3_dup, int a4_dup, void*); // idbint CIndoorScene_GetNearestObject(void* a1, int a2_dup, float, int a3_dup, int a4_dup, int a5, void*); // idbint CIndoorScene_GetNearestObject(void* a1, int a2_dup, float, int a3, int a4_dup, int a5, void*); // idbCMatrix *CIndoorScene_GetIntersectingBox(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2, unsigned int a3);int CIndoorScene_GetIntersectingBoxes(int a1, float *a2, DWORD *a3, int a4_dup);int CIndoorScene_MoveObject();
-int CIndoorScene_MoveObject(CIndoorScene *self, CMatrix *a2, const CVector *a3, const CVector *a4, tVKY_CollisionInfo *a5, int a6);int CIndoorScene_RayTrace(CIndoorScene *self, const CVector *a2, const CVector *a3, float a4_dup, float *a5);CIndoorScene *CIndoorScene_ClearCollisionCache(CIndoorScene *self);
-int CIndoorScene_GetMemoryUsedByScene(CIndoorScene *self);
+// FIXME FWD: int CIndoorScene_AddPoint(CIndoorScene *self, VKY_SCENE_tPoint *a2);
+// FIXME FWD: int CIndoorScene_RemovePoint(CIndoorScene *self, VKY_SCENE_tPoint *a2);
+// FIXME FWD: int CIndoorScene_AddCollisionBox(CIndoorScene *self, VKY_SCENE_tBoundingBox *a2);
+// FIXME FWD: int CIndoorScene_RemoveCollisionBox(CIndoorScene *self, VKY_SCENE_tBoundingBox *a2);
+// FIXME FWD: int *CIndoorScene_GetNearestPoint(CIndoorScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tPoint **a4, int *a5);int CIndoorScene_GetExactNearestObject(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int CIndoorScene_GetExactNearestObject(void* a1, int a2_dup, float, int a3_dup, int a4_dup, int a5, void*); // idbint CIndoorScene_GetSortedNearestObject(void* a1, int a2_dup, float, void *base, int a3_dup, int a4_dup, void*); // idbint CIndoorScene_GetNearestObject(void* a1, int a2_dup, float, int a3_dup, int a4_dup, int a5, void*); // idbint CIndoorScene_GetNearestObject(void* a1, int a2_dup, float, int a3, int a4_dup, int a5, void*); // idbCMatrix *CIndoorScene_GetIntersectingBox(CIndoorScene *self, VKY_SCENE_tObjectHandle *a2, unsigned int a3);int CIndoorScene_GetIntersectingBoxes(int a1, float *a2, DWORD *a3, int a4_dup);int CIndoorScene_MoveObject();
+// FIXME FWD: int CIndoorScene_MoveObject(CIndoorScene *self, CMatrix *a2, const CVector *a3, const CVector *a4, tVKY_CollisionInfo *a5, int a6);int CIndoorScene_RayTrace(CIndoorScene *self, const CVector *a2, const CVector *a3, float a4_dup, float *a5);CIndoorScene *CIndoorScene_ClearCollisionCache(CIndoorScene *self);
+// FIXME FWD: int CIndoorScene_GetMemoryUsedByScene(CIndoorScene *self);
 CMatrix *_static_initialization_and_destruction_0_37(int a1, int a2);
-int *tf12CIndoorScene();
+// FIXME FWD: int *tf12CIndoorScene();
 CVector *CVector___apl(CVector *self, const CVector *a2);
-void GetNormal(const CVector *a1, CVector *a2);
+// FIXME FWD: void GetNormal(const CVector *a1, CVector *a2);
 CMatrix *CMatrix_SetScale(CMatrix *self, float a2, float a3, float a4);CMatrix *CMatrix_AddTranslate(CMatrix *self, const CVector *a2);
 const CMatrix *VecMultiplyMat3x3(const CMatrix *a1, const CVector *a2, float *a3);
 CVKY_CollisionResponse_tCollisionData *CVKY_CollisionResponse_tCollisionData_tCollisionData(CVKY_CollisionResponse_tCollisionData *self);
-void CVKY_Brush_ctor(void *self);
-void CIndoorScene_tFaceTable_dtor_tFaceTable(CIndoorScene_tFaceTable *self, char a2);CIndoorScene_tFaceTable *CIndoorScene_tFaceTable_tFaceTable(CIndoorScene_tFaceTable *self);
-DWORD *CGEN_ArrayList_ulong__CGEN_ArrayList(DWORD *a1);
-void CGEN_ArrayList_ulong__Destroy(int a1);int CGEN_ArrayList_ulong__dtor_CGEN_ArrayList(int a1, char a2_dup);void *CGEN_ArrayList_ulong__Resize(int a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__SetDestroy(int a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__SetDestroy(int a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__SetMaxFreeCount(int a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__AddTail(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__Delete(DWORD **a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__AddTail(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Delete(DWORD **a1, int a2);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__GetHead(DWORD *a1, DWORD *a2);
-int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetCurrent(int a1, int *a2);int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetNext(int a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetHead(DWORD *a1, DWORD *a2);
-int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetCurrent(int a1, int *a2);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetNext(int a1, int a2_dup);int CGEN_ArrayList_ulong__Clear(int a1);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Clear(int a1);int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Clear(int a1);int CGEN_ArrayList_ulong__Add(int a1, int a2_dup);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCount(int a1);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetSize(int a1);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace____vc(DWORD *a1, int a2_dup);int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Add(int a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetCount(int a1);int CGEN_ArrayList_ulong__GetCount(int a1);int CGEN_ArrayList_ulong____vc(DWORD *a1, int a2_dup);int CGEN_ArrayList_ulong__GetArray(int a1);int CGEN_ArrayList_ulong__GetSize(int a1);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetFreeCount(int a1);int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetCount(int a1);void CVector4_ctor(CVector4 *self);
-int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__dtor_CGEN_NiceLinkList(DWORD *a1, char a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__dtor_CGEN_NiceLinkList(DWORD *a1, char a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__CGEN_NiceLinkList(DWORD *a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__CGEN_NiceLinkList(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__CNode_ctor(int a1);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__Find(DWORD **a1, int a2);int CGEN_NiceLinkList_VKY_SCENE_tPoint__Delete(DWORD *a1, DWORD *a2);
-int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__CNode_ctor(int a1);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Find(DWORD **a1, int a2);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Delete(DWORD *a1, DWORD *a2);
-DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Clear(DWORD *a1);
-DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__Clear(DWORD *a1);
-int RayBoxIntersection(VKY_SCENE_tBoundingBox *a1, const CVector *a2, const CVector *a3, float *a4);
-void CLandscapeScene_ctor(CLandscapeScene *self);
-void CLandscapeScene_dtor(CLandscapeScene *self, char a2);void CLandscapeScene_Destroy(CLandscapeScene *self);
-int CLandscapeScene_ReadQuad(CLandscapeScene *self, int a2, int a3, _IO_FILE *stream);int CLandscapeScene_LoadTerrain(CLandscapeScene *self, char *filename);
-int CLandscapeScene_ReadTerrainChunk(CLandscapeScene *self, unsigned char *a2, unsigned int a3);int CLandscapeScene_LoadSceneMemory(CLandscapeScene *self, unsigned char *a2, unsigned int a3);int CLandscapeScene_AddPoint(CLandscapeScene *self, VKY_SCENE_tPoint *a2);
-int CLandscapeScene_RemovePoint(CLandscapeScene *self, VKY_SCENE_tPoint *a2);
-int CLandscapeScene_AddCollisionBox(CLandscapeScene *self, VKY_SCENE_tBoundingBox *a2);
-int CLandscapeScene_RemoveCollisionBox(CLandscapeScene *self, VKY_SCENE_tBoundingBox *a2);
+// FIXME FWD: void CVKY_Brush_ctor(void *self);
+// FIXME FWD: void CIndoorScene_tFaceTable_dtor_tFaceTable(CIndoorScene_tFaceTable *self, char a2);CIndoorScene_tFaceTable *CIndoorScene_tFaceTable_tFaceTable(CIndoorScene_tFaceTable *self);
+// FIXME FWD: DWORD *CGEN_ArrayList_ulong__CGEN_ArrayList(DWORD *a1);
+// FIXME FWD: void CGEN_ArrayList_ulong__Destroy(int a1);int CGEN_ArrayList_ulong__dtor_CGEN_ArrayList(int a1, char a2_dup);void *CGEN_ArrayList_ulong__Resize(int a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__SetDestroy(int a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__SetDestroy(int a1, int a2_dup);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__SetMaxFreeCount(int a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__AddTail(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__Delete(DWORD **a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__AddTail(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Delete(DWORD **a1, int a2);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__GetHead(DWORD *a1, DWORD *a2);
+// FIXME FWD: int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetCurrent(int a1, int *a2);int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetNext(int a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetHead(DWORD *a1, DWORD *a2);
+// FIXME FWD: int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetCurrent(int a1, int *a2);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetNext(int a1, int a2_dup);int CGEN_ArrayList_ulong__Clear(int a1);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Clear(int a1);int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Clear(int a1);int CGEN_ArrayList_ulong__Add(int a1, int a2_dup);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCount(int a1);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetSize(int a1);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace____vc(DWORD *a1, int a2_dup);int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Add(int a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetCount(int a1);int CGEN_ArrayList_ulong__GetCount(int a1);int CGEN_ArrayList_ulong____vc(DWORD *a1, int a2_dup);int CGEN_ArrayList_ulong__GetArray(int a1);int CGEN_ArrayList_ulong__GetSize(int a1);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__GetFreeCount(int a1);int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetCount(int a1);void CVector4_ctor(CVector4 *self);
+// FIXME FWD: int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__dtor_CGEN_NiceLinkList(DWORD *a1, char a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__dtor_CGEN_NiceLinkList(DWORD *a1, char a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__CGEN_NiceLinkList(DWORD *a1, int a2_dup);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__CGEN_NiceLinkList(DWORD *a1, int a2_dup);int CGEN_NiceLinkList_VKY_SCENE_tPoint__CNode_ctor(int a1);DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__Find(DWORD **a1, int a2);int CGEN_NiceLinkList_VKY_SCENE_tPoint__Delete(DWORD *a1, DWORD *a2);
+// FIXME FWD: int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__CNode_ctor(int a1);DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Find(DWORD **a1, int a2);int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Delete(DWORD *a1, DWORD *a2);
+// FIXME FWD: DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Clear(DWORD *a1);
+// FIXME FWD: DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__Clear(DWORD *a1);
+// FIXME FWD: int RayBoxIntersection(VKY_SCENE_tBoundingBox *a1, const CVector *a2, const CVector *a3, float *a4);
+// FIXME FWD: void CLandscapeScene_ctor(CLandscapeScene *self);
+// FIXME FWD: void CLandscapeScene_dtor(CLandscapeScene *self, char a2);void CLandscapeScene_Destroy(CLandscapeScene *self);
+// FIXME FWD: int CLandscapeScene_ReadQuad(CLandscapeScene *self, int a2, int a3, _IO_FILE *stream);int CLandscapeScene_LoadTerrain(CLandscapeScene *self, char *filename);
+// FIXME FWD: int CLandscapeScene_ReadTerrainChunk(CLandscapeScene *self, unsigned char *a2, unsigned int a3);int CLandscapeScene_LoadSceneMemory(CLandscapeScene *self, unsigned char *a2, unsigned int a3);int CLandscapeScene_AddPoint(CLandscapeScene *self, VKY_SCENE_tPoint *a2);
+// FIXME FWD: int CLandscapeScene_RemovePoint(CLandscapeScene *self, VKY_SCENE_tPoint *a2);
+// FIXME FWD: int CLandscapeScene_AddCollisionBox(CLandscapeScene *self, VKY_SCENE_tBoundingBox *a2);
+// FIXME FWD: int CLandscapeScene_RemoveCollisionBox(CLandscapeScene *self, VKY_SCENE_tBoundingBox *a2);
 VKY_SCENE_tObjectHandle *CLandscapeScene_MoveObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, const CMatrix *a3);
 VKY_SCENE_tObjectHandle *CLandscapeScene_PlaceObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2);
 VKY_SCENE_tObjectHandle *CLandscapeScene_RemoveObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2);
-int *CLandscapeScene_GetNearestPoint(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tPoint **a4, int *a5);int *CLandscapeScene_GetExactNearestObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetExactNearestObject(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetSortedNearestObject(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tObjectHandle **base, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetNearestObject(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetNearestObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);CMatrix *CLandscapeScene_GetIntersectingBox(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, unsigned int a3);int CLandscapeScene_GetIntersectingBoxes(CLandscapeScene *, int a2_dup, int a3_dup, void*); // idbint CLandscapeScene_MoveObject();
-int *CLandscapeScene_FindGrid(CLandscapeScene *self, const CVector *a2, int *a3, int *a4);
-int CLandscapeScene_MoveObject(CLandscapeScene *self, CMatrix *a2, const CVector *a3, const CVector *a4, tVKY_CollisionInfo *a5, int a6);long double CLandscapeScene_GetRealHeight(CLandscapeScene *self, float a2_dup, float a3_dup, int *a4);int CLandscapeScene_RayTrace(CLandscapeScene *self, const CVector *a2, const CVector *a3, float a4_dup, float *a5);int CLandscapeScene_GetFaces(CLandscapeScene *, int a2_dup, float, int a3_dup, int a4_dup, void*); // idbCLandscapeScene *CLandscapeScene_ClearCollisionCache(CLandscapeScene *self);
-int CLandscapeScene_GetMemoryUsedByScene(CLandscapeScene *self);
+// FIXME FWD: int *CLandscapeScene_GetNearestPoint(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tPoint **a4, int *a5);int *CLandscapeScene_GetExactNearestObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetExactNearestObject(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetSortedNearestObject(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tObjectHandle **base, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetNearestObject(CLandscapeScene *self, const CVector *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);int *CLandscapeScene_GetNearestObject(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, float a3_dup, VKY_SCENE_tObjectHandle **a4, int *a5, unsigned int a6, unsigned int a7);CMatrix *CLandscapeScene_GetIntersectingBox(CLandscapeScene *self, VKY_SCENE_tObjectHandle *a2, unsigned int a3);int CLandscapeScene_GetIntersectingBoxes(CLandscapeScene *, int a2_dup, int a3_dup, void*); // idbint CLandscapeScene_MoveObject();
+// FIXME FWD: int *CLandscapeScene_FindGrid(CLandscapeScene *self, const CVector *a2, int *a3, int *a4);
+// FIXME FWD: int CLandscapeScene_MoveObject(CLandscapeScene *self, CMatrix *a2, const CVector *a3, const CVector *a4, tVKY_CollisionInfo *a5, int a6);long double CLandscapeScene_GetRealHeight(CLandscapeScene *self, float a2_dup, float a3_dup, int *a4);int CLandscapeScene_RayTrace(CLandscapeScene *self, const CVector *a2, const CVector *a3, float a4_dup, float *a5);int CLandscapeScene_GetFaces(CLandscapeScene *, int a2_dup, float, int a3_dup, int a4_dup, void*); // idbCLandscapeScene *CLandscapeScene_ClearCollisionCache(CLandscapeScene *self);
+// FIXME FWD: int CLandscapeScene_GetMemoryUsedByScene(CLandscapeScene *self);
 CMatrix *_static_initialization_and_destruction_0_38(int a1, int a2);
-int *tf15CLandscapeScene();
+// FIXME FWD: int *tf15CLandscapeScene();
 CLandscapeScene_tVertex *CLandscapeScene_tVertex_tVertex(CLandscapeScene_tVertex *self);
-void CLandscapeScene_tGridUnit_dtor_tGridUnit(CLandscapeScene_tGridUnit *self, char a2);CLandscapeScene_tGridUnit *CLandscapeScene_tGridUnit_tGridUnit(CLandscapeScene_tGridUnit *self);
-int VKY_CharSorter0(const void *a1, const void *a2);
-int VKY_CharSorter1(const void *a1, const void *a2);
-int VKY_CharSorter2(const void *a1, const void *a2);
-int VKY_CharSorter3(const void *a1, const void *a2);
-int VKY_CharSorter4(const void *a1, const void *a2);
-int VKY_CharSorter5(const void *a1, const void *a2);
-int VKY_CharSorter6(const void *a1, const void *a2);
-int VKY_CharSorter7(const void *a1, const void *a2);
-int CSceneSharedData_LoadPCTypeList(CSceneSharedData *self, const char *filename);
-int CSceneSharedData_LoadNPCTypeList(CSceneSharedData *self, const char *filename);
-int CSceneSharedData_LoadCharacterCollisionBoxList(CSceneSharedData *self, const char *filename);
-void CScene_ctor(CScene *self);
-void CScene_dtor(CScene *self, char a2);int CScene_Destroy(CScene *self);
+// FIXME FWD: void CLandscapeScene_tGridUnit_dtor_tGridUnit(CLandscapeScene_tGridUnit *self, char a2);CLandscapeScene_tGridUnit *CLandscapeScene_tGridUnit_tGridUnit(CLandscapeScene_tGridUnit *self);
+// FIXME FWD: int VKY_CharSorter0(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter1(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter2(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter3(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter4(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter5(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter6(const void *a1, const void *a2);
+// FIXME FWD: int VKY_CharSorter7(const void *a1, const void *a2);
+// FIXME FWD: int CSceneSharedData_LoadPCTypeList(CSceneSharedData *self, const char *filename);
+// FIXME FWD: int CSceneSharedData_LoadNPCTypeList(CSceneSharedData *self, const char *filename);
+// FIXME FWD: int CSceneSharedData_LoadCharacterCollisionBoxList(CSceneSharedData *self, const char *filename);
+// FIXME FWD: void CScene_ctor(CScene *self);
+// FIXME FWD: void CScene_dtor(CScene *self, char a2);int CScene_Destroy(CScene *self);
 VKY_SCENE_tObjectHandle *CScene_CreateObject(CScene *self, unsigned int a2, unsigned int a3, float a4, const CVector *a5, int a2_2);int CScene_DeleteObject(CScene *self, VKY_SCENE_tObjectHandle *a2);int CScene_GetPCObject(int a1, void *a2);int CScene_GetNPCObject(int a1, void *a2);int CScene_GetObject(int a1, void *a2);int CScene_GetSObject(int a1, void *a2);int CScene_FindObject(CScene *self, unsigned int a2);int CScene_FindObjectInScene(CScene *self, unsigned int a2);void *CScene_ChangeObjectPos(int a1, void *dest, void *src);int CScene_ReadModelChunk(CScene *self, unsigned char *a2, unsigned int a3, unsigned int a4);int CScene_IsObjectWithinBoundary(CScene *self, VKY_SCENE_tObjectHandle *a2);
-int CScene_ReadBoxChunk(CScene *self, unsigned char *a2, unsigned int a3);int CScene_ReadBoundingBoxChunk(CScene *self, unsigned char *a2, unsigned int a3);int CScene_ReadWayPointNetChunk(CScene *self, unsigned char *a2);
-int CScene_ReadPointChunk(CScene *self, unsigned char *a2, unsigned int a3, unsigned int a4);int CScene_LoadScene(CScene *self, const char *filename);
-int CScene_ReadWaypointdata(CScene *self, void **a2, unsigned int *a3);
-int CScene_OrganisedModel(CScene *self);
-int CScene_GetMemoryUsed(CScene *self);
-int CScene_CheckTargetable(CScene *self, VKY_SCENE_tObjectHandle *a2, VKY_SCENE_tObjectHandle *a3);
-int CheckScene(char *filename, void*); // idb
-int LoadFile(const char *filename, unsigned char **a2, unsigned int *a3);
+// FIXME FWD: int CScene_ReadBoxChunk(CScene *self, unsigned char *a2, unsigned int a3);int CScene_ReadBoundingBoxChunk(CScene *self, unsigned char *a2, unsigned int a3);int CScene_ReadWayPointNetChunk(CScene *self, unsigned char *a2);
+// FIXME FWD: int CScene_ReadPointChunk(CScene *self, unsigned char *a2, unsigned int a3, unsigned int a4);int CScene_LoadScene(CScene *self, const char *filename);
+// FIXME FWD: int CScene_ReadWaypointdata(CScene *self, void **a2, unsigned int *a3);
+// FIXME FWD: int CScene_OrganisedModel(CScene *self);
+// FIXME FWD: int CScene_GetMemoryUsed(CScene *self);
+// FIXME FWD: int CScene_CheckTargetable(CScene *self, VKY_SCENE_tObjectHandle *a2, VKY_SCENE_tObjectHandle *a3);
+// FIXME FWD: int CheckScene(char *filename, void*); // idb
+// FIXME FWD: int LoadFile(const char *filename, unsigned char **a2, unsigned int *a3);
 CMatrix *_static_initialization_and_destruction_0_39(int a1, int a2);
-int *tf6CScene();
-int *tf22CVKY_CollisionResponse();
+// FIXME FWD: int *CScene();
+// FIXME FWD: int *tf22CVKY_CollisionResponse();
 
 VKY_SCENE__tFileHeader *VKY_SCENE__tFileHeader__tFileHeader(VKY_SCENE__tFileHeader *self);
 VKY_SCENE_tBoundingBox *VKY_SCENE_tBoundingBox_tBoundingBox(VKY_SCENE_tBoundingBox *self);
 VKY_SCENE_tPoint *VKY_SCENE_tPoint_tPoint(VKY_SCENE_tPoint *self);
-int CScene_GetSceneType(CScene *self);
-int CScene_GetSceneID(CScene *self);
-int CScene_IsLoaded(CScene *self);
-char *CScene_GetFileHeader(CScene *self);
+// FIXME FWD: int CScene_GetSceneType(CScene *self);
+// FIXME FWD: int CScene_GetSceneID(CScene *self);
+// FIXME FWD: int CScene_IsLoaded(CScene *self);
+// FIXME FWD: char *CScene_GetFileHeader(CScene *self);
 CScene *CScene_SetSharedData(CScene *self, CSceneSharedData *a2);
-char *CScene_GetSceneName(CScene *self);
-char *CScene_GetPCObject(CScene *self);
-char *CScene_GetNPCList(CScene *self);
-char *CScene_GetObjectList(CScene *self);
-char *CScene_GetSObjectList(CScene *self);
-char *CScene_GetUserRelicList(CScene *self);
-int CScene_GetPoints(CScene *self);
-int CScene_GetPointCount(CScene *self);
-int CScene_GetWayPointNetID(CScene *self);
-int CScene_GetWayPointNetIDCount(CScene *self);
-DWORD *CGEN_NicePreAllocPoolList_CVKY_Entity__CGEN_NicePreAllocPoolList(DWORD *a1);
-int CGEN_NicePreAllocPoolList_CVKY_Entity__Clear(DWORD *a1);
-int CGEN_NicePreAllocPoolList_CVKY_Entity__dtor_CGEN_NicePreAllocPoolList(DWORD *a1, char a2);DWORD *CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__CGEN_NicePreAllocPoolList(DWORD *a1);
-int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Clear(DWORD *a1);
-int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__dtor_CGEN_NicePreAllocPoolList(DWORD *a1, char a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__PreAlloc(DWORD *a1);
-void CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__PreAlloc(VKY_SCENE_tObjectHandle **a1, int a2_dup);void CGEN_NicePreAllocPoolList_CVKY_Entity__PreAlloc(DWORD *a1, int a2);VKY_SCENE_tObjectHandle *CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Get(VKY_SCENE_tObjectHandle **a1);
-int CGEN_NicePreAllocPoolList_CVKY_Entity__Get(DWORD *a1);
-int CGEN_NicePreAllocPoolList_CVKY_Entity__Add(DWORD *a1, int a2_dup);int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Add(DWORD *a1, int a2);int CGEN_NicePreAllocPoolList_CVKY_Entity__GetCount(int a1);int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__GetCount(int a1);void CVKY_Entity_ctor(CVKY_Entity *self);
+// FIXME FWD: char *CScene_GetSceneName(CScene *self);
+// FIXME FWD: char *CScene_GetPCObject(CScene *self);
+// FIXME FWD: char *CScene_GetNPCList(CScene *self);
+// FIXME FWD: char *CScene_GetObjectList(CScene *self);
+// FIXME FWD: char *CScene_GetSObjectList(CScene *self);
+// FIXME FWD: char *CScene_GetUserRelicList(CScene *self);
+// FIXME FWD: int CScene_GetPoints(CScene *self);
+// FIXME FWD: int CScene_GetPointCount(CScene *self);
+// FIXME FWD: int CScene_GetWayPointNetID(CScene *self);
+// FIXME FWD: int CScene_GetWayPointNetIDCount(CScene *self);
+// FIXME FWD: DWORD *CGEN_NicePreAllocPoolList_CVKY_Entity__CGEN_NicePreAllocPoolList(DWORD *a1);
+// FIXME FWD: int CGEN_NicePreAllocPoolList_CVKY_Entity__Clear(DWORD *a1);
+// FIXME FWD: int CGEN_NicePreAllocPoolList_CVKY_Entity__dtor_CGEN_NicePreAllocPoolList(DWORD *a1, char a2);DWORD *CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__CGEN_NicePreAllocPoolList(DWORD *a1);
+// FIXME FWD: int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Clear(DWORD *a1);
+// FIXME FWD: int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__dtor_CGEN_NicePreAllocPoolList(DWORD *a1, char a2);int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__PreAlloc(DWORD *a1);
+// FIXME FWD: void CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__PreAlloc(VKY_SCENE_tObjectHandle **a1, int a2_dup);void CGEN_NicePreAllocPoolList_CVKY_Entity__PreAlloc(DWORD *a1, int a2);VKY_SCENE_tObjectHandle *CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Get(VKY_SCENE_tObjectHandle **a1);
+// FIXME FWD: int CGEN_NicePreAllocPoolList_CVKY_Entity__Get(DWORD *a1);
+// FIXME FWD: int CGEN_NicePreAllocPoolList_CVKY_Entity__Add(DWORD *a1, int a2_dup);int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Add(DWORD *a1, int a2);int CGEN_NicePreAllocPoolList_CVKY_Entity__GetCount(int a1);int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__GetCount(int a1);void CVKY_Entity_ctor(CVKY_Entity *self);
 VKY_SCENE_tObjectHandle *VKY_SCENE_tObjectHandle_tObjectHandle(VKY_SCENE_tObjectHandle *self);
-int *tf11CVKY_Entity();
-void CGEN_Node_ctor(CGEN_Node *self);
-void CGEN_Node_dtor(CGEN_Node *self, char a2_dup);void CVKY_Entity_dtor(CVKY_Entity *self, char a2);int *tf9CGEN_Node();
-int CVKY_Brush_DoCaching(void *self);
+// FIXME FWD: int *tf11CVKY_Entity();
+// FIXME FWD: void CGEN_Node_ctor(CGEN_Node *self);
+// FIXME FWD: void CGEN_Node_dtor(CGEN_Node *self, char a2_dup);void CVKY_Entity_dtor(CVKY_Entity *self, char a2);int *tf9CGEN_Node();
+// FIXME FWD: int CVKY_Brush_DoCaching(void *self);
 CVector *CVKY_Brush_CacheFace(void *self, int a2);void CVKY_MeshFaceCache_ctor(CVKY_MeshFaceCache *self);
-void CVKY_MeshFaceCache_dtor(CVKY_MeshFaceCache *self, char a2);int CVKY_MeshFaceCache_Destroy(CVKY_MeshFaceCache *self);
-int CVKY_MeshFaceCache_Flush(CVKY_MeshFaceCache *self);
-void *CVKY_MeshFaceCache_Init(CVKY_MeshFaceCache *self, void *a2);
-int CVKY_MeshFaceCache_CacheAABBFace(CVKY_MeshFaceCache *self, int a2_dup);float *CVKY_MeshFaceCache_CacheFace(CVKY_MeshFaceCache *self, int a2);void CVKY_CollisionCache_ctor(CVKY_CollisionCache *self);
-void CVKY_CollisionCache_dtor(CVKY_CollisionCache *self, char a2);int CVKY_CollisionCache_Destroy(CVKY_CollisionCache *self);
-int CVKY_CollisionCache_Init(CVKY_CollisionCache *self, void *a2, int a3);int CVKY_CollisionCache_Flush(CVKY_CollisionCache *self);
+// FIXME FWD: void CVKY_MeshFaceCache_dtor(CVKY_MeshFaceCache *self, char a2);int CVKY_MeshFaceCache_Destroy(CVKY_MeshFaceCache *self);
+// FIXME FWD: int CVKY_MeshFaceCache_Flush(CVKY_MeshFaceCache *self);
+// FIXME FWD: void *CVKY_MeshFaceCache_Init(CVKY_MeshFaceCache *self, void *a2);
+// FIXME FWD: int CVKY_MeshFaceCache_CacheAABBFace(CVKY_MeshFaceCache *self, int a2_dup);float *CVKY_MeshFaceCache_CacheFace(CVKY_MeshFaceCache *self, int a2);void CVKY_CollisionCache_ctor(CVKY_CollisionCache *self);
+// FIXME FWD: void CVKY_CollisionCache_dtor(CVKY_CollisionCache *self, char a2);int CVKY_CollisionCache_Destroy(CVKY_CollisionCache *self);
+// FIXME FWD: int CVKY_CollisionCache_Init(CVKY_CollisionCache *self, void *a2, int a3);int CVKY_CollisionCache_Flush(CVKY_CollisionCache *self);
 CMatrix *_static_initialization_and_destruction_0_40(int a1, int a2);
-void tVKY_BBox_ctor(tVKY_BBox *self);
-void tVKY_FaceCache_ctor(tVKY_FaceCache *self);
-void CVKY_CollisionResponse_ctor(CVKY_CollisionResponse *self);
-void CVKY_CollisionResponse_dtor(CVKY_CollisionResponse *self, char a2);DWORD *CVKY_CollisionResponse_AddBBoxToCollisionList(CVKY_CollisionResponse *self, VKY_SCENE_tBoundingBox *a2, const CMatrix *a3);
+// FIXME FWD: void tVKY_BBox_ctor(tVKY_BBox *self);
+// FIXME FWD: void tVKY_FaceCache_ctor(tVKY_FaceCache *self);
+// FIXME FWD: void CVKY_CollisionResponse_ctor(CVKY_CollisionResponse *self);
+// FIXME FWD: void CVKY_CollisionResponse_dtor(CVKY_CollisionResponse *self, char a2);DWORD *CVKY_CollisionResponse_AddBBoxToCollisionList(CVKY_CollisionResponse *self, VKY_SCENE_tBoundingBox *a2, const CMatrix *a3);
 CVKY_CollisionResponse *CVKY_CollisionResponse_DoCollisionCheck(CVKY_CollisionResponse *self, CVKY_CollisionResponse_tCollisionData *a2, tVKY_CollisionInfo *a3, int a4_dup, int a5);CVKY_CollisionResponse *CVKY_CollisionResponse_CheckCollision(CVKY_CollisionResponse *self, CVKY_CollisionResponse_tCollisionData *a2, tVKY_CollisionInfo *a3, int a4, int a5);unsigned int CVKY_CollisionResponse_GetCollisionSet(CVKY_CollisionResponse *self, CVKY_CollisionResponse_tCollisionData *a2);
 CMatrix *_static_initialization_and_destruction_0_41(int a1, int a2);
 long double FastAbs(float a1);const CVector *__mi(const CVector *a1, float *a2);
 // DWORD *CVector4_operator_CVector(DWORD *a1, DWORD *a2);
 CVector4 *CVector4___ml(CVector4 *self, float a2, float a3);DWORD *CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_StructArrayList(DWORD *a1);
-int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_StructArrayList(DWORD *a1, char a2);DWORD *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_ArrayList(DWORD *a1);
-int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_ArrayList(int a1, char a2_dup);void *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int a1, int a2_dup);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int *a1, int a2);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCurrent(DWORD *a1);
-int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__GetCount(int a1);int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace____vc(DWORD *a1, int a2);CVector4 *CVector4_ctor(CVector4 *self, float, float, float, float); // idb
+// FIXME FWD: int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_StructArrayList(DWORD *a1, char a2);DWORD *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_ArrayList(DWORD *a1);
+// FIXME FWD: int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_ArrayList(int a1, char a2_dup);void *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int a1, int a2_dup);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Resize(int *a1, int a2);int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCurrent(DWORD *a1);
+// FIXME FWD: int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__GetCount(int a1);int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace____vc(DWORD *a1, int a2);CVector4 *CVector4_ctor(CVector4 *self, float, float, float, float); // idb
 CVKY_CollisionResponse_tCollisionFace *CVKY_CollisionResponse_tCollisionFace_tCollisionFace(CVKY_CollisionResponse_tCollisionFace *self);
-int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Destroy(DWORD *a1);
-void CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Destroy(int a1);void CVKY_CollisionList_ctor(CVKY_CollisionList *self);
-void CVKY_CollisionList_dtor(CVKY_CollisionList *self, char a2_dup);int CVKY_CollisionList_ReadPCChunk(CVKY_CollisionList *self, unsigned char *a2, unsigned int a3);int CVKY_CollisionList_ReadNPCChunk(CVKY_CollisionList *self, unsigned char *a2, unsigned int a3);int CVKY_CollisionList_ReadFile(CVKY_CollisionList *self, unsigned char *a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_42(int a1, int a2_dup);
-DWORD *GEN_CLinkList_CVector__Reset(DWORD *a1);
-int GEN_CLinkList_CVector__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_CVector__GEN_CLinkList(DWORD *a1, int a2_dup);DWORD *GEN_CLinkList_CVector__AddTail(DWORD *a1, int a2);int GEN_CLinkList_CVector__GetCount(int a1);int GEN_CLinkList_CVector__GetCurrent(int a1);int GEN_CLinkList_CVector__GetNext(int a1);DWORD *GEN_CLinkList_CVector__Clear(DWORD *a1);
-int GEN_CLinkList_CVector__CNode_ctor(int a1);void CVKY_EntityManager_ctor(CVKY_EntityManager *self);
-void CVKY_EntityManager_dtor(CVKY_EntityManager *self, char a2);int CVKY_EntityManager_FindEntity(CVKY_EntityManager *self, unsigned int a2);CGEN_Node *CVKY_EntityManager_InsertEntity(CVKY_EntityManager *self, CVKY_Entity *a2);
-int CVKY_EntityManager_RemoveEntity(CVKY_EntityManager *self, CVKY_Entity *a2);
+// FIXME FWD: int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Destroy(DWORD *a1);
+// FIXME FWD: void CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__Destroy(int a1);void CVKY_CollisionList_ctor(CVKY_CollisionList *self);
+// FIXME FWD: void CVKY_CollisionList_dtor(CVKY_CollisionList *self, char a2_dup);int CVKY_CollisionList_ReadPCChunk(CVKY_CollisionList *self, unsigned char *a2, unsigned int a3);int CVKY_CollisionList_ReadNPCChunk(CVKY_CollisionList *self, unsigned char *a2, unsigned int a3);int CVKY_CollisionList_ReadFile(CVKY_CollisionList *self, unsigned char *a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_42(int a1, int a2_dup);
+// FIXME FWD: DWORD *GEN_CLinkList_CVector__Reset(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_CVector__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_CVector__GEN_CLinkList(DWORD *a1, int a2_dup);DWORD *GEN_CLinkList_CVector__AddTail(DWORD *a1, int a2);int GEN_CLinkList_CVector__GetCount(int a1);int GEN_CLinkList_CVector__GetCurrent(int a1);int GEN_CLinkList_CVector__GetNext(int a1);DWORD *GEN_CLinkList_CVector__Clear(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_CVector__CNode_ctor(int a1);void CVKY_EntityManager_ctor(CVKY_EntityManager *self);
+// FIXME FWD: void CVKY_EntityManager_dtor(CVKY_EntityManager *self, char a2);int CVKY_EntityManager_FindEntity(CVKY_EntityManager *self, unsigned int a2);CGEN_Node *CVKY_EntityManager_InsertEntity(CVKY_EntityManager *self, CVKY_Entity *a2);
+// FIXME FWD: int CVKY_EntityManager_RemoveEntity(CVKY_EntityManager *self, CVKY_Entity *a2);
 CGEN_NiceNodeLinkList *CGEN_NiceNodeLinkList_ctor(CGEN_NiceNodeLinkList *self, void*); // idb
-int CGEN_NiceNodeLinkList_SetDestroy(int a1, int a2);int CGEN_NiceNodeLinkList_GetHead(CGEN_NiceNodeLinkList *self);
-DWORD *CGEN_NiceNodeLinkList_Delete(CGEN_NiceNodeLinkList *self, CGEN_Node *a2);
+// FIXME FWD: int CGEN_NiceNodeLinkList_SetDestroy(int a1, int a2);int CGEN_NiceNodeLinkList_GetHead(CGEN_NiceNodeLinkList *self);
+// FIXME FWD: DWORD *CGEN_NiceNodeLinkList_Delete(CGEN_NiceNodeLinkList *self, CGEN_Node *a2);
 CGEN_Node *CGEN_NiceNodeLinkList_AddTail(CGEN_NiceNodeLinkList *self, CGEN_Node *a2);
-void CGEN_NiceNodeLinkList_dtor(CGEN_NiceNodeLinkList *self, char a2);int CGEN_NiceNodeLinkList_Clear(CGEN_NiceNodeLinkList *self);
-void CVKY_NPCTypeList_ctor(CVKY_NPCTypeList *self);
-void CVKY_NPCTypeList_dtor(CVKY_NPCTypeList *self, char a2_dup);int CVKY_NPCTypeList_ReadNPCChunk(int a1, char *dest, int a2_dup, int a3);int CVKY_NPCTypeList_ReadFile(CVKY_NPCTypeList *self, unsigned char *a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_43(int a1, int a2_dup);
-DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__Reset(DWORD *a1);
-int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GEN_CLinkList(DWORD *a1, int a2_dup);DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__AddTail(DWORD *a1, int a2);int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GetCount(int a1);int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GetCurrent(int a1);int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GetNext(int a1);DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__Clear(DWORD *a1);
-int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__CNode_ctor(int a1);void CVKY_PCList_ctor(CVKY_PCList *self);
-void CVKY_PCList_dtor(CVKY_PCList *self, char a2);char *CVKY_PCList_Destroy(CVKY_PCList *self);
-int CVKY_PCList_ReadStringChunk(CVKY_PCList *self, char **a2[255], int *a3, unsigned char *a4, unsigned int a5, unsigned int *a6);int CVKY_PCList_ReadPCChunk(CVKY_PCList *, char **[255], int a2_dup, int a3_dup, void*); // idbint CVKY_PCList_ReadFile(CVKY_PCList *self, unsigned char *a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_44(int a1, int a2_dup);
-DWORD *GEN_CLinkList_tStringSt__Reset(DWORD *a1);
-int GEN_CLinkList_tStringSt__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_tStringSt__GEN_CLinkList(DWORD *a1, int a2_dup);DWORD *GEN_CLinkList_tStringSt__AddTail(DWORD *a1, int a2);int GEN_CLinkList_tStringSt__GetCount(int a1);int GEN_CLinkList_tStringSt__GetCurrent(int a1);int GEN_CLinkList_tStringSt__GetNext(int a1);DWORD *GEN_CLinkList_tStringSt__Clear(DWORD *a1);
-int GEN_CLinkList_tStringSt__CNode_ctor(int a1);unsigned int GEN_CheckForComment(const char *haystack, unsigned int a2);unsigned int GEN_GetLine(const char *haystack, char *dest, unsigned int a3);signed int GEN_GetToken(const char *a1, char *a2, unsigned int a3);int GEN_GetTokenCount(const unsigned char *a1, unsigned int a2);int GEN_GetFileName(const char *s, char *a2);
-int GEN_GetFilePath(const char *s, char *a2);
-int GEN_GetFileExt(const char *s, char *a2);
-int GEN_ChangeFileExt(char *s, char *a2);
-int GEN_CheckStringIsNumeric(const char *s);
-int ConvertSecToTime(char *s, float a2_dup);CMatrix *CMatrix_Quaternions(CMatrix *self, float a2_dup, float a3, float a4, float a5);// float *CMatrix_operator CQuaternions(float *a1, float *a2);
+// FIXME FWD: void CGEN_NiceNodeLinkList_dtor(CGEN_NiceNodeLinkList *self, char a2);int CGEN_NiceNodeLinkList_Clear(CGEN_NiceNodeLinkList *self);
+// FIXME FWD: void CVKY_NPCTypeList_ctor(CVKY_NPCTypeList *self);
+// FIXME FWD: void CVKY_NPCTypeList_dtor(CVKY_NPCTypeList *self, char a2_dup);int CVKY_NPCTypeList_ReadNPCChunk(int a1, char *dest, int a2_dup, int a3);int CVKY_NPCTypeList_ReadFile(CVKY_NPCTypeList *self, unsigned char *a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_43(int a1, int a2_dup);
+// FIXME FWD: DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__Reset(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GEN_CLinkList(DWORD *a1, int a2_dup);DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__AddTail(DWORD *a1, int a2);int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GetCount(int a1);int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GetCurrent(int a1);int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__GetNext(int a1);DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__Clear(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__CNode_ctor(int a1);void CVKY_PCList_ctor(CVKY_PCList *self);
+// FIXME FWD: void CVKY_PCList_dtor(CVKY_PCList *self, char a2);char *CVKY_PCList_Destroy(CVKY_PCList *self);
+// FIXME FWD: int CVKY_PCList_ReadStringChunk(CVKY_PCList *self, char **a2[255], int *a3, unsigned char *a4, unsigned int a5, unsigned int *a6);int CVKY_PCList_ReadPCChunk(CVKY_PCList *, char **[255], int a2_dup, int a3_dup, void*); // idbint CVKY_PCList_ReadFile(CVKY_PCList *self, unsigned char *a2, unsigned int a3);CMatrix *_static_initialization_and_destruction_0_44(int a1, int a2_dup);
+// FIXME FWD: DWORD *GEN_CLinkList_tStringSt__Reset(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_tStringSt__dtor_GEN_CLinkList(DWORD *a1, char a2_dup);DWORD *GEN_CLinkList_tStringSt__GEN_CLinkList(DWORD *a1, int a2_dup);DWORD *GEN_CLinkList_tStringSt__AddTail(DWORD *a1, int a2);int GEN_CLinkList_tStringSt__GetCount(int a1);int GEN_CLinkList_tStringSt__GetCurrent(int a1);int GEN_CLinkList_tStringSt__GetNext(int a1);DWORD *GEN_CLinkList_tStringSt__Clear(DWORD *a1);
+// FIXME FWD: int GEN_CLinkList_tStringSt__CNode_ctor(int a1);unsigned int GEN_CheckForComment(const char *haystack, unsigned int a2);unsigned int GEN_GetLine(const char *haystack, char *dest, unsigned int a3);signed int GEN_GetToken(const char *a1, char *a2, unsigned int a3);int GEN_GetTokenCount(const unsigned char *a1, unsigned int a2);int GEN_GetFileName(const char *s, char *a2);
+// FIXME FWD: int GEN_GetFilePath(const char *s, char *a2);
+// FIXME FWD: int GEN_GetFileExt(const char *s, char *a2);
+// FIXME FWD: int GEN_ChangeFileExt(char *s, char *a2);
+// FIXME FWD: int GEN_CheckStringIsNumeric(const char *s);
+// FIXME FWD: int ConvertSecToTime(char *s, float a2_dup);CMatrix *CMatrix_Quaternions(CMatrix *self, float a2_dup, float a3, float a4, float a5);// float *CMatrix_operator CQuaternions(float *a1, float *a2);
 CMatrix *CMatrix_GetTranspose(CMatrix *self, CMatrix *a2);
 long double CMatrix_Determinant(CMatrix *self);
 CMatrix *CMatrix_Adjoint(CMatrix *self, CMatrix *a2);
 unsigned short CMatrix_GetInverse(CMatrix *self, CMatrix *a2);
 short CMatrix_GetInverse3x3(CMatrix *self, CMatrix *a2);
-void CMatrix_SetRotateX(CMatrix *self, float a2_dup);void CMatrix_SetRotateY(CMatrix *self, float a2_dup);void CMatrix_SetRotateZ(CMatrix *self, float a2);void CMatrix_SetRotate(CMatrix *self, float a2_dup, float a3, float a4);CMatrix *CMatrix_MakeRotationFromRightDir(CMatrix *self, CVector *a2, CVector *a3, CVector *a4);
+// FIXME FWD: void CMatrix_SetRotateX(CMatrix *self, float a2_dup);void CMatrix_SetRotateY(CMatrix *self, float a2_dup);void CMatrix_SetRotateZ(CMatrix *self, float a2);void CMatrix_SetRotate(CMatrix *self, float a2_dup, float a3, float a4);CMatrix *CMatrix_MakeRotationFromRightDir(CMatrix *self, CVector *a2, CVector *a3, CVector *a4);
 CMatrix *CMatrix_MakeRotationFromRightDir(CMatrix *self, CVector *a2, CVector *a3);
 CMatrix *CMatrix_MakeRotationFromDirUp(CMatrix *self, CVector *a2, CVector *a3, CVector *a4);
 CMatrix *CMatrix_MakeRotationFromDirUp(CMatrix *self, CVector *a2, CVector *a3);
@@ -31733,10 +31733,10 @@ CMatrix *CMatrix_MakeRotationFromUpRight(CMatrix *self, CVector *a2, CVector *a3
 CMatrix *CMatrix_MakeRotationMatrixFromUpRight(CMatrix *self, CVector *a2, CVector *a3);
 CMatrix *CMatrix_MakeRotation(CMatrix *self, const CVector *a2, const CVector *a3, const CVector *a4);
 CMatrix *CMatrix_MakeRotation(CMatrix *self, const CVector *a2, const CVector *a3, const CVector *a4, const CVector *a5);
-void CMatrix_Normalize3x3Vectors(CMatrix *self);
+// FIXME FWD: void CMatrix_Normalize3x3Vectors(CMatrix *self);
 const CMatrix *__pl(const CMatrix *a1, const CMatrix *a2, int a2_dup);const CMatrix *__mi(const CMatrix *a1, const CMatrix *a2, int a2_dup);const CMatrix *__ml(const CMatrix *a1, const CMatrix *a2, float *a3);
 const CMatrix *CMatrix_MatrixMultiply(CMatrix *self, const CMatrix *a2, const CMatrix *a3);
-const CMatrix *CMatrix_MatrixMultiply3x3(CMatrix *self, const CMatrix *a2, const CMatrix *a3);
+// FIXME AMBIG: const CMatrix *CMatrix_MatrixMultiply3x3(CMatrix *self, const CMatrix *a2, const CMatrix *a3);
 CMatrix *CMatrix_PreScaleMatrix(CMatrix *self, float a2_dup, float a3_dup, float a4_dup);CMatrix *CMatrix_PostScaleMatrix(CMatrix *self, float a2, float a3, float a4);CMatrix *CMatrix_PreTranslateMatrix(CMatrix *self, const CVector *a2);
 CMatrix *CMatrix_PostTranslateMatrix(CMatrix *self, const CVector *a2);
 float *CMatrix_ExtractRotation(CMatrix *self, float *a2, float *a3, float *a4);
@@ -31931,8 +31931,8 @@ DWORD unk_819DCD0; // weak
 DWORD unk_819F078; // weak
 DWORD unk_819F250; // weak
 DWORD unk_819FA80; // weak
-int *off_81A0064 = (int*)tf6CScene(); // weak
-int *off_81A01E4 = (int*)tf6CScene(); // weak
+// FIXME INCOMPLETE: int *off_81A0064 = (int*)CScene(); // weak
+// FIXME INCOMPLETE: int *off_81A01E4 = (int*)CScene(); // weak
 int *off_81A08B8 = (int*)tf18CVKY_EntityManager_func(); // weak
 // int (*(*0)[4])() = NULL; // weak
 // DUPLICATE: int completed_4 = 0; // weak
@@ -32210,7 +32210,7 @@ float g_fSinTable[256]; // idb
 int ti12CIndoorScene; // weak
 int ti15CLandscapeScene; // weak
 // DUPLICATE: int ti22CVKY_CollisionResponse; // weak
-// DUPLICATE: int tf6CScene; // weak
+// DUPLICATE: int CScene; // weak
 // DUPLICATE: int ti9CGEN_Node; // weak
 // DUPLICATE: int ti18CVKY_EntityManager; // weak
 int ti11CVKY_Entity; // weak
