@@ -24015,7 +24015,7 @@ LABEL_12:
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A758: using guessed type int mysql_store_result(DWORD);
 // 804A788: using guessed type int mysql_fetch_row(DWORD);
 // 804ACD8: using guessed type int mysql_num_rows(DWORD);
@@ -28251,7 +28251,7 @@ CMatrix *CMatrix_MakeRotation(CMatrix *self, const CVector *a2, const CVector *a
   *((float *)self + 14) = v6;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817E1C8) --------------------------------------------------------
 const CMatrix *__pl(const CMatrix *a1, const CMatrix *a2, int a2){
@@ -29412,7 +29412,7 @@ int maths_RayTriangleIntersect(float *a1, float *a2, float *a3, float *a4)
   *a4 = -v11;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081803F8) --------------------------------------------------------
 void _static_initialization_and_destruction_0_46(int a1, int a2){
@@ -31953,7 +31953,7 @@ char *co_funcs = "create"; // weak
 int mode_159[3] = { 0, 1, 2 }; // idb
 DWORD unk_819BB1C; // weak
 char *modenames_160 = NULL; // idb
-int cat_212[6] = {6, 3, void*, 4, 1, 2 }; // idb
+int cat_212[6] = {6, 3, 0, 4, 1, 2 }; // idb
 DWORD unk_819BC10; // weak
 char *catnames_213 = NULL; // idb
 char *iolib = "input"; // weak
@@ -32264,7 +32264,7 @@ void init_proc(void)
   frame_dummy();
   _do_global_ctors_aux();
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804A6E8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -32272,7 +32272,7 @@ void sub_804A6E8(void)
 {
   /* JUMPOUT - indirect jump */
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A6EE: control flows out of bounds to 0
 
 //----- (0804B370) --------------------------------------------------------
@@ -32300,7 +32300,7 @@ void *call_gmon_start()
     result = (void *)((int (*)())0)();
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804B3C0) --------------------------------------------------------
 int (*_do_global_dtors_aux())(DWORD, DWORD, DWORD, DWORD)
@@ -32339,7 +32339,7 @@ void fini_dummy(void)
 {
   ;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804B418) --------------------------------------------------------
 int (*frame_dummy())(DWORD, DWORD, DWORD, DWORD)
@@ -32363,7 +32363,7 @@ void init_dummy(void)
 {
   ;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804B450) --------------------------------------------------------
 int main(int argc, const char **argv, const char **envp)
@@ -32400,7 +32400,7 @@ int ExitHandler(void)
   printf("exit Handler\n");
   return CProcMgr_Shutdown((CProcMgr *)&ProcMgr);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804B560) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -32727,7 +32727,7 @@ LABEL_3:
   }
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81A1010: using guessed type int force_to_data;
 // 81D4A54: using guessed type short word_81D4A54;
 // 81D4A58: using guessed type int dword_81D4A58;
@@ -32793,7 +32793,7 @@ int strcpyup(char *a1, char *a2)
   *a1 = 0;
   return *a1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804C358) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -32835,7 +32835,7 @@ int daemon_init()
   dup(v2);
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804C4D4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -32889,7 +32889,7 @@ int CheckOnlyCopy(void)
     result = printf("error: fcntl F_SETFD error\n");
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804C698) --------------------------------------------------------
 void _static_initialization_and_destruction_0(int a1, int a2){
@@ -32911,7 +32911,7 @@ void _static_initialization_and_destruction_0(int a1, int a2){
 
 //----- (0804C714) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0804C734) --------------------------------------------------------
 // void _vtbl_global _destructor keyed todaemon_flag()
@@ -32933,7 +32933,7 @@ CMatrix *CMatrix_ctor(CMatrix *self, int a2){
 void *CMatrix_ClearMatrix(CMatrix *self)
 {return memset(self, 0, 0x40u);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804C7C0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -32960,7 +32960,7 @@ CMatrix *CMatrix_SetIdentity(CMatrix *self)
   *(float *)self = 1.0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804C800) --------------------------------------------------------
 time_t *CTimer_ctor(time_t *timer)
@@ -33050,7 +33050,7 @@ int CTimer_OutputLog(CTimer *self)
   fprintf(stream, "%s:%s:%f:%u:%u\n", buf, (const char *)self + 60, (double)(v1 / (long double)v5), v3, v4 / 0x3C);
   return fclose(stream);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804C924: using guessed type char buf[1024];
 
 //----- (0804CA20) --------------------------------------------------------
@@ -33066,7 +33066,7 @@ int CTimer_GetTickCount(CTimer *self)
   *(((DWORD*)(void*)self) + 35) = tv.tv_sec;
   return tv.tv_usec / 1000;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804CAD0) --------------------------------------------------------
 // positive sp value has been detected, the output may be wrong!
@@ -33113,7 +33113,7 @@ void FWLogClient_ctor(FWLogClient *self)
   *(DWORD *)self = 0;
   g_pcLogClient = self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804CC7C) --------------------------------------------------------
 FWLogClient *FWLogClient_SetLog(FWLogClient *self, void *a2)
@@ -33154,7 +33154,7 @@ char FWLogClient_IsValid(FWLogClient *self)
 {
   return *((BYTE *)self + 4);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804CD78) --------------------------------------------------------
 void FWLogClient_dtor(FWLogClient *self, char a2){
@@ -33285,7 +33285,7 @@ CMatrix *_static_initialization_and_destruction_0_0(int a1, int a2){
 
 //----- (0804D108) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0804D130) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -33305,7 +33305,7 @@ void CCommsMgr_ctor(CCommsMgr *self)
   for ( i = 0; i <= 4; ++i )
     memset((char *)self + 16 * i + 76, 0, 0x10u);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804D1EC) --------------------------------------------------------
 void CCommsMgr_dtor(CCommsMgr *self, char a2){
@@ -33517,7 +33517,7 @@ int CCommsMgr_AddSession(CCommsMgr *self, CSession *a2)
   *(((DWORD*)(void*)self) + 59) = a2;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804DA64) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -33528,7 +33528,7 @@ int CCommsMgr_Shutdown(CCommsMgr *self)
   *(((DWORD*)(void*)self) + 67) = -1;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804DAA0) --------------------------------------------------------
 int CCommsMgr_Authenticate(int a1, const char *a2, int a2){
@@ -33857,7 +33857,7 @@ int CCommsMgr_GetNumConnects(CCommsMgr *self)
     v2 += *(DWORD *)(i + 748);
   return v2;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0804E53C) --------------------------------------------------------
 int CCommsMgr_SetChatLog(CCommsMgr *self, unsigned int a2){
@@ -34140,7 +34140,7 @@ CMatrix *_static_initialization_and_destruction_0_1(int a1, int a2){
 
 //----- (0804EDD4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0804EE00) --------------------------------------------------------
 void CProcMgr_ctor(CProcMgr *self)
@@ -34434,7 +34434,7 @@ CScene *CProcMgr_CleanupOldConnections(CProcMgr *self)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804F658: using guessed type char var_FA8[4000];
 // 804F658: using guessed type char var_1138[400];
 
@@ -34745,7 +34745,7 @@ int CProcMgr_Shutdown(CProcMgr *self)
   }
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (080505EC) --------------------------------------------------------
@@ -34941,7 +34941,7 @@ int CProcMgr_GetServerConfig(CProcMgr *self)
   *(((DWORD*)(void*)self) + 155) = 3000;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81D7D84: using guessed type int dword_81D7D84;
 // 81D7E04: using guessed type int dword_81D7E04;
 // 81D7E84: using guessed type int dword_81D7E84;
@@ -35125,7 +35125,7 @@ int CProcMgr_GetProcess(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08051138) --------------------------------------------------------
 int CProcMgr_GetProcCount(CProcMgr *self, int a2){
@@ -35217,7 +35217,7 @@ CMatrix *_static_initialization_and_destruction_0_2(int a1, int a2){
 
 //----- (08051364) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08051380) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -35226,7 +35226,7 @@ void CProc_ctor(CProc *self)
   *(((DWORD*)(void*)self) + 4) = 0;
   *(((DWORD*)(void*)self) + 5) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0805139C) --------------------------------------------------------
 void /* __noreturn */ SendStub(void *a1)
@@ -35364,7 +35364,7 @@ int CProc_GetStatus(CProc *self)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080516C4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -35399,7 +35399,7 @@ int CProc_Remove(CProc *self)
   }
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08051798) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -35407,7 +35407,7 @@ int CProc_Restart(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080517A8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -35435,7 +35435,7 @@ int CProc_Shutdown(CProc *self)
   }
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08051830) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -35443,7 +35443,7 @@ int CProc_Process(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08051844) --------------------------------------------------------
 CMatrix *_static_initialization_and_destruction_0_3(int a1, int a2){
@@ -35459,7 +35459,7 @@ CMatrix *_static_initialization_and_destruction_0_3(int a1, int a2){
 
 //----- (08051878) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080518A0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -35470,7 +35470,7 @@ void Connection_ctor(Connection *self)
   *(((DWORD*)(void*)self) + 12) = 0;
   *(((DWORD*)(void*)self) + 17) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080518C8) --------------------------------------------------------
 void Connection_dtor(Connection *self, char a2){
@@ -35596,7 +35596,7 @@ void CSession_ctor(CSession *self)
   memset((char *)self + 384, 0, 0x80u);
   _lzo_init2(4224, 2, 4, 4, 4, 4, 4, 4, 4, 4);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 8051E54: variable 'v1' is possibly undefined
 // 804B1D8: using guessed type int free(DWORD);
 // 804B208: using guessed type int malloc(DWORD);
@@ -36431,7 +36431,7 @@ int CSession_Shutdown(CSession *self)
   *(((DWORD*)(void*)self) + 191) = 1;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0805418C) --------------------------------------------------------
 int CSession_AddConnection(CSession *self, sockaddr_in *addr, unsigned int a3, int a2, char *src, CTaskMgr *a6){
@@ -37222,7 +37222,7 @@ CMatrix *_static_initialization_and_destruction_0_4(int a1, int a2){
 
 //----- (080560B4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080560D0) --------------------------------------------------------
 int CHashTable_Connection_ptr_FreeNodes(int a1, DWORD *a2){
@@ -37253,7 +37253,7 @@ int CHashTable_Connection_ptr_RemoveAll(DWORD *a1)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08056170) --------------------------------------------------------
 int CHashTable_Connection_ptr_dtor_CHashTable(DWORD *a1, char a2){
@@ -37304,7 +37304,7 @@ int CHashTable_Connection_ptr_Remove(DWORD *a1, unsigned long long a2)
   free(i);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (08056320) --------------------------------------------------------
@@ -37320,7 +37320,7 @@ int CHashTable_Connection_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3)
   *a3 = i[3];
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080563B0) --------------------------------------------------------
 int CHashTable_Connection_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a3)
@@ -37372,7 +37372,7 @@ CMatrix *_static_initialization_and_destruction_0_5(int a1, int a2){
 
 //----- (08056508) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08056530) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -37388,7 +37388,7 @@ void CMemMgr_ctor(CMemMgr *self)
   *(((DWORD*)(void*)self) + 47) = 0;
   *(((DWORD*)(void*)self) + 128) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080565A4) --------------------------------------------------------
 void CMemMgr_dtor(CMemMgr *self, char a2){
@@ -37661,7 +37661,7 @@ int CMemMgr_Process(CMemMgr *self)
   *(((DWORD*)(void*)self) + 128) = 0;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08057304) --------------------------------------------------------
 int CMemMgr_Delete(int *a1, int a2){
@@ -38042,7 +38042,7 @@ int CMemPage_Purge(CMemPage *self)
   }
   return v4;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08058620) --------------------------------------------------------
 int CMemPage_Stats(CMemPage *a1, void *s)
@@ -38116,7 +38116,7 @@ CMatrix *_static_initialization_and_destruction_0_6(int a1, int a2){
 
 //----- (08058824) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08058840) --------------------------------------------------------
 int CHashTable_CMemObject_ptr_Hash(int a1, unsigned long long a2){
@@ -38136,7 +38136,7 @@ int CHashTable_CMemObject_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3)
   *a3 = i[3];
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08058910) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -38162,7 +38162,7 @@ int CHashTable_CMemObject_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a3
   *(DWORD *)(v7 + 12) = *a3;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B208: using guessed type int malloc(DWORD);
 
 //----- (08058A00) --------------------------------------------------------
@@ -38186,7 +38186,7 @@ int CHashTable_CMemObject_ptr_Remove(DWORD *a1, unsigned long long a2)
   free(i);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (08058AD0) --------------------------------------------------------
@@ -38226,7 +38226,7 @@ int CHashTable_CMemObject_ptr_RemoveAll(DWORD *a1)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08058BC0) --------------------------------------------------------
 int CHashTable_CMemObject_ptr_dtor_CHashTable(DWORD *a1, char a2){
@@ -38251,7 +38251,7 @@ void CMemObject_ctor(CMemObject *self)
   *(((DWORD*)(void*)self) + 4) = 0;
   *(((DWORD*)(void*)self) + 5) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 
 //----- (08058C48) --------------------------------------------------------
@@ -38270,7 +38270,7 @@ int CMemObject_GetElementsCount(CMemObject *self)
 {
   return *((unsigned short *)self + 24);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08058CA0) --------------------------------------------------------
 CMatrix *_static_initialization_and_destruction_0_7(int a1, int a2){
@@ -38286,7 +38286,7 @@ CMatrix *_static_initialization_and_destruction_0_7(int a1, int a2){
 
 //----- (08058CD4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08058CF0) --------------------------------------------------------
 int CMemMgr_QueryMemObject(CMemMgr *self, unsigned int a2){
@@ -44796,7 +44796,7 @@ LABEL_907:
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 80623F7: too many varargs, some ignored
 // 8060177: too many varargs, some ignored
 // 805F3EB: too many varargs, some ignored
@@ -50571,7 +50571,7 @@ CMatrix *_static_initialization_and_destruction_0_8(int a1, int a2){
 
 //----- (0806F748) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0806F770) --------------------------------------------------------
 CMemAccess *CMemAccess_ctor(CMemAccess *self, char *src, char *a3, char *a4, char *a5)
@@ -51108,7 +51108,7 @@ int CMemAccess_AddCacheObject(CMemAccess *self, tMemCacheObject *a2)
   CHashTable__tMemCacheObject_ptr_Insert(*((DWORD **)self + 1), v3, &a2);
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08070B74) --------------------------------------------------------
 int CMemAccess_FlushCache(CMemAccess *self, int a2){
@@ -51203,7 +51203,7 @@ int CMemAccess_DeleteCacheObject(CMemAccess *self, tMemCacheObject *a2)
   *(DWORD *)(*(((DWORD*)(void*)self) + 5) + 4 * ++*(((DWORD*)(void*)self) + 8)) = a2;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08070E88) --------------------------------------------------------
 CMatrix *_static_initialization_and_destruction_0_9(int a1, int a2){
@@ -51219,7 +51219,7 @@ CMatrix *_static_initialization_and_destruction_0_9(int a1, int a2){
 
 //----- (08070EB4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08070ED0) --------------------------------------------------------
 int CHashTable__tMemCacheObject_ptr_FreeNodes(int a1, DWORD *a2){
@@ -51250,7 +51250,7 @@ int CHashTable__tMemCacheObject_ptr_RemoveAll(DWORD *a1)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08070F60) --------------------------------------------------------
 int CHashTable__tMemCacheObject_ptr_dtor_CHashTable(DWORD *a1, char a2){
@@ -51289,7 +51289,7 @@ int CHashTable__tMemCacheObject_ptr_Find(DWORD *a1, unsigned long long a2, DWORD
   *a3 = i[3];
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08071080) --------------------------------------------------------
 int CHashTable__tMemCacheObject_ptr_CHashTable(int a1, int a2){*(DWORD *)a1 = malloc(4 * a2);
@@ -51323,7 +51323,7 @@ int CHashTable__tMemCacheObject_ptr_Insert(DWORD *a1, unsigned long long a2, DWO
   *(DWORD *)(v7 + 12) = *a3;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B208: using guessed type int malloc(DWORD);
 
 //----- (080711D0) --------------------------------------------------------
@@ -51347,7 +51347,7 @@ int CHashTable__tMemCacheObject_ptr_Remove(DWORD *a1, unsigned long long a2)
   free(i);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (080712A0) --------------------------------------------------------
@@ -51364,7 +51364,7 @@ void tMemCacheObject__tMemCacheObject(tMemCacheObject *self)
 {
   CMemObject_ctor((tMemCacheObject *)((char *)self + 8));
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08071340) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -51376,7 +51376,7 @@ void CVM_ctor(CVM *self)
   *(((DWORD*)(void*)self) + 10) = 0;
   *(((DWORD*)(void*)self) + 2) = 1000000;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080713A0) --------------------------------------------------------
 void CVM_dtor(CVM *self, char a2){
@@ -51473,7 +51473,7 @@ void _static_initialization_and_destruction_0_10(int a1, int a2){
 
 //----- (08071698) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080716B4) --------------------------------------------------------
 // void _vtbl_global _destructor keyed toBindings()
@@ -51499,7 +51499,7 @@ int CHashTable__ScriptData_ptr_Find(DWORD *a1, unsigned long long a2, DWORD *a3)
   *a3 = i[3];
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080717A0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -51529,7 +51529,7 @@ void CTaskMgr_ctor(CTaskMgr *self)
   *(((DWORD*)(void*)self) + 18) = CLog_RegisterModule((CLog *)&ALog15, 9, ": CharID");
   *(((DWORD*)(void*)self) + 19) = CLog_RegisterModule((CLog *)&ALog16, 9, ": CharID");
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080719BC) --------------------------------------------------------
 void CTaskMgr_dtor(CTaskMgr *self, char a2){
@@ -51875,7 +51875,7 @@ int CTaskMgr_ReloadLUA(CTaskMgr *self)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81D7D84: using guessed type int dword_81D7D84;
 // 81D7E04: using guessed type int dword_81D7E04;
 // 81D7E84: using guessed type int dword_81D7E84;
@@ -51915,7 +51915,7 @@ int CTaskMgr_LoadHeaders(CTaskMgr *self)
   CLogFilter_Log(*(CLogFilter **)self, "Loading %u Headers", v2);
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0807267C) --------------------------------------------------------
 int (**CTaskMgr_BindFunctions(CTaskMgr *self))(int)
@@ -52209,7 +52209,7 @@ void _static_initialization_and_destruction_0_11(int a1, int a2){
 
 //----- (080731F4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08073210) --------------------------------------------------------
 // void _vtbl_global _destructor keyed toCTaskMgr_CTaskMgr()
@@ -52246,7 +52246,7 @@ int CHashTable__ScriptData_ptr_RemoveAll(DWORD *a1)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080732D0) --------------------------------------------------------
 int CHashTable__ScriptData_ptr_dtor_CHashTable(DWORD *a1, char a2){
@@ -52295,7 +52295,7 @@ int CHashTable__ScriptData_ptr_Insert(DWORD *a1, unsigned long long a2, DWORD *a
   *(DWORD *)(v7 + 12) = *a3;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B208: using guessed type int malloc(DWORD);
 
 //----- (08073470) --------------------------------------------------------
@@ -52316,7 +52316,7 @@ void CEventMgr_ctor(CEventMgr *self)
   *(((DWORD*)(void*)self) + 26) = 999999999;
   *(((DWORD*)(void*)self) + 27) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08073508) --------------------------------------------------------
 void CEventMgr_dtor(CEventMgr *self, char a2){
@@ -52501,7 +52501,7 @@ int CEventMgr_Startup(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08073AB4) --------------------------------------------------------
 int CEventMgr_Init(int a1, int a2){
@@ -52911,7 +52911,7 @@ int CEventMgr_ClearEvents(CEventMgr *self)
   pthread_mutex_unlock((pthread_mutex_t *)((char *)self + 44));
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080747BC) --------------------------------------------------------
 int CEventMgr_ReloadEvents(CEventMgr *self)
@@ -53170,7 +53170,7 @@ CMatrix *_static_initialization_and_destruction_0_12(int a1, int a2){
 
 //----- (08074D24) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08074D50) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -53181,7 +53181,7 @@ void CGS_ctor(CGS *self)
   *(DWORD *)self = CLog_RegisterModule((CLog *)&SysLog, 6, "Game Service");
   *(((DWORD*)(void*)self) + 183) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08074D9C) --------------------------------------------------------
 void CGS_dtor(CGS *self, char a2){
@@ -53615,7 +53615,7 @@ int CGS_GetAuctionList(CGS *self)
   }
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 8075730: using guessed type char var_C4[8];
 // 8075730: using guessed type char var_BC[8];
 // 8075730: using guessed type char var_B4[4];
@@ -61090,7 +61090,7 @@ void _static_initialization_and_destruction_0_13(int a1, int a2){
 
 //----- (08086DF8) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08086E14) --------------------------------------------------------
 // void _vtbl_global _destructor keyed toCGS_CGS()
@@ -61113,7 +61113,7 @@ void CVector_ctor(CVector *self)
 {
   ;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08086E68) --------------------------------------------------------
 CVector *CVector_ctor(CVector *self, float a2, float a3, float a4){
@@ -61267,7 +61267,7 @@ int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Clear(int *a1)
   a1[5] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (08087130) --------------------------------------------------------
@@ -61377,7 +61377,7 @@ int CSceneMgr_ReloadScenes(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0808752C) --------------------------------------------------------
 int CSceneMgr_GetCharacterList(int *a1, void *a2, int a3){
@@ -61406,7 +61406,7 @@ int CSceneMgr_LockWrite(CSceneMgr *self, CScene *a2)
     __assert_fail("0", "CSceneMgr.cpp", 0xC7u, "void CSceneMgr_LockWrite(CScene *)");
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08087618) --------------------------------------------------------
 
@@ -61426,7 +61426,7 @@ int CSceneMgr_GetNextScene(CSceneMgr *self, CScene *a2)
     result = *(DWORD *)self;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08087730) --------------------------------------------------------
 int CSceneMgr_GetObjects(int a1, int a2, void *a3){
@@ -61586,7 +61586,7 @@ int CSceneMgr_GetProcessID(CSceneMgr *self)
 {
   return (*(((DWORD*)(void*)self) + 7403))++;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08087BC4) --------------------------------------------------------
 CScene *CSceneMgr_FindObject(CSceneMgr *self, unsigned int a2){
@@ -61737,7 +61737,7 @@ CMatrix *_static_initialization_and_destruction_0_14(int a1, int a2){
 
 //----- (08088068) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08088090) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -61745,7 +61745,7 @@ void CMatrix_ctor(CMatrix *self)
 {
   ;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080880A0) --------------------------------------------------------
 DWORD *CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__AddTail(DWORD *a1, int a2){
@@ -61858,7 +61858,7 @@ int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Delete(int *a1, DWORD *a2
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (08088330) --------------------------------------------------------
@@ -61889,7 +61889,7 @@ CMatrix *_static_initialization_and_destruction_0_15(int a1, int a2){
 
 //----- (08088444) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08088460) --------------------------------------------------------
 int npcmutexlock(pthread_mutex_t *mutex, int a2){
@@ -61916,7 +61916,7 @@ int npcmutexunlock(pthread_mutex_t *mutex)
   lastnpclockdone = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF220: using guessed type int lastnpclockdone;
 
 //----- (080884C0) --------------------------------------------------------
@@ -61944,7 +61944,7 @@ int targetlmutexunlock(pthread_mutex_t *mutex)
   lasttargetldone = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF22C: using guessed type int lasttargetldone;
 
 //----- (08088520) --------------------------------------------------------
@@ -61972,7 +61972,7 @@ int spawnmutexunlock(pthread_mutex_t *mutex)
   lastspawndone = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF234: using guessed type int lastspawndone;
 
 //----- (08088580) --------------------------------------------------------
@@ -62000,7 +62000,7 @@ int putmutexunlock(pthread_mutex_t *mutex)
   lastputdone = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF23C: using guessed type int lastputdone;
 
 //----- (080885E0) --------------------------------------------------------
@@ -62028,7 +62028,7 @@ int getmutexunlock(pthread_mutex_t *mutex)
   lastgetdone = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF244: using guessed type int lastgetdone;
 
 //----- (08088640) --------------------------------------------------------
@@ -62047,7 +62047,7 @@ CAI *CAI_ShowDestroyMsg(CAI *self)
   g_bShowDestroy = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F2: using guessed type char g_bShowDestroy;
 
 //----- (08088670) --------------------------------------------------------
@@ -62060,7 +62060,7 @@ CAI *CAI_HideDestroyMsg(CAI *self)
   g_bShowDestroy = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F2: using guessed type char g_bShowDestroy;
 
 //----- (08088680) --------------------------------------------------------
@@ -62069,7 +62069,7 @@ void MSGShowDestroy(void)
 {
   ;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F2: using guessed type char g_bShowDestroy;
 
 //----- (08088690) --------------------------------------------------------
@@ -62108,7 +62108,7 @@ CAI *CAI_ShowWayPoint(CAI *self)
   g_bShowWayPoint = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F0: using guessed type char g_bShowWayPoint;
 
 //----- (08088718) --------------------------------------------------------
@@ -62121,7 +62121,7 @@ CAI *CAI_HideWayPoint(CAI *self)
   g_bShowWayPoint = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F0: using guessed type char g_bShowWayPoint;
 
 //----- (08088728) --------------------------------------------------------
@@ -62135,7 +62135,7 @@ CAI *CAI_ShowMove(CAI *self)
   g_bShowAggro = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F1: using guessed type char g_bShowMove;
 // 81AF1F4: using guessed type char g_bShowAggro;
 
@@ -62150,7 +62150,7 @@ CAI *CAI_HideMove(CAI *self)
   g_bShowAggro = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F1: using guessed type char g_bShowMove;
 // 81AF1F4: using guessed type char g_bShowAggro;
 
@@ -62194,7 +62194,7 @@ void CSpawnPoint_ctor(CSpawnPoint *self)
   *((WORD *)self + 4) = 0;
   pthread_mutex_init((pthread_mutex_t *)self + 2, NULL);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080888E4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -62204,7 +62204,7 @@ void CSpawnMgr_ctor(CSpawnMgr *self)
   *(DWORD *)self = 0;
   pthread_mutex_init((pthread_mutex_t *)((char *)self + 4), NULL);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08088918) --------------------------------------------------------
 char CSpawnMgr_CreateSpawnMem(CSpawnMgr *self, int a2){
@@ -62243,7 +62243,7 @@ int CSpawnMgr_GetSpawnPointCount(CSpawnMgr *self)
 {
   return *(DWORD *)self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08088A50) --------------------------------------------------------
 void CSpawnMgr_dtor(CSpawnMgr *self, char a2){
@@ -62261,7 +62261,7 @@ void CEffectElement_ctor(CEffectElement *self)
 {
   *((BYTE *)self + 20) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08088AA8) --------------------------------------------------------
 void CWayPoints_ctor(CWayPoints *self)
@@ -62289,7 +62289,7 @@ int CWayPointMgr_GetWayPointSize(CWayPointMgr *self)
 {
   return *(DWORD *)self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08088B40) --------------------------------------------------------
 bool CWayPointMgr_SetWayPointSize(CWayPointMgr *self, int a2){
@@ -62368,7 +62368,7 @@ void CPathFinder_ctor(CPathFinder *self)
 {
   *(((DWORD*)(void*)self) + 3) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08088E3C) --------------------------------------------------------
 void CPathFinder_dtor(CPathFinder *self, char a2){
@@ -62591,7 +62591,7 @@ void CWayPointSceneMgr_ctor(CWayPointSceneMgr *self)
   *(((DWORD*)(void*)self) + 1) = 0;
   *(DWORD *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080894F8) --------------------------------------------------------
 void CWayPointSceneMgr_dtor(CWayPointSceneMgr *self, char a2){
@@ -62653,7 +62653,7 @@ int CWayPointSceneMgr_GetManagerCount(CWayPointSceneMgr *self)
 {
   return *(DWORD *)self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08089730) --------------------------------------------------------
 int CWayPointSceneMgr_GetWayPointMgr(CWayPointSceneMgr *self, unsigned int a2){
@@ -62751,7 +62751,7 @@ void CAI_ctor(CAI *self)
   *(((DWORD*)(void*)self) + 16429) = 0;
   strcpy((char *)self + 65632, "AIProcess");
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 // 81D873C: using guessed type int g_pLog;
 
@@ -62826,7 +62826,7 @@ CAI *CAI_ShowAttack(CAI *self)
   g_bShowAttack = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1FC: using guessed type char g_bShowAttack;
 
 //----- (08089F24) --------------------------------------------------------
@@ -62839,7 +62839,7 @@ CAI *CAI_ShowTick(CAI *self)
   g_bShowTick = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1FD: using guessed type char g_bShowTick;
 
 //----- (08089F34) --------------------------------------------------------
@@ -62852,7 +62852,7 @@ CAI *CAI_HideAttack(CAI *self)
   g_bShowAttack = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1FC: using guessed type char g_bShowAttack;
 
 //----- (08089F44) --------------------------------------------------------
@@ -62885,7 +62885,7 @@ void CNPCAttribute_ctor(CNPCAttribute *self)
   }
   *(BYTE *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08089FF4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -62902,7 +62902,7 @@ void CNPCAttAccess_ctor(CNPCAttAccess *self)
   }
   memset(self, 0, 0x41AC80u);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0808A054) --------------------------------------------------------
 unsigned int CNPCAttAccess_ResetAttID(CNPCAttAccess *self, unsigned int a2, CMemAccess *a3){
@@ -63364,7 +63364,7 @@ char CNPCAttribute_GetPowerRank(CNPCAttribute *self, unsigned short a2, unsigned
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0808CAE8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -63372,7 +63372,7 @@ void TargetInfo_ctor(TargetInfo *self)
 {
   *(BYTE *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0808CAF8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -63381,7 +63381,7 @@ void NPCGroupInfo_ctor(NPCGroupInfo *self)
   *(((DWORD*)(void*)self) + 1) = 0;
   *(DWORD *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0808CB14) --------------------------------------------------------
 char NPCGroupInfo_CreateNPC(NPCGroupInfo *self, int a2){
@@ -63424,7 +63424,7 @@ int NPCGroupInfo_GetNPCCount(NPCGroupInfo *self)
 {
   return *(DWORD *)self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0808CD28) --------------------------------------------------------
 void NPCGroupInfo_dtor(NPCGroupInfo *self, char a2){
@@ -64275,7 +64275,7 @@ CAI *CAI_ShowColl(CAI *self)
   g_bShowColl = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF270: using guessed type char g_bShowColl;
 
 //----- (0808EA34) --------------------------------------------------------
@@ -64288,7 +64288,7 @@ CAI *CAI_HideColl(CAI *self)
   g_bShowColl = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF270: using guessed type char g_bShowColl;
 
 //----- (0808EA48) --------------------------------------------------------
@@ -66280,7 +66280,7 @@ CAI *CAI_ClearGuard(CAI *self)
   g_dwGuardID = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF218: using guessed type int g_dwGuardID;
 
 //----- (08092AD4) --------------------------------------------------------
@@ -67294,7 +67294,7 @@ CAI *CAI_ShowAttackMessage(CAI *self)
   g_bShowAttack = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1FC: using guessed type char g_bShowAttack;
 
 //----- (08094DB4) --------------------------------------------------------
@@ -67307,7 +67307,7 @@ CAI *CAI_HideAttackMessage(CAI *self)
   g_bShowAttack = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1FC: using guessed type char g_bShowAttack;
 
 //----- (08094DC8) --------------------------------------------------------
@@ -68061,7 +68061,7 @@ char CAI_LineOfSight(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08096B90) --------------------------------------------------------
 pthread_mutex_t *NPCInfo_ctor(pthread_mutex_t *mutex)
@@ -68310,7 +68310,7 @@ CAI *CAI_ClearID(CAI *self)
   g_byShowStat = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1E8: using guessed type char g_byShowStat;
 
 //----- (080973F8) --------------------------------------------------------
@@ -69092,7 +69092,7 @@ CAI *CAI_HideSpawn(CAI *self)
   g_bShowSpawn = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF214: using guessed type char g_bShowSpawn;
 
 //----- (08099A10) --------------------------------------------------------
@@ -70298,7 +70298,7 @@ int comparepart(const void *a1, const void *a2)
     result = v8 > (long double)v7;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0809D5F4) --------------------------------------------------------
 bool CAI_ProceedWithAggro(CAI *self, NPCInfo *a2, unsigned int a3){
@@ -70671,7 +70671,7 @@ CAI *CAI_ShowChangeMove(CAI *self)
   g_bShowChangeMove = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F3: using guessed type char g_bShowChangeMove;
 
 //----- (0809E3F0) --------------------------------------------------------
@@ -70684,7 +70684,7 @@ CAI *CAI_HideChangeMove(CAI *self)
   g_bShowChangeMove = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF1F3: using guessed type char g_bShowChangeMove;
 
 //----- (0809E400) --------------------------------------------------------
@@ -70693,7 +70693,7 @@ int CAI_GetScriptCount(CAI *self)
 {
   return *(((DWORD*)(void*)self) + 4008494);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0809E414) --------------------------------------------------------
 int CAI_GetClanParty(CAI *self, unsigned int a2, float a3, VKY_SCENE_tObjectHandle **a4, int *a5){
@@ -70768,7 +70768,7 @@ void NPCPool_ctor(NPCPool *self)
   pthread_mutex_init((pthread_mutex_t *)((char *)self + 12), NULL);
   pthread_mutex_init((pthread_mutex_t *)((char *)self + 36), NULL);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0809E6B4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -70776,7 +70776,7 @@ int NPCPool_GetNPCSlotCount(NPCPool *self)
 {
   return *(((DWORD*)(void*)self) + 15);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0809E6C4) --------------------------------------------------------
 char NPCPool_CreateNPCSlots(NPCPool *self, int a2){
@@ -70850,7 +70850,7 @@ void NPCPoolMgr_ctor(NPCPoolMgr *self)
   *(((DWORD*)(void*)self) + 1) = 0;
   *(DWORD *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0809E880) --------------------------------------------------------
 bool NPCPoolMgr_CreatePool(NPCPoolMgr *self, int a2){
@@ -71423,7 +71423,7 @@ void _static_initialization_and_destruction_0_16(int a1, int a2){
 
 //----- (080A0788) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080A07B0) --------------------------------------------------------
 void CVector_GetMagnitude(CVector *self)
@@ -71442,7 +71442,7 @@ int __eq(const CVector *s1, const CVector *s2)
 {
   return memcmp(s1, s2, 0xCu) == 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A081C) --------------------------------------------------------
 long double VDot(const CVector *a1, const CVector *a2)
@@ -71623,7 +71623,7 @@ int CVKY_CollisionList_GetNPCData(CVKY_CollisionList *self)
 {
   return *(((DWORD*)(void*)self) + 1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A0B98) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -71631,7 +71631,7 @@ char *CVKY_CollisionList_GetNPCCount(CVKY_CollisionList *self)
 {
   return (char *)self + 12;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A0BA8) --------------------------------------------------------
 void tVKY_CollisionInfo_ctor(tVKY_CollisionInfo *self)
@@ -71647,7 +71647,7 @@ void CSceneSharedData_ctor(CSceneSharedData *self)
   CVKY_NPCTypeList_ctor((CSceneSharedData *)((char *)self + 1584));
   CVKY_CollisionList_ctor((CSceneSharedData *)((char *)self + 1592));
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A0C90) --------------------------------------------------------
 void CSceneSharedData_dtor(CSceneSharedData *self, char a2){
@@ -71696,7 +71696,7 @@ DWORD *CGEN_NiceLinkList_CPathFinder__GetHead(DWORD *a1, DWORD *a2)
   *a2 = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A0DA0) --------------------------------------------------------
 int CGEN_NiceLinkList_CPathFinder__GetNext(int a1, int a2){
@@ -71764,7 +71764,7 @@ int CGEN_NiceLinkList_CPathFinder__Clear(int *a1)
   a1[2] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (080A0F30) --------------------------------------------------------
@@ -71781,7 +71781,7 @@ void /* __noreturn */ err_exit(char *a1)
   fprintf(stderr, "%s\n", a1);
   exit(0);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A0F84) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -71791,7 +71791,7 @@ void /* __noreturn */ berr_exit(char *a1)
   ERR_print_errors(bio_err);
   exit(0);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AAA8: using guessed type int BIO_printf(DWORD, const char *, ...);
 // 804B0D8: using guessed type int ERR_print_errors(DWORD);
 // 81AF27C: using guessed type int bio_err;
@@ -71871,7 +71871,7 @@ int readPubKey(char *a1)
   BIO_free(v5);
   return v6;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A9F8: using guessed type int BIO_s_file();
 // 804AB58: using guessed type int BUF_MEM_new();
 // 804ABA8: using guessed type int BIO_free(DWORD);
@@ -71924,7 +71924,7 @@ int readPrivKey(char *a1)
   BIO_free(v5);
   return v6;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A838: using guessed type int PEM_read_bio_RSAPrivateKey(DWORD, DWORD, DWORD, DWORD);
 // 804A998: using guessed type int OpenSSL_add_all_algorithms();
 // 804A9F8: using guessed type int BIO_s_file();
@@ -72114,7 +72114,7 @@ int outenc(char *a1, char *a2, int *a3)
   a2[v6] = v8;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A19A0) --------------------------------------------------------
 int encode(char *s, char *a2)
@@ -73322,7 +73322,7 @@ void /* __noreturn */ lua_error(DWORD *a1)
 {
   luaG_errormsg(a1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A3254) --------------------------------------------------------
 int lua_next(DWORD *a1, int a2){
@@ -73521,7 +73521,7 @@ int currentline(DWORD *a1)
     v4 = *(DWORD *)(v3 + 4 * v1);
   return v4;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A356C) --------------------------------------------------------
 int luaG_inithooks(int a1){
@@ -73858,7 +73858,7 @@ int precheck(DWORD *a1)
   v1 = a1[12];
   return (v1 == a1[11] || !v1) && (*(DWORD *)(a1[3] + 4 * a1[11] - 4) & 0x3F) == 27;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A3B0C) --------------------------------------------------------
 int checkopenop(int a1, int a2){
@@ -74286,7 +74286,7 @@ void /* __noreturn */ luaG_errormsg(DWORD *a1)
   }
   luaD_throw((int)a1, 1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A4398) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -74299,7 +74299,7 @@ void /* __noreturn */ luaG_runerror(DWORD *a1, char *s, ...)
   addinfo((int)a1);
   luaG_errormsg(a1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A43D0) --------------------------------------------------------
 int ***seterrorobj(int a1, int a2, DWORD *a3){
@@ -74604,7 +74604,7 @@ char *tryfuncTM(DWORD *a1, DWORD *a2)
   *(((DWORD*)(void*)v5) + 2) = v6;
   return v5;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A49C8) --------------------------------------------------------
 int luaD_precall(int a1, DWORD *a2){
@@ -74975,7 +74975,7 @@ int f_parser(DWORD *a1, int *a2)
   a1[2] += 12;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A50AC) --------------------------------------------------------
 int luaD_protectedparser(int a1, int a2, int a3){
@@ -75384,7 +75384,7 @@ int marktmu(int *a1)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A5930) --------------------------------------------------------
 int luaC_separateudata(int a1){
@@ -75440,7 +75440,7 @@ int *removekey(int *a1)
     *a1 = -1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A59FC) --------------------------------------------------------
 unsigned int traversetable(int *a1, int a2){
@@ -75603,7 +75603,7 @@ int traverseproto(int *a1, DWORD *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A5C74) --------------------------------------------------------
 int traverseclosure(int *a1, int a2){
@@ -75710,7 +75710,7 @@ int traversestack(int *a1, DWORD *a2)
   }
   return checkstacksizes((int)a2, v2);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A5E88) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -75748,7 +75748,7 @@ void propagatemarks(int *a1)
     }
   }
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A5F0C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -75763,7 +75763,7 @@ int valismarked(int *a1)
     v1 = 1;
   return v1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A5F38) --------------------------------------------------------
 void cleartablekeys(int a1){
@@ -76231,7 +76231,7 @@ LABEL_12:
   *(uint8_t*)&(result) = (uint8_t)((v5 & 0x45) == 64);
   return (unsigned char)result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A66DC) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -76250,7 +76250,7 @@ int luaO_str2d(const char *nptr, double *a2)
   *a2 = v2;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81D4870: using guessed type int _ctype_b;
 
 //----- (080A6778) --------------------------------------------------------
@@ -76269,7 +76269,7 @@ int pushstr(DWORD *a1, void *src)
   a1[2] += 12;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A67D8) --------------------------------------------------------
 int luaO_pushvfstring(int a1, char *s, int a2){
@@ -76409,7 +76409,7 @@ char *luaO_chunkid(char *dest, const char *s, size_t n)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819A83F: using guessed type char byte_819A83F;
 
 //----- (080A6B00) --------------------------------------------------------
@@ -76445,6 +76445,7 @@ int lookahead(int a1){
 }
 
 //----- (080A6B68) --------------------------------------------------------
+#if 0 // DUPLICATE FUNCTION
 void /* __noreturn */ error_expected(int a1, int a2){
   int v2; // eax
 
@@ -76452,6 +76453,7 @@ void /* __noreturn */ error_expected(int a1, int a2){
   luaO_pushfstring(*(DWORD *)(a1 + 40), "_vtbl_%s expected", v2);
   luaX_syntaxerror(a1);
 }
+#endif // DUPLICATE FUNCTION
 
 //----- (080A6BA0) --------------------------------------------------------
 int testnext(int a1, int a2){
@@ -76806,7 +76808,7 @@ void leaveblock(int *a1)
   a1[9] = a1[13];
   luaK_patchtohere(a1, v1[1]);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A7258) --------------------------------------------------------
 int pushclosure(int a1, int *a2, DWORD *a3){DWORD *v3; // edi
@@ -76874,7 +76876,7 @@ int open_func(DWORD *a1, DWORD *a2)
   *((BYTE *)v3 + 71) = 2;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A73AC) --------------------------------------------------------
 int close_func(int a1){int v1; // edi
@@ -77003,7 +77005,7 @@ int closelistfield(int *a1, DWORD *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A7720) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -77025,7 +77027,7 @@ void lastlistfield(int *a1, DWORD *a2)
     a1[9] = *(DWORD *)(a2[5] + 4) + 1;
   }
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A7798) --------------------------------------------------------
 int listfield(int a1, int a2){
@@ -77212,7 +77214,7 @@ LABEL_15:
   v2[9] = v4 + 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A7C60) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -77239,7 +77241,7 @@ int prefixexp(DWORD *a1, DWORD *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A7CD8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -77293,7 +77295,7 @@ LABEL_17:
     goto LABEL_16;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A7DD0) --------------------------------------------------------
 int simpleexp(int a1, DWORD *a2){
@@ -77839,7 +77841,7 @@ int localfunc(DWORD *a1)
   *(DWORD *)(*(DWORD *)(*v1 + 24) + 12 * v1[v1[13] + 173] + 4) = v1[6];
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A8BC4) --------------------------------------------------------
 int localstat(int a1){
@@ -77914,7 +77916,7 @@ DWORD *exprstat(DWORD *a1)
   v3 = 0;
   return assignment(a1, &v3, 1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A8D50) --------------------------------------------------------
 int retstat(int a1){
@@ -78037,7 +78039,7 @@ int statement(DWORD *a1)
       return 0;
   }
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A8FB4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -78068,7 +78070,7 @@ int chunk(DWORD *a1)
   --a1[14];
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A9030) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -78076,7 +78078,7 @@ int default_panic(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A9038) --------------------------------------------------------
 void *mallocstate(int a1){void *result; // eax
@@ -78177,7 +78179,7 @@ int f_luaopen(DWORD *a1)
   v2[8] = result;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A92B4) --------------------------------------------------------
 int preinit_state(int a1){
@@ -78226,7 +78228,7 @@ void *close_state(void *ptr)
     luaM_realloc(0, v1, 160, 0);
   return freestate(0, ptr);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A93B8) --------------------------------------------------------
 DWORD *luaE_newthread(DWORD *a1)
@@ -78277,7 +78279,7 @@ DWORD *lua_open()
   }
   return v1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080A94B4) --------------------------------------------------------
 char callallgcTM(int a1){
@@ -79147,9 +79149,11 @@ DWORD *luaT_gettmbyobj(int a1, DWORD *a2, int a3){
 }
 
 //----- (080AA410) --------------------------------------------------------
+#if 0 // DUPLICATE FUNCTION
 void /* __noreturn */ unexpectedEOZ(int a1){
   luaG_runerror(*(DWORD **)a1, "unexpected end of file in %s", *(const char **)(a1 + 16));
 }
+#endif // DUPLICATE FUNCTION
 
 //----- (080AA430) --------------------------------------------------------
 int ezgetc(int a1){
@@ -79428,7 +79432,7 @@ LABEL_12:
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AA91C) --------------------------------------------------------
 DWORD *LoadFunction(int *a1, int a2){
@@ -79529,7 +79533,7 @@ int LoadHeader(DWORD **a1)
     luaG_runerror(*a1, "unknown number format in %s", (const char *)a1[4]);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AAC1C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -79538,7 +79542,7 @@ DWORD *LoadChunk(int *a1)
   LoadHeader((DWORD **)a1);
   return LoadFunction(a1, 0);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AAC40) --------------------------------------------------------
 DWORD *luaU_undump(int a1, int a2, int a3){
@@ -79574,7 +79578,7 @@ int luaU_endianness(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AACA0) --------------------------------------------------------
 DWORD *luaV_tonumber(DWORD *a1, int a2){
@@ -79694,7 +79698,7 @@ char callTMres(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4)
   a1[2] -= 12;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AAEA8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -79736,7 +79740,7 @@ char callTM(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4, DWORD *a5)
   a1[2] = v13 + 12;
   return luaD_call((int)a1, v13, 0);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AAF4C) --------------------------------------------------------
 DWORD *luaV_index(int a1, int a2, DWORD *a3, int a4){int v4; // edx
@@ -79833,7 +79837,7 @@ char luaV_settable(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4)
   *(uint8_t*)&(v9) = (uint8_t)(callTM(a1, v8, v4, a3, a4));
   return v9;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AB178) --------------------------------------------------------
 int call_binTM(DWORD *a1, DWORD *a2, DWORD *a3, int a4, int a5){
@@ -80982,7 +80986,7 @@ int luaZ_lookahead(DWORD *a1)
   }
   return *(unsigned char *)a1[1];
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AC8F4) --------------------------------------------------------
 DWORD *luaZ_init(DWORD *a1, int a2, int a3, int a4){
@@ -81078,7 +81082,7 @@ int luaK_jump(int *a1)
   luaK_concat(a1, &v3, v1);
   return v3;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080ACA94) --------------------------------------------------------
 int luaK_condjump(int *a1, int a2, int a3, int a4, int a5){
@@ -81211,7 +81215,7 @@ void luaK_dischargejpc(int *a1)
   luaK_patchlistaux(a1, a1[8], a1[6], 255, a1[6], 255, a1[6]);
   a1[8] = -1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080ACCE4) --------------------------------------------------------
 void luaK_patchlist(int *a1, int a2, int a3){
@@ -81330,7 +81334,7 @@ int addk(int *a1, DWORD *a2, DWORD *a3)
   *(double *)(v8 + 1) = (double)a1[10];
   return a1[10]++;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080ACF00) --------------------------------------------------------
 int luaK_stringK(int *a1, int a2){
@@ -81365,7 +81369,7 @@ int nil_constant(int *a1)
   v4 = a1[1];
   return addk(a1, &v3, &v2);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080ACF80) --------------------------------------------------------
 int luaK_setcallreturns(int a1, DWORD *a2, int a3){
@@ -81472,7 +81476,7 @@ int discharge2anyreg(int *a1, DWORD *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD180) --------------------------------------------------------
 int luaK_exp2reg(int *a1, DWORD *a2, int a3){
@@ -81520,7 +81524,7 @@ int luaK_exp2nextreg(int *a1, DWORD *a2)
   luaK_reserveregs(a1, 1);
   return luaK_exp2reg(a1, a2, a1[9] - 1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD2F8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -81541,7 +81545,7 @@ LABEL_5:
   }
   return a2[1];
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD34C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -81555,7 +81559,7 @@ int luaK_exp2val(int *a1, DWORD *a2)
     result = luaK_exp2anyreg(a1, a2);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD37C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -81583,7 +81587,7 @@ int luaK_exp2RK(int *a1, DWORD *a2)
     return luaK_exp2anyreg(a1, a2);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD3F0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -81620,7 +81624,7 @@ DWORD *luaK_storevar(int *a1, int *a2, DWORD *a3)
   }
   return freeexp((int)a1, a3);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD4A4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -81641,7 +81645,7 @@ DWORD *luaK_self(int *a1, DWORD *a2, DWORD *a3)
   *a2 = 11;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD518) --------------------------------------------------------
 unsigned int invertjump(int a1, int a2){
@@ -81720,7 +81724,7 @@ LABEL_8:
 LABEL_12:
   luaK_concat(a1, a2 + 4, v3);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD648) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -81758,7 +81762,7 @@ LABEL_8:
 LABEL_12:
   luaK_concat(a1, a2 + 3, v3);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD6BC) --------------------------------------------------------
 int codenot(int a1, DWORD *a2){
@@ -81797,7 +81801,7 @@ int luaK_indexed(int *a1, DWORD *a2, DWORD *a3)
   *a2 = 8;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AD774) --------------------------------------------------------
 int luaK_prefix(int *a1, int a2, DWORD *a3){
@@ -82093,7 +82097,7 @@ int inclinenumber(int *a1)
   a1[1] = v5;
   return luaX_checklimit((int)a1, v5, 2147483645, (int)"lines in a chunk");
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080ADE08) --------------------------------------------------------
 int luaX_setinput(int a1, int *a2, DWORD *a3, int a4){
@@ -83150,7 +83154,7 @@ void /* __noreturn */ luaL_error(DWORD *a1, char *a2, ...)
   lua_concat(a1, 2);
   lua_error(a1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AEFC0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -83168,7 +83172,7 @@ int luaL_findstring(const char *s2, const char *const *a2)
   }
   return v2;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AF004) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -83188,7 +83192,7 @@ int luaL_newmetatable(DWORD *a1, void *a2)
   lua_rawset(a1, -10000);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AF0BC) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -83197,7 +83201,7 @@ int luaL_getmetatable(DWORD *a1, void *a2)
   lua_pushstring((int)a1, a2);
   return lua_rawget(a1, -10000);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080AF0E8) --------------------------------------------------------
 int luaL_checkudata(int a1, int a2, char *s2){
@@ -84296,7 +84300,7 @@ void def_80B0BFA(void)
 {
   /* JUMPOUT - indirect jump */
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 80B0CD3: control flows out of bounds to 80B0CD6
 
 //----- (080B0CEC) --------------------------------------------------------
@@ -84333,7 +84337,7 @@ int luaB_newproxy(DWORD *a1)
   }
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080B0DEC) --------------------------------------------------------
 const char *getpath(DWORD *a1)
@@ -84606,7 +84610,7 @@ int base_open(DWORD *a1)
   lua_rawset(a1, -3);
   return lua_rawset(a1, -1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819B8E0: using guessed type char *base_funcs;
 
 //----- (080B15C8) --------------------------------------------------------
@@ -84621,7 +84625,7 @@ int luaopen_base(DWORD *a1)
   lua_settable(a1, -10001);
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819B9E0: using guessed type char *co_funcs;
 
 //----- (080B1630) --------------------------------------------------------
@@ -84710,7 +84714,7 @@ DWORD *newfile(DWORD *a1)
   lua_setmetatable(a1, -2);
   return v2;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080B17E8) --------------------------------------------------------
 char registerfile(DWORD *a1, int a2, void *a3, void *a4){
@@ -85256,7 +85260,7 @@ int createmeta(DWORD *a1)
   lua_rawset(a1, -3);
   return luaL_openlib(a1, 0, &flib, 0);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819BD40: using guessed type char *flib;
 
 //----- (080B2534) --------------------------------------------------------
@@ -85518,7 +85522,7 @@ int luaopen_io(DWORD *a1)
   registerfile(a1, (int)stderr, "stderr", 0);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819BCC0: using guessed type char *iolib;
 // 819BDE0: using guessed type char *syslib;
 // 81D4874: using guessed type int stdin;
@@ -85675,7 +85679,7 @@ int math_pow(DWORD *a1)
   lua_pushnumber((int)a1, v2);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080B308C) --------------------------------------------------------
 int math_log(DWORD *a1)
@@ -85876,7 +85880,7 @@ int luaopen_math(DWORD *a1)
   lua_settable(a1, -10001);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819BF20: using guessed type void *mathlib;
 
 //----- (080B3630) --------------------------------------------------------
@@ -87043,7 +87047,7 @@ int luaopen_string(DWORD *a1)
   luaL_openlib(a1, "string", &strlib, 0);
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 819C460: using guessed type char *strlib;
 
 //----- (080B5070) --------------------------------------------------------
@@ -88670,7 +88674,7 @@ int GetBarredClanList(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080B8B14) --------------------------------------------------------
 int SendClanReply(int a1){
@@ -90186,7 +90190,7 @@ int AddToBountyList(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080BC248) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -90194,7 +90198,7 @@ int RemoveFromBountyList(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080BC258) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -90202,7 +90206,7 @@ int GetBountyList(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080BC268) --------------------------------------------------------
 int GetClanType(int a1){
@@ -91425,7 +91429,7 @@ int QuitClan(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080BEA58) --------------------------------------------------------
 int QuitClan_F(int a1, int a2, int a3){
@@ -92703,7 +92707,7 @@ CMatrix *_static_initialization_and_destruction_0_17(int a1, int a2){
 
 //----- (080C1CF8) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080C1D20) --------------------------------------------------------
 int GetAllStances(int a1){
@@ -99257,7 +99261,7 @@ CMatrix *_static_initialization_and_destruction_0_18(int a1, int a2){
 
 //----- (080D6714) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080D6730) --------------------------------------------------------
 int GEN_CLinkList_VKY_SCENE_tObjectHandle__dtor_GEN_CLinkList(DWORD *a1, char a2){
@@ -99322,7 +99326,7 @@ DWORD *GEN_CLinkList_VKY_SCENE_tObjectHandle__Reset(DWORD *a1)
   a1[2] = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080D6860) --------------------------------------------------------
 int DoEffect(int a1){
@@ -102348,7 +102352,7 @@ CMatrix *_static_initialization_and_destruction_0_19(int a1, int a2){
 
 //----- (080E0024) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080E0040) --------------------------------------------------------
 int GetEventStance(int a1){
@@ -103529,7 +103533,7 @@ CMatrix *_static_initialization_and_destruction_0_20(int a1, int a2){
 
 //----- (080E45C4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080E45E0) --------------------------------------------------------
 int RollDice(DWORD *a1)
@@ -107399,7 +107403,7 @@ int ActivateWeather(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080EF0A4) --------------------------------------------------------
 int SaveCharacter(int a1){
@@ -108404,7 +108408,7 @@ int GetLastResTime(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (080F17A4) --------------------------------------------------------
 int VerifyCharExists(int a1){
@@ -110629,7 +110633,7 @@ CMatrix *_static_initialization_and_destruction_0_21(int a1, int a2){
 
 //----- (080F71D4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080F7200) --------------------------------------------------------
 int CreateGuild(int a1){
@@ -111324,7 +111328,7 @@ CMatrix *_static_initialization_and_destruction_0_22(int a1, int a2){
 
 //----- (080F8A98) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080F8AC0) --------------------------------------------------------
 int SetTeamID(int a1){
@@ -112278,7 +112282,7 @@ CMatrix *_static_initialization_and_destruction_0_23(int a1, int a2){
 
 //----- (080FB488) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (080FB4B0) --------------------------------------------------------
 int GetGold(int a1){
@@ -120113,7 +120117,7 @@ int AddSetEffects_F(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08112134) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -120121,7 +120125,7 @@ int RemoveSetEffects_F(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08112144) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -120129,7 +120133,7 @@ int GetSetEffects_F(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08112154) --------------------------------------------------------
 int DoSetEffects(DWORD *a1)
@@ -120674,7 +120678,7 @@ CMatrix *_static_initialization_and_destruction_0_24(int a1, int a2){
 
 //----- (08113868) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08113890) --------------------------------------------------------
 int GetLevel(int a1){
@@ -121484,7 +121488,7 @@ CMatrix *_static_initialization_and_destruction_0_25(int a1, int a2){
 
 //----- (08115AB8) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08115AE0) --------------------------------------------------------
 int Abs(DWORD *a1)
@@ -121691,7 +121695,7 @@ CMatrix *_static_initialization_and_destruction_0_26(int a1, int a2){
 
 //----- (08116228) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08116250) --------------------------------------------------------
 int GetElementalAdvantage(int a1){
@@ -121886,7 +121890,7 @@ CMatrix *_static_initialization_and_destruction_0_27(int a1, int a2){
 
 //----- (08116844) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08116860) --------------------------------------------------------
 int AIGetByAttID(unsigned int a1, int a2){
@@ -123584,7 +123588,7 @@ int aicomparepart(const void *a1, const void *a2)
     result = v8 > (long double)v7;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0811DD18) --------------------------------------------------------
 int AIGetNPCPartner(unsigned int a1, int a2, int a3, float a4, int a5){
@@ -127157,7 +127161,7 @@ int aicomparespawnpt(const void *a1, const void *a2)
     result = *((float *)a1 + 1) > (long double)*((float *)a2 + 1);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0812AC0C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -127180,7 +127184,7 @@ int aicomparenpc(const void *a1, const void *a2)
     result = *((float *)a1 + 1) > (long double)*((float *)a2 + 1);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0812AC5C) --------------------------------------------------------
 int GetNPCCoord(DWORD *a1)
@@ -129676,7 +129680,7 @@ CMatrix *_static_initialization_and_destruction_0_28(int a1, int a2){
 
 //----- (08130A48) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08130A70) --------------------------------------------------------
 int GetAllBasePrimaryAttributes(int a1){
@@ -130723,7 +130727,7 @@ CMatrix *_static_initialization_and_destruction_0_29(int a1, int a2){
 
 //----- (08132E08) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08132E30) --------------------------------------------------------
 int SendJournal(DWORD *a1)
@@ -134591,7 +134595,7 @@ int PickGenTextDiff(unsigned short a1, unsigned short *a2)
   }
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0813F2AC) --------------------------------------------------------
 int CheckElapsedTime(int a1){
@@ -135484,7 +135488,7 @@ CMatrix *_static_initialization_and_destruction_0_30(int a1, int a2){
 
 //----- (08141718) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08141740) --------------------------------------------------------
 int GetResourceClan(int a1){
@@ -136369,7 +136373,7 @@ CMatrix *_static_initialization_and_destruction_0_31(int a1, int a2){
 
 //----- (08144184) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (081441B0) --------------------------------------------------------
 int GetCurrentHitPoints(int a1){
@@ -139827,7 +139831,7 @@ CMatrix *_static_initialization_and_destruction_0_32(int a1, int a2){
 
 //----- (0814CBE8) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0814CC10) --------------------------------------------------------
 int GetSkillPoints(int a1){
@@ -140601,7 +140605,7 @@ CMatrix *_static_initialization_and_destruction_0_33(int a1, int a2){
 
 //----- (0814E924) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0814E940) --------------------------------------------------------
 int Echo(int a1){
@@ -141241,7 +141245,7 @@ int RemoveEvent(void)
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08150134) --------------------------------------------------------
 int ReloadEvents(int a1){
@@ -142082,7 +142086,7 @@ CMatrix *_static_initialization_and_destruction_0_34(int a1, int a2){
 
 //----- (08152688) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (081526B0) --------------------------------------------------------
 int CreateWarEvent(int a1){
@@ -145104,7 +145108,7 @@ CMatrix *_static_initialization_and_destruction_0_35(int a1, int a2){
 
 //----- (0815C408) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0815C430) --------------------------------------------------------
 int ConfirmZone(int a1){
@@ -146291,7 +146295,7 @@ CMatrix *_static_initialization_and_destruction_0_36(int a1, int a2){
 
 //----- (0815F338) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0815F360) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -146299,7 +146303,7 @@ void CDBAccess_ctor(CDBAccess *self)
 {
   *(((DWORD*)(void*)self) + 8389847) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0815F378) --------------------------------------------------------
 void CDBAccess_dtor(CDBAccess *self, char a2){
@@ -146323,7 +146327,7 @@ int CDBAccess_Init(CDBAccess *self, char *src, char *a3, char *a4, char *a5)
   *((BYTE *)self + 33555286) = 1;
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A848: using guessed type int mysql_init(DWORD);
 // 804B158: using guessed type int mysql_real_connect(DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD, DWORD);
 
@@ -146338,7 +146342,7 @@ int CDBAccess_SetInitParams(CDBAccess *self, char *src, char *a3, char *a4, char
   strcpy((char *)self + 639, a5);
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A848: using guessed type int mysql_init(DWORD);
 
 //----- (0815F4D0) --------------------------------------------------------
@@ -146358,7 +146362,7 @@ int CDBAccess_ReConnect(CDBAccess *self)
     result = -1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A848: using guessed type int mysql_init(DWORD);
 // 804ACB8: using guessed type int mysql_close(DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
@@ -146373,7 +146377,7 @@ int CDBAccess_Disconnect(CDBAccess *self)
   *(((DWORD*)(void*)self) + 8389847) = 0;
   return mysql_close(self);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804ACB8: using guessed type int mysql_close(DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
 
@@ -146427,7 +146431,7 @@ LABEL_15:
     __assert_fail("0", "CDBAccess.cpp", 0xA2u, "int CDBAccess_SQLQuery((char*)0, ...)");
   return -1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A7E8: using guessed type int mysql_affected_rows(DWORD);
 // 804AD78: using guessed type int mysql_errno(DWORD);
 // 804AE88: using guessed type int mysql_query(DWORD, DWORD, DWORD);
@@ -146459,7 +146463,7 @@ LABEL_15:
   *(((DWORD*)(void*)self) + 8389847) = 0;
   return -1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A758: using guessed type int mysql_store_result(DWORD);
 // 804A788: using guessed type int mysql_fetch_row(DWORD);
 // 804ACD8: using guessed type int mysql_num_rows(DWORD);
@@ -146624,7 +146628,7 @@ LABEL_12:
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A758: using guessed type int mysql_store_result(DWORD);
 // 804A788: using guessed type int mysql_fetch_row(DWORD);
 // 804ACD8: using guessed type int mysql_num_rows(DWORD);
@@ -146637,7 +146641,7 @@ int CDBAccess_GetLastInsertID(CDBAccess *self)
 {
   return mysql_insert_id(self);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804A828: using guessed type long long mysql_insert_id(DWORD);
 
 //----- (0815FD18) --------------------------------------------------------
@@ -146773,7 +146777,7 @@ char *strmov(char *a1, const char *a2)
   while ( v4 );
   return v2 - 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081602B0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -146785,7 +146789,7 @@ void CLog_ctor(CLog *self)
   *(((DWORD*)(void*)self) + 1) = 3;
   *(((DWORD*)(void*)self) + 25) = -1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081602E0) --------------------------------------------------------
 void CLog_dtor(CLog *self, char a2){
@@ -146809,7 +146813,7 @@ char *CLog_SetLogFile(CLog *self, char *src)
   *(DWORD *)self = 2;
   return strcpy((char *)self + 12, src);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08160360) --------------------------------------------------------
 int CLog_SetProgName(CLog *self, char *ident, int a2){
@@ -146992,7 +146996,7 @@ int CLogFilter_Log(CLogFilter *self, char *format, ...)
   vsnprintf(&s, 0x400u, format, va);
   return CLog_Log(*(CLog **)self, 3, (char *)self + 16, &s);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816099C) --------------------------------------------------------
 FILE *CLogFilter_Log(CLogFilter *self, unsigned short *a2)
@@ -147006,7 +147010,7 @@ int CLogFilter_LogFilename(CLogFilter *self)
 {
   return *((DWORD*)(void*)self) + 12;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081609F0) --------------------------------------------------------
 void CRcvPkt_ctor(CRcvPkt *self)
@@ -147249,7 +147253,7 @@ int CRcvPkt_LocateFree(CRcvPkt *self)
     *(((DWORD*)(void*)self) + 24) = 0;
   return v2;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816116C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -147299,7 +147303,7 @@ int CRcvPkt_GetNextPacket(CRcvPkt *self)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816123C) --------------------------------------------------------
 DWORD *CRcvPkt_FreePacket(DWORD *a1, int a2){
@@ -147357,7 +147361,7 @@ int CRcvPkt_AllocDropList(CRcvPkt *self)
   *(((DWORD*)(void*)self) + 4) = *(DWORD *)(result + 4);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 8161326: variable 'v4' is possibly undefined
 // 804B208: using guessed type int malloc(DWORD);
 
@@ -147500,7 +147504,7 @@ int CSndPkt_GetNextPacket(CSndPkt *self)
 {
   return *(((DWORD*)(void*)self) + 3);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081617F8) --------------------------------------------------------
 int CSndPkt_DeletePacket(DWORD *a1, int a2){
@@ -147836,7 +147840,7 @@ int CSndPkt_GetUID(CSndPkt *self)
   }
   return *((unsigned char *)self + 44);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081620B4) --------------------------------------------------------
 CSndPkt *CSndPkt_SetPacketBreak(CSndPkt *self, int a2){
@@ -147888,7 +147892,7 @@ DWORD *CSndPkt_LocateFree(CSndPkt *self)
   v2[4] = *(((DWORD*)(void*)self) + 12);
   return v2;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162208) --------------------------------------------------------
 int CSndPkt_LocatePacket(CSndPkt *self, int a2, unsigned char a3){
@@ -148058,7 +148062,7 @@ int GetTickCount(void)
   secbase = tv.tv_sec;
   return tv.tv_usec / 1000;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF760: using guessed type int secbase;
 
 //----- (08162678) --------------------------------------------------------
@@ -148067,7 +148071,7 @@ void CMTimer_ctor(CMTimer *self)
 {
   *(DWORD *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816268C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -148082,7 +148086,7 @@ int CMTimer_GetTickCount(CMTimer *self)
   *(DWORD *)self = tv.tv_sec;
   return tv.tv_usec / 1000;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF760: using guessed type int secbase;
 
 //----- (08162740) --------------------------------------------------------
@@ -148094,7 +148098,7 @@ void CRC32_ctor(CRC32 *self)
   CRC32_crc32_init(self);
   *(((DWORD*)(void*)self) + 2) = -1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 
 //----- (08162790) --------------------------------------------------------
@@ -148145,7 +148149,7 @@ void CRC32_crc32_init(CRC32 *self)
     *(DWORD *)(*((DWORD*)(void*)self) + 4 * i) = CRC32_reflect(self, *(DWORD *)(*((DWORD*)(void*)self) + 4 * i), 32);
   }
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162978) --------------------------------------------------------
 unsigned int CRC32_crc32_calc(CRC32 *self, unsigned char *a2, int a2){
@@ -148179,7 +148183,7 @@ int CRC32_get(CRC32 *self)
 {
   return *(((DWORD*)(void*)self) + 2);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162A90) --------------------------------------------------------
 int _lzo_ptr_linear(int a1){
@@ -148211,7 +148215,7 @@ int lzo_version(void)
 {
   return 4224;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162B24) --------------------------------------------------------
 const char *lzo_version_string()
@@ -148349,7 +148353,7 @@ int lzo_memcmp(void *s1, void *s2, size_t n)
 {
   return memcmp(s1, s2, n);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162DD4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -148357,7 +148361,7 @@ void *lzo_memcpy(void *dest, void *src, size_t n)
 {
   return memcpy(dest, src, n);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162DFC) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -148365,7 +148369,7 @@ void *lzo_memmove(void *dest, void *src, size_t n)
 {
   return memmove(dest, src, n);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162E24) --------------------------------------------------------
 void *lzo_memset(void *s, int a2, size_t n){
@@ -148378,7 +148382,7 @@ int basic_integral_check()
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162E68) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -148386,7 +148390,7 @@ int basic_ptr_check()
 {
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08162E84) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -148550,7 +148554,7 @@ int ptr_check()
   }
   return v33;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 8162E84: using guessed type char var_4C[16];
 // 8162E84: using guessed type char var_34[44];
 
@@ -148684,7 +148688,7 @@ int lzo_config_check()
     result = -1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 81AF764: using guessed type int xn_55;
 
 //----- (081634B8) --------------------------------------------------------
@@ -148693,7 +148697,7 @@ int schedule_insns_bug(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081634F4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -148706,7 +148710,7 @@ int strength_reduce_bug(DWORD *a1)
     result = 1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08163534) --------------------------------------------------------
 int _lzo_init2(int a1, int a2, int a3, int a4, int a5, int a6, int a7, int a8, int a9, int a10){
@@ -151596,7 +151600,7 @@ int CIndoorScene_MoveObject(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08169A48) --------------------------------------------------------
 int CIndoorScene_MoveObject(CIndoorScene *self, CMatrix *a2, const CVector *a3, const CVector *a4, tVKY_CollisionInfo *a5, int a6){
@@ -152322,7 +152326,7 @@ CMatrix *_static_initialization_and_destruction_0_37(int a1, int a2){
 
 //----- (0816BCD4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0816BCF0) --------------------------------------------------------
 int *tf12CIndoorScene()
@@ -152346,7 +152350,7 @@ CVector *CVector___apl(CVector *self, const CVector *a2)
   *((float *)self + 2) = *((float *)self + 2) + *((float *)a2 + 2);
   return self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816BD58) --------------------------------------------------------
 void GetNormal(const CVector *a1, CVector *a2)
@@ -152416,7 +152420,7 @@ CMatrix *CMatrix_AddTranslate(CMatrix *self, const CVector *a2)
   *((float *)self + 14) = *((float *)a2 + 2);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816BE74) --------------------------------------------------------
 const CMatrix *VecMultiplyMat3x3(const CMatrix *a1, const CVector *a2, float *a3)
@@ -152496,7 +152500,7 @@ DWORD *CGEN_ArrayList_ulong__CGEN_ArrayList(DWORD *a1)
   a1[2] = 0;
   return a1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816C1A0) --------------------------------------------------------
 void CGEN_ArrayList_ulong__Destroy(int a1){
@@ -152645,7 +152649,7 @@ DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__GetHead(DWORD *a1, DWORD *a2)
   *a2 = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816C4F0) --------------------------------------------------------
 int CGEN_NiceLinkList_VKY_SCENE_tPoint__GetCurrent(int a1, int *a2){
@@ -152678,7 +152682,7 @@ DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetHead(DWORD *a1, DWORD *a2)
   *a2 = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0816C540) --------------------------------------------------------
 int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__GetCurrent(int a1, int *a2){
@@ -152917,7 +152921,7 @@ int CGEN_NiceLinkList_VKY_SCENE_tPoint__Delete(DWORD *a1, DWORD *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (0816C970) --------------------------------------------------------
@@ -152973,7 +152977,7 @@ int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Delete(DWORD *a1, DWORD *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (0816CA70) --------------------------------------------------------
@@ -153004,7 +153008,7 @@ DWORD *CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Clear(DWORD *a1)
   a1[2] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (0816CAF0) --------------------------------------------------------
@@ -153035,7 +153039,7 @@ DWORD *CGEN_NiceLinkList_VKY_SCENE_tPoint__Clear(DWORD *a1)
   a1[2] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (0816CB70) --------------------------------------------------------
@@ -154658,7 +154662,7 @@ int CLandscapeScene_MoveObject(void)
 {
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08170878) --------------------------------------------------------
 int *CLandscapeScene_FindGrid(CLandscapeScene *self, const CVector *a2, int *a3, int *a4)
@@ -155468,7 +155472,7 @@ CMatrix *_static_initialization_and_destruction_0_38(int a1, int a2){
 
 //----- (08172BC4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08172BE0) --------------------------------------------------------
 int *tf15CLandscapeScene()
@@ -156010,7 +156014,7 @@ int CScene_DeleteObject(CScene *self, VKY_SCENE_tObjectHandle *a2)
   CVKY_EntityManager_RemoveEntity(self, v3);
   return CGEN_NicePreAllocPoolList_CVKY_Entity__Add(((DWORD*)(void*)self) + 33031, (int)v3);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08174384) --------------------------------------------------------
 int CScene_GetPCObject(int a1, void *a2){
@@ -156320,7 +156324,7 @@ int CScene_ReadWayPointNetChunk(CScene *self, unsigned char *a2)
   }
   return 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 // 804B088: using guessed type int free(DWORD);
 
@@ -156415,7 +156419,7 @@ int CScene_LoadScene(CScene *self, const char *filename)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 // 804B088: using guessed type int free(DWORD);
 
@@ -156491,7 +156495,7 @@ int CScene_ReadWaypointdata(CScene *self, void **a2, unsigned int *a3)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 // 804B088: using guessed type int free(DWORD);
 
@@ -156711,7 +156715,7 @@ int LoadFile(const char *filename, unsigned char **a2, unsigned int *a3)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AF48: using guessed type int malloc(DWORD);
 
 //----- (08175C3C) --------------------------------------------------------
@@ -156728,7 +156732,7 @@ CMatrix *_static_initialization_and_destruction_0_39(int a1, int a2){
 
 //----- (08175C68) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08175C90) --------------------------------------------------------
 int *tf6CScene()
@@ -156752,7 +156756,7 @@ int *tf22CVKY_CollisionResponse()
     0;
   return &ti22CVKY_CollisionResponse;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AA38: using guessed type int 0;
 // 81DDA40: using guessed type int ti22CVKY_CollisionResponse;
 
@@ -156804,7 +156808,7 @@ int CScene_GetSceneType(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33078);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175E48) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156812,7 +156816,7 @@ int CScene_GetSceneID(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33081);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175E5C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156820,7 +156824,7 @@ int CScene_IsLoaded(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33079);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175E70) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156828,7 +156832,7 @@ char *CScene_GetFileHeader(CScene *self)
 {
   return (char *)self + 132384;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175E84) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156840,7 +156844,7 @@ CScene *CScene_SetSharedData(CScene *self, CSceneSharedData *a2)
   *(((DWORD*)(void*)self) + 33030) = a2;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175E98) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156848,7 +156852,7 @@ char *CScene_GetSceneName(CScene *self)
 {
   return (char *)self + 131096;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175EAC) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156856,7 +156860,7 @@ char *CScene_GetPCObject(CScene *self)
 {
   return (char *)self + 132168;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175EC0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156864,7 +156868,7 @@ char *CScene_GetNPCList(CScene *self)
 {
   return (char *)self + 132196;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175ED4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156872,7 +156876,7 @@ char *CScene_GetObjectList(CScene *self)
 {
   return (char *)self + 132224;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175EE8) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156880,7 +156884,7 @@ char *CScene_GetSObjectList(CScene *self)
 {
   return (char *)self + 132252;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175EFC) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156888,7 +156892,7 @@ char *CScene_GetUserRelicList(CScene *self)
 {
   return (char *)self + 132140;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175F10) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156896,7 +156900,7 @@ int CScene_GetPoints(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33076);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175F24) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156904,7 +156908,7 @@ int CScene_GetPointCount(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33077);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175F38) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156912,7 +156916,7 @@ int CScene_GetWayPointNetID(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33074);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175F4C) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156920,7 +156924,7 @@ int CScene_GetWayPointNetIDCount(CScene *self)
 {
   return *(((DWORD*)(void*)self) + 33075);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175F60) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156930,7 +156934,7 @@ DWORD *CGEN_NicePreAllocPoolList_CVKY_Entity__CGEN_NicePreAllocPoolList(DWORD *a
   a1[1] = 0;
   return a1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175F80) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156953,7 +156957,7 @@ int CGEN_NicePreAllocPoolList_CVKY_Entity__Clear(DWORD *a1)
   a1[1] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08175FE0) --------------------------------------------------------
 int CGEN_NicePreAllocPoolList_CVKY_Entity__dtor_CGEN_NicePreAllocPoolList(DWORD *a1, char a2){
@@ -156975,7 +156979,7 @@ DWORD *CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__CGEN_NicePreAllocPoolL
   a1[1] = 0;
   return a1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08176040) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -156997,7 +157001,7 @@ int CGEN_NicePreAllocPoolList_VKY_SCENE_tObjectHandle__Clear(DWORD *a1)
   a1[1] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (08176090) --------------------------------------------------------
@@ -157194,7 +157198,7 @@ void CGEN_Node_ctor(CGEN_Node *self)
   *(((DWORD*)(void*)self) + 1) = 0;
   *(DWORD *)self = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08176600) --------------------------------------------------------
 void CGEN_Node_dtor(CGEN_Node *self, char a2){
@@ -157218,7 +157222,7 @@ int *tf9CGEN_Node()
     0;
   return &ti9CGEN_Node;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804AA38: using guessed type int 0;
 // 81DDA58: using guessed type int ti9CGEN_Node;
 
@@ -157325,7 +157329,7 @@ void CVKY_MeshFaceCache_ctor(CVKY_MeshFaceCache *self)
   *(((DWORD*)(void*)self) + 7) = 0;
   *(((DWORD*)(void*)self) + 8) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817698C) --------------------------------------------------------
 void CVKY_MeshFaceCache_dtor(CVKY_MeshFaceCache *self, char a2){
@@ -157400,7 +157404,7 @@ int CVKY_MeshFaceCache_Flush(CVKY_MeshFaceCache *self)
   *(((DWORD*)(void*)self) + 6) = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (08176B74) --------------------------------------------------------
@@ -157609,7 +157613,7 @@ void CVKY_CollisionCache_ctor(CVKY_CollisionCache *self)
   *(((DWORD*)(void*)self) + 3) = 0;
   *(((DWORD*)(void*)self) + 4) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08177238) --------------------------------------------------------
 void CVKY_CollisionCache_dtor(CVKY_CollisionCache *self, char a2){
@@ -157718,7 +157722,7 @@ CMatrix *_static_initialization_and_destruction_0_40(int a1, int a2){
 
 //----- (08177538) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08177560) --------------------------------------------------------
 void tVKY_BBox_ctor(tVKY_BBox *self)
@@ -158716,7 +158720,7 @@ CMatrix *_static_initialization_and_destruction_0_41(int a1, int a2){
 
 //----- (08179454) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (08179470) --------------------------------------------------------
 long double FastAbs(float a1){
@@ -158786,7 +158790,7 @@ DWORD *CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_StructAr
   a1[2] = 0;
   return a1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081795C0) --------------------------------------------------------
 int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_StructArrayList(DWORD *a1, char a2){
@@ -158809,7 +158813,7 @@ DWORD *CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__CGEN_ArrayList(DWOR
   a1[2] = 0;
   return a1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08179620) --------------------------------------------------------
 int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__dtor_CGEN_ArrayList(int a1, char a2){
@@ -158873,7 +158877,7 @@ int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__GetCurrent(DWORD
 {
   return *a1 + 72 * a1[1] - 72;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (081797F4) --------------------------------------------------------
 int CGEN_ArrayList_CVKY_CollisionResponse_tCollisionFace__GetCount(int a1){
@@ -158915,7 +158919,7 @@ int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Destroy(DWORD *a
   *a1 = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B088: using guessed type int free(DWORD);
 
 //----- (081798C0) --------------------------------------------------------
@@ -158936,7 +158940,7 @@ void CVKY_CollisionList_ctor(CVKY_CollisionList *self)
   *(((DWORD*)(void*)self) + 2) = 0;
   *(((DWORD*)(void*)self) + 3) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (08179928) --------------------------------------------------------
 void CVKY_CollisionList_dtor(CVKY_CollisionList *self, char a2){
@@ -159212,7 +159216,7 @@ CMatrix *_static_initialization_and_destruction_0_42(int a1, int a2){
 
 //----- (0817A714) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0817A730) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -159224,7 +159228,7 @@ DWORD *GEN_CLinkList_CVector__Reset(DWORD *a1)
   a1[2] = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817A740) --------------------------------------------------------
 int GEN_CLinkList_CVector__dtor_GEN_CLinkList(DWORD *a1, char a2){
@@ -159402,7 +159406,7 @@ int CVKY_EntityManager_RemoveEntity(CVKY_EntityManager *self, CVKY_Entity *a2)
   CGEN_NiceNodeLinkList_Delete((CVKY_EntityManager *)((char *)self + 16 * v3), a2);
   return CGEN_NiceNodeLinkList_SetDestroy((int)self + 16 * v3, 1);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817AC30) --------------------------------------------------------
 CGEN_NiceNodeLinkList *CGEN_NiceNodeLinkList_ctor(CGEN_NiceNodeLinkList *self, int a2){
@@ -159428,7 +159432,7 @@ int CGEN_NiceNodeLinkList_GetHead(CGEN_NiceNodeLinkList *self)
 {
   return *(DWORD *)self;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817AC80) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -159467,7 +159471,7 @@ DWORD *CGEN_NiceNodeLinkList_Delete(CGEN_NiceNodeLinkList *self, CGEN_Node *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817AD10) --------------------------------------------------------
 CGEN_Node *CGEN_NiceNodeLinkList_AddTail(CGEN_NiceNodeLinkList *self, CGEN_Node *a2)
@@ -159528,7 +159532,7 @@ int CGEN_NiceNodeLinkList_Clear(CGEN_NiceNodeLinkList *self)
   *(((DWORD*)(void*)self) + 2) = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817AE00) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -159537,7 +159541,7 @@ void CVKY_NPCTypeList_ctor(CVKY_NPCTypeList *self)
   *(DWORD *)self = 0;
   *(((DWORD*)(void*)self) + 1) = 0;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817AE1C) --------------------------------------------------------
 void CVKY_NPCTypeList_dtor(CVKY_NPCTypeList *self, char a2){
@@ -159719,7 +159723,7 @@ CMatrix *_static_initialization_and_destruction_0_43(int a1, int a2){
 
 //----- (0817B664) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0817B680) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -159731,7 +159735,7 @@ DWORD *GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__Reset(DWORD *a1)
   a1[2] = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817B690) --------------------------------------------------------
 int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__dtor_GEN_CLinkList(DWORD *a1, char a2){
@@ -159853,7 +159857,7 @@ int GEN_CLinkList_CVKY_NPCTypeList_tNPCTypeData__CNode_ctor(int a1){
 void CVKY_PCList_ctor(CVKY_PCList *self)
 {memset(self, 0, 0x630u);
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817B908) --------------------------------------------------------
 void CVKY_PCList_dtor(CVKY_PCList *self, char a2){
@@ -159893,7 +159897,7 @@ char *CVKY_PCList_Destroy(CVKY_PCList *self)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 // 804B088: using guessed type int free(DWORD);
 
 //----- (0817BB0C) --------------------------------------------------------
@@ -160091,7 +160095,7 @@ CMatrix *_static_initialization_and_destruction_0_44(int a1, int a2){
 
 //----- (0817C3A4) --------------------------------------------------------
 
-}
+// ORPHAN BRACE: }
 
 //----- (0817C3C0) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -160103,7 +160107,7 @@ DWORD *GEN_CLinkList_tStringSt__Reset(DWORD *a1)
   a1[2] = *a1;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817C3D0) --------------------------------------------------------
 int GEN_CLinkList_tStringSt__dtor_GEN_CLinkList(DWORD *a1, char a2){
@@ -160357,7 +160361,7 @@ int GEN_GetFileName(const char *s, char *a2)
   a2[v6 - v3 - 1] = 0;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817CA28) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -160383,7 +160387,7 @@ int GEN_GetFilePath(const char *s, char *a2)
   a2[v3 + 1] = 0;
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817CAE4) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -160415,7 +160419,7 @@ int GEN_GetFileExt(const char *s, char *a2)
   a2[j - v4] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817CB94) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -160449,7 +160453,7 @@ int GEN_ChangeFileExt(char *s, char *a2)
   s[v8 + v4] = 0;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817CC54) --------------------------------------------------------
 /* DUPLICATE FUNCTION - COMMENTED OUT
@@ -160466,7 +160470,7 @@ int GEN_CheckStringIsNumeric(const char *s)
   }
   return 1;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817CCE4) --------------------------------------------------------
 int ConvertSecToTime(char *s, float a2){
@@ -160643,7 +160647,7 @@ CMatrix *CMatrix_GetTranspose(CMatrix *self, CMatrix *a2)
   *((float *)a2 + 14) = *((float *)self + 11);
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817D0C4) --------------------------------------------------------
 long double CMatrix_Determinant(CMatrix *self)
@@ -160782,7 +160786,7 @@ CMatrix *CMatrix_Adjoint(CMatrix *self, CMatrix *a2)
   *((float *)a2 + 15) = v19 * v39 - v21 * v35 + v23 * v31;
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817D4BC) --------------------------------------------------------
 unsigned short CMatrix_GetInverse(CMatrix *self, CMatrix *a2)
@@ -160930,7 +160934,7 @@ short CMatrix_GetInverse3x3(CMatrix *self, CMatrix *a2)
   }
   return result;
 }
- END DUPLICATE */
+//  END DUPLICATE */
 
 //----- (0817D734) --------------------------------------------------------
 void CMatrix_SetRotateX(CMatrix *self, float a2){
