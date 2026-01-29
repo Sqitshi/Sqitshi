@@ -126,10 +126,8 @@ int CMemAccess_RefreshCacheObject(void* self, void* obj);
 #endif /* _FWONLINE_DEFS_H_ */
 
 
-// OpenSSL Stubs
-typedef void BIO;
-typedef void BUF_MEM;
-typedef void RSA;
+// OpenSSL Stubs - BIO and RSA are already declared in types.h as structs
+struct BUF_MEM { char* data; size_t length; size_t max; };
 static inline BIO* BIO_new(void* type) { return 0; }
 static inline void* BIO_s_mem() { return 0; }
 static inline void* BIO_s_file() { return 0; }

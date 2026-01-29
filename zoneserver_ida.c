@@ -2620,7 +2620,7 @@ void CSession_dtor(CSession *self, char a2){
   {
     for ( i = (Connection *)(*(((DWORD*)(void*)self) + 16) + 224 * *(DWORD *)(*(((DWORD*)(void*)self) + 16) - 4));
           *((Connection **)self + 16) != i;
-          Connection_dtor(i, 0))
+          Connection_dtor(i, int))
     {
       i = (Connection *)((char *)i - 224);
     }
@@ -3208,7 +3208,7 @@ void CMemPage_dtor(CMemPage *self, char a2){
   {
     for ( i = (CMemObject *)(*(((DWORD*)(void*)self) + 8) + 60 * *(DWORD *)(*(((DWORD*)(void*)self) + 8) - 4));
           *((CMemObject **)self + 8) != i;
-          CMemObject_dtor(i, 0))
+          CMemObject_dtor(i, int))
     {
       i = (CMemObject *)((char *)i - 60);
     }
@@ -9785,7 +9785,7 @@ void CMemAccess_dtor(CMemAccess *self, char a2){
   {
     for ( i = (tMemCacheObject *)(*(((DWORD*)(void*)self) + 4) + 76 * *(DWORD *)(*(((DWORD*)(void*)self) + 4) - 4));
           *((tMemCacheObject **)self + 4) != i;
-          tMemCacheObject_dtor_tMemCacheObject(i, 0))
+          tMemCacheObject_dtor_tMemCacheObject(i, int))
     {
       i = (tMemCacheObject *)((char *)i - 76);
     }
@@ -11841,7 +11841,7 @@ void CWayPointMgr_dtor(CWayPointMgr *self, char a2){
   {
     for ( i = (CWayPoints *)(*(((DWORD*)(void*)self) + 1) + 40 * *(DWORD *)(*(((DWORD*)(void*)self) + 1) - 4));
           *((CWayPoints **)self + 1) != i;
-          CWayPoints_dtor(i, 0))
+          CWayPoints_dtor(i, int))
     {
       i = (CWayPoints *)((char *)i - 40);
     }
@@ -11885,7 +11885,7 @@ void CWayPointSceneMgr_dtor(CWayPointSceneMgr *self, char a2){
   {
     for ( i = (CWayPointMgr *)(*(((DWORD*)(void*)self) + 1) + 48 * *(DWORD *)(*(((DWORD*)(void*)self) + 1) - 4));
           *((CWayPointMgr **)self + 1) != i;
-          CWayPointMgr_dtor(i, 0))
+          CWayPointMgr_dtor(i, int))
     {
       i = (CWayPointMgr *)((char *)i - 48);
     }
@@ -12230,7 +12230,7 @@ void NPCGroupInfo_dtor(NPCGroupInfo *self, char a2){
   {
     for ( i = (NPCInfo *)(*(((DWORD*)(void*)self) + 1) + 2968 * *(DWORD *)(*(((DWORD*)(void*)self) + 1) - 4));
           *((NPCInfo **)self + 1) != i;
-          NPCInfo_dtor(i, 0))
+          NPCInfo_dtor(i, int))
     {
       i = (NPCInfo *)((char *)i - 2968);
     }
@@ -12595,7 +12595,7 @@ void NPCPoolMgr_dtor(NPCPoolMgr *self, char a2){
   {
     for ( i = (NPCPool *)(*((DWORD*)(void*)self) + 68 * *(DWORD *)(*(DWORD *)self - 4));
           *(NPCPool **)self != i;
-          NPCPool_dtor(i, 0))
+          NPCPool_dtor(i, int))
     {
       i = (NPCPool *)((char *)i - 68);
     }
@@ -14572,7 +14572,7 @@ char *luaD_growCI(int a1){
 //----- (080A46E0) --------------------------------------------------------
 int luaD_callhook(int a1, int a2, int a3){
   int v3; // ecx
-  void (*v4)(0, int a2, int*); // esi  int v5; // eax
+  void (*v4)(int, int a2, int*); // esi  int v5; // eax
   int v6; // edx
   int v7; // edi
   int result; // eax
@@ -18012,7 +18012,7 @@ DWORD *lua_open()
     *v0 = 0;
     preinit_state((int)v0);
     v1[4] = 0;
-    if ( luaD_rawrunprotected((int)v1, (void (*)(void*, int, int, void*))f_luaopen, 0))    {
+    if ( luaD_rawrunprotected((int)v1, (void (*)(void*, int, int, void*))f_luaopen, int))    {
       close_state(v1);
       v1 = 0;
     }
@@ -18044,7 +18044,7 @@ void *lua_close(int a1){
     *(DWORD *)(v1 + 12) = v3;
     *(WORD *)(v1 + 46) = 0;
   }
-  while ( luaD_rawrunprotected(v1, (void (*)(void*, int, int, void*))callallgcTM, 0));  return close_state((void *)v1);
+  while ( luaD_rawrunprotected(v1, (void (*)(void*, int, int, void*))callallgcTM, int));  return close_state((void *)v1);
 }
 
 //----- (080A9530) --------------------------------------------------------
@@ -20597,7 +20597,7 @@ int luaZ_fill(int a1){
   int v3; // [esp-4h] [ebp-1Ch]
   int v4; // [esp+14h] [ebp-4h]
 
-  v1 = (unsigned char *)(*(int (**)(DWORD, DWORD, int *, 0))(a1 + 8))(0, *(DWORD *)(a1 + 12), &v4, v3);
+  v1 = (unsigned char *)(*(int (**)(DWORD, DWORD, int *, int))(a1 + 8))(0, *(DWORD *)(a1 + 12), &v4, v3);
   if ( !v1 || !v4 )
     return -1;
   *(DWORD *)a1 = v4 - 1;
@@ -21124,7 +21124,7 @@ int luaK_exp2reg(int *a1, DWORD *a2, int a3){
   {
     v7 = -1;
     v4 = -1;
-    if ( need_value((int)a1, v3, 1) || need_value((int)a1, a2[4], 0))
+    if ( need_value((int)a1, v3, 1) || need_value((int)a1, a2[4], int))
     {
       v6 = -1;
       if ( *a2 != 9 )
@@ -23693,7 +23693,7 @@ void CDBAccess_ctor(CDBAccess *self)
 
 //----- (0815F378) --------------------------------------------------------
 void CDBAccess_dtor(CDBAccess *self, char a2){
-  mysql_close(self);
+  mysql_close((MYSQL*)self);
   if ( a2 & 1 )
     free(self);
 }
@@ -23703,8 +23703,8 @@ void CDBAccess_dtor(CDBAccess *self, char a2){
 //----- (0815F3AC) --------------------------------------------------------
 int CDBAccess_Init(CDBAccess *self, char *src, char *a3, char *a4, char *a5)
 {
-  mysql_init(self);
-  if ( !mysql_real_connect(self, a3, a4, a5, src, 0, 0, 0))
+  mysql_init((MYSQL*)self);
+  if ( !mysql_real_connect((MYSQL*)self, a3, a4, a5, src, 0, 0, int))
     return -1;
   strcpy((char *)self + 496, src);
   strcpy((char *)self + 561, a3);
@@ -23719,7 +23719,7 @@ int CDBAccess_Init(CDBAccess *self, char *src, char *a3, char *a4, char *a5)
 //----- (0815F458) --------------------------------------------------------
 int CDBAccess_SetInitParams(CDBAccess *self, char *src, char *a3, char *a4, char *a5)
 {
-  mysql_init(self);
+  mysql_init((MYSQL*)self);
   strcpy((char *)self + 496, src);
   strcpy((char *)self + 561, a3);
   strcpy((char *)self + 622, a4);
@@ -23736,10 +23736,10 @@ int CDBAccess_ReConnect(CDBAccess *self)
   if ( *(((DWORD*)(void*)self) + 8389847) )
     mysql_free_result(*(((DWORD*)(void*)self) + 8389847));
   *(((DWORD*)(void*)self) + 8389847) = 0;
-  mysql_close(self);
-  mysql_init(self);
+  mysql_close((MYSQL*)self);
+  mysql_init((MYSQL*)self);
   printf("\nDatabase connection lost..reconnecting.\n");
-  if ( mysql_real_connect(self, (char *)self + 561, (char *)self + 622, (char *)self + 639, (char *)self + 496, 0, 0, 0))
+  if ( mysql_real_connect((MYSQL*)self, (char *)self + 561, (char *)self + 622, (char *)self + 639, (char *)self + 496, 0, 0, int))
     result = 0;
   else
     result = -1;
@@ -23756,7 +23756,7 @@ int CDBAccess_Disconnect(CDBAccess *self)
   if ( *(((DWORD*)(void*)self) + 8389847) )
     mysql_free_result(*(((DWORD*)(void*)self) + 8389847));
   *(((DWORD*)(void*)self) + 8389847) = 0;
-  return mysql_close(self);
+  return mysql_close((MYSQL*)self);
 }
 // 804ACB8: using guessed type int mysql_close(DWORD);
 // 804AFA8: using guessed type int mysql_free_result(DWORD);
@@ -24014,7 +24014,7 @@ LABEL_12:
 //----- (0815FCE8) --------------------------------------------------------
 int CDBAccess_GetLastInsertID(CDBAccess *self)
 {
-  return mysql_insert_id(self);
+  return mysql_insert_id((MYSQL*)self);
 }
 // 804A828: using guessed type long long mysql_insert_id(DWORD);
 
@@ -26843,7 +26843,7 @@ int CScene_LoadScene(CScene *self, const char *filename)
     ptr = (void *)malloc(size);
     fread(ptr, size, 1u, stream);
     fclose(stream);
-    v3 = (*(int (**)(CScene *, 0, 0))(*(((DWORD*)(void*)self) + 33134) + 32))(self, ptr, size);
+    v3 = (*(int (**)(CScene *, 0, int))(*(((DWORD*)(void*)self) + 33134) + 32))(self, ptr, size);
     if ( ptr )
       free(ptr);
     strcpy((char *)self + 131096, filename);
@@ -27499,7 +27499,7 @@ DWORD *CGEN_NiceNodeLinkList_Delete(CGEN_NiceNodeLinkList *self, CGEN_Node *a2)
         *(((DWORD*)(void*)self) + 1) = 0;
     }
     if ( *(((DWORD*)(void*)self) + 3) )
-      result = (DWORD *)(*(int (**)(CGEN_Node *, 0))(*(((DWORD*)(void*)a2) + 2) + 8))(a2, 3);
+      result = (DWORD *)(*(int (**)(CGEN_Node *, int))(*(((DWORD*)(void*)a2) + 2) + 8))(a2, 3);
     --*(((DWORD*)(void*)self) + 2);
   }
   return result;
