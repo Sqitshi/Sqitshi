@@ -952,7 +952,7 @@ int (*_do_global_dtors_aux())(DWORD, DWORD, DWORD, DWORD)
     }
     result = 0;
     if ( 0 )
-      result = (int (*)(DWORD, DWORD, DWORD, DWORD))0(&force_to_data_0, v2, v3, v4);
+      result = 0; // FIXED: invalid function call
     completed_4 = 1;
   }
   return result;
@@ -2870,7 +2870,7 @@ int CHashTable_Connection_ptr_FreeNodes(int a1, DWORD *a2){
   if ( a2 )
   {
     CHashTable_Connection_ptr_FreeNodes(a1, *a2);
-    result = free(a2);
+    result = 0; free(a2);
   }
   return result;
 }
@@ -2901,7 +2901,7 @@ int CHashTable_Connection_ptr_dtor_CHashTable(DWORD *a1, char a2){
     free(*a1);
   result = a2 & 1;
   if ( a2 & 1 )
-    result = free(a1);
+    result = 0; free(a1);
   return result;
 }
 // 804B088: using guessed type int free(DWORD);
@@ -3181,8 +3181,7 @@ int CMemMgr_Process(CMemMgr *self)
 }
 
 //----- (08058058) --------------------------------------------------------
-CMemAccess *CMemMgr_AccessMem(CMemMgr *self, unsigned int a2, int a2_2){  CMemAccess *v3; // esi
-  CMemAccess *v5; // [esp+14h] [ebp-4h]
+CMemAccess *CMemMgr_AccessMem(CMemMgr *self, unsigned int a2, int a3){  CMemAccess *v5; // [esp+14h] [ebp-4h]
 
   v3 = (CMemAccess *)malloc(80);
   v5 = CMemAccess_ctor(v3, (char *)self + 24, (char *)self + 89, (char *)self + 150, (char *)self + 167);
@@ -3341,7 +3340,7 @@ int CHashTable_CMemObject_ptr_FreeNodes(int a1, DWORD *a2){
   if ( a2 )
   {
     CHashTable_CMemObject_ptr_FreeNodes(a1, *a2);
-    result = free(a2);
+    result = 0; free(a2);
   }
   return result;
 }
@@ -3372,7 +3371,7 @@ int CHashTable_CMemObject_ptr_dtor_CHashTable(DWORD *a1, char a2){
     free(*a1);
   result = a2 & 1;
   if ( a2 & 1 )
-    result = free(a1);
+    result = 0; free(a1);
   return result;
 }
 // 804B088: using guessed type int free(DWORD);
@@ -10203,7 +10202,7 @@ int CHashTable__tMemCacheObject_ptr_FreeNodes(int a1, DWORD *a2){
   if ( a2 )
   {
     CHashTable__tMemCacheObject_ptr_FreeNodes(a1, *a2);
-    result = free(a2);
+    result = 0; free(a2);
   }
   return result;
 }
@@ -10234,7 +10233,7 @@ int CHashTable__tMemCacheObject_ptr_dtor_CHashTable(DWORD *a1, char a2){
     free(*a1);
   result = a2 & 1;
   if ( a2 & 1 )
-    result = free(a1);
+    result = 0; free(a1);
   return result;
 }
 // 804B088: using guessed type int free(DWORD);
@@ -10905,7 +10904,7 @@ int CHashTable__ScriptData_ptr_FreeNodes(int a1, DWORD *a2){
   if ( a2 )
   {
     CHashTable__ScriptData_ptr_FreeNodes(a1, *a2);
-    result = free(a2);
+    result = 0; free(a2);
   }
   return result;
 }
@@ -10936,7 +10935,7 @@ int CHashTable__ScriptData_ptr_dtor_CHashTable(DWORD *a1, char a2){
     free(*a1);
   result = a2 & 1;
   if ( a2 & 1 )
-    result = free(a1);
+    result = 0; free(a1);
   return result;
 }
 // 804B088: using guessed type int free(DWORD);
@@ -11530,7 +11529,7 @@ int CGEN_NicePreAllocLinkList_VKY_SCENE_tObjectHandle__Delete(int *a1, DWORD *a2
       free(*a2);
     if ( a1[4] >= a1[3] )
     {
-      result = free(a2);
+      result = 0; free(a2);
     }
     else
     {
@@ -12774,7 +12773,7 @@ int CGEN_NiceLinkList_CPathFinder__dtor_CGEN_NiceLinkList(int *a1, char a2){
   CGEN_NiceLinkList_CPathFinder__Clear(a1);
   result = a2 & 1;
   if ( a2 & 1 )
-    result = free(a1);
+    result = 0; free(a1);
   return result;
 }
 // 804B1D8: using guessed type int free(DWORD);
@@ -13353,14 +13352,14 @@ int **lua_pushstring(int a1, void *a2){
 }
 
 //----- (080A2B28) --------------------------------------------------------
-int lua_pushvfstring(int a1, char *s, int a2){
+int lua_pushvfstring(int a1, char *s, int a3){
   if ( *(DWORD *)(*(DWORD *)(a1 + 16) + 36) >= *(DWORD *)(*(DWORD *)(a1 + 16) + 32) )
     luaC_collectgarbage(a1);
   return luaO_pushvfstring(a1, s, a3);
 }
 
 //----- (080A2B60) --------------------------------------------------------
-int lua_pushfstring(int a1, char *s, int a2){
+int lua_pushfstring(int a1, char *s, int a3){
   if ( *(DWORD *)(*(DWORD *)(a1 + 16) + 36) >= *(DWORD *)(*(DWORD *)(a1 + 16) + 32) )
     luaC_collectgarbage(a1);
   return luaO_pushvfstring(a1, s, (int)&a3);
@@ -13926,8 +13925,7 @@ int auxgetinfo(int a1, BYTE *a2, DWORD *a3, DWORD *a4, DWORD *a5){
 }
 
 //----- (080A3A04) --------------------------------------------------------
-int lua_getinfo(int a1, char *s, int a2){
-  int v3; // esi
+int lua_getinfo(int a1, char *s, int a3){  int v3; // esi
   int v4; // eax
   int v5; // eax
 
@@ -14465,7 +14463,7 @@ void /* __noreturn */ luaD_throw(int a1, int a2){
 }
 
 //----- (080A4498) --------------------------------------------------------
-int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a4){
+int luaD_rawrunprotected(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a3){
   int v4; // [esp-8h] [ebp-C0h]
   int v5; // [esp-4h] [ebp-BCh]
   int v6; // [esp+14h] [ebp-A4h]
@@ -14890,7 +14888,7 @@ char luaD_call(int a1, DWORD *a2, int a3){
 }
 
 //----- (080A4F70) --------------------------------------------------------
-int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a4, int a5, int a6){
+int luaD_pcall(int a1, void (*a2)(void*, int a2_dup, int a3, void*), int a3, int a4, int a5){
   int v5; // edi
   DWORD *v6; // ebx
   DWORD *v7; // eax
@@ -15662,8 +15660,7 @@ void *freeobj(int a1, unsigned char *ptr){
 }
 
 //----- (080A60F4) --------------------------------------------------------
-int sweeplist(int a1, unsigned char **a2, int a2_dup){
-  unsigned char **v3; // ebx
+int sweeplist(int a1, unsigned char **a2, int a3){  unsigned char **v3; // ebx
   int v4; // esi
   unsigned char *v5; // edx
 
@@ -16057,8 +16054,7 @@ int pushstr(DWORD *a1, void *src)
 }
 
 //----- (080A67D8) --------------------------------------------------------
-int luaO_pushvfstring(int a1, char *s, int a2){
-  char *v3; // esi
+int luaO_pushvfstring(int a1, char *s, int a3){  char *v3; // esi
   int v4; // edi
   DWORD *v5; // ebx
   int v6; // edx
@@ -16145,8 +16141,7 @@ LABEL_21:
 // 819A83F: using guessed type char byte_819A83F;
 
 //----- (080A69D8) --------------------------------------------------------
-int luaO_pushfstring(int a1, char *s, int a2){
-  return luaO_pushvfstring(a1, s, (int)&a3);
+int luaO_pushfstring(int a1, char *s, int a3){  return luaO_pushvfstring(a1, s, (int)&a3);
 }
 
 //----- (080A69F4) --------------------------------------------------------
@@ -16385,8 +16380,7 @@ int removevars(int a1, int a2){
 }
 
 //----- (080A6E58) --------------------------------------------------------
-int new_localvarstr(int a1, void *src, int a2){
-  int **v3; // eax
+int new_localvarstr(int a1, void *src, int a3){  int **v3; // eax
 
   v3 = luaS_newlstr(*(DWORD *)(a1 + 40), src, strlen((const char *)src));
   return new_localvar(a1, (int)v3, a3);
@@ -24111,8 +24105,7 @@ char *CLog_SetLogFile(CLog *self, char *src)
 }
 
 //----- (08160360) --------------------------------------------------------
-int CLog_SetProgName(CLog *self, char *ident, int a2){
-  openlog(ident, 2, facility);
+int CLog_SetProgName(CLog *self, char *ident, int a3){  openlog(ident, 2, facility);
   return 0;
 }
 
@@ -24180,7 +24173,7 @@ int CLog_Log(CLog *self, int a2, char *a3, char *a4){
     v4 = *(DWORD *)self;
     if ( *(DWORD *)self == 1 )
     {
-      SysLog(pri, "%s %s", a3, a4);
+      syslog(pri, "%s %s", a3, a4);
     }
     else if ( v4 > 1 )
     {
@@ -24207,7 +24200,7 @@ int CLog_Log(CLog *self, int a2, char *a3, char *a4){
         v6 = strlen(buf);
         buf[v6 - 1] = 0;
         printf("\n%s %s : %s", buf, a3, a4);
-        SysLog(pri, "%s %s", a3, a4);
+        syslog(pri, "%s %s", a3, a4);
       }
     }
     else if ( !v4 )
@@ -24496,8 +24489,7 @@ void CSndPkt_dtor(CSndPkt *self, char a2){
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (081615D0) --------------------------------------------------------
-int CSndPkt_AddNetObject(CSndPkt *a1, void *src, int a2){
-  int result; // eax
+int CSndPkt_AddNetObject(CSndPkt *a1, void *src, int a3){  int result; // eax
   DWORD *v4; // edx
   DWORD *v5; // [esp+10h] [ebp-8h]
   DWORD *v6; // [esp+10h] [ebp-8h]
@@ -24713,8 +24705,7 @@ int CSndPkt_LocatePacket(CSndPkt *self, int a2, unsigned char a3){
 }
 
 //----- (08162288) --------------------------------------------------------
-DWORD *CSndPkt_AddNewPacket(CSndPkt *a1, void *src, int a2){
-  DWORD *v4; // [esp+10h] [ebp-8h]
+DWORD *CSndPkt_AddNewPacket(CSndPkt *a1, void *src, int a3){  DWORD *v4; // [esp+10h] [ebp-8h]
 
   v4 = CSndPkt_LocateFree(a1);
   if ( !v4 )
@@ -26572,7 +26563,7 @@ int CGEN_NiceLinkList_VKY_SCENE_tPoint__Delete(DWORD *a1, DWORD *a2)
       if ( a1[3] )
         free(*a2);
     }
-    result = free(a2);
+    result = 0; free(a2);
     --a1[2];
   }
   return result;
@@ -26626,7 +26617,7 @@ int CGEN_NiceLinkList_VKY_SCENE_tBoundingBox__Delete(DWORD *a1, DWORD *a2)
       if ( a1[3] )
         free(*a2);
     }
-    result = free(a2);
+    result = 0; free(a2);
     --a1[2];
   }
   return result;
@@ -27330,7 +27321,7 @@ int CGEN_StructArrayList_CVKY_CollisionResponse_tCollisionFace__Destroy(DWORD *a
   int result; // eax
 
   if ( *a1 )
-    result = free(*a1);
+    result = 0; free(*a1);
   a1[2] = 0;
   a1[1] = 0;
   *a1 = 0;

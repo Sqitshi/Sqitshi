@@ -1,4 +1,4 @@
-#ifndef _FWONLINE_TYPES_H_
+﻿#ifndef _FWONLINE_TYPES_H_
 #define _FWONLINE_TYPES_H_
 
 #include <stdint.h>
@@ -353,3 +353,15 @@ typedef struct CVKY_PCList CVKY_PCList;
 /* Fehlende Typen - Phase 49 */
 typedef struct CVKY_CollisionResponse CVKY_CollisionResponse;
 typedef struct CVKY_Brush CVKY_Brush;
+
+// Typ-Aliase für IDA-Dekompilierung
+// tMemCacheObject und CMemObject sind wahrscheinlich gleich
+#define tMemCacheObject CMemObject
+
+
+// Weitere fehlende Typen
+struct stLoc;
+struct VKY_SCENE_tBoundingBox;
+struct VKY_SCENE_tObjectHandle;
+struct VKY_SCENE_tPoint;
+
