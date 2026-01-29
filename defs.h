@@ -123,6 +123,16 @@ typedef struct CVKY_CollisionResponse_tCollisionData {
 int CMemAccess_Init(void* self);
 int CMemAccess_RefreshCacheObject(void* self, void* obj);
 
+// Fehlende Funktionen für Linker
+int CDBAccess_FetchNextRow(CDBAccess* self, char* fmt, ...);
+int CSndPkt_AddNetObject(CSndPkt* pkt, void* obj, void* data);
+int CSndPkt_AddObjectHeader(void* pkt, int type, void* obj);
+void* luaO_pushvfstring(void* L, char* fmt, void* args);
+void* luaO_pushfstring(void* L, char* fmt, void* args);
+int luaX_lex(void* ls, double* seminfo);
+int luaK_numberK(void* fs, double r);
+void* luaZ_openspace(void* L, int buff, unsigned int n);
+
 #endif /* _FWONLINE_DEFS_H_ */
 
 
