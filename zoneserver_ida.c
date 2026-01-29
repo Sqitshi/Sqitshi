@@ -11956,13 +11956,13 @@ void CAI_ctor(CAI *self)
   time_t v6; // [esp+34h] [ebp-4h]
 
   CTimer_ctor((time_t *)self + 16393);
-  NPCGroupInfo_ctor((CAI *)((char *)self + 5629576));
-  CNPCAttAccess_ctor((CAI *)((char *)self + 5629584));
-  CSpawnMgr_ctor((CAI *)((char *)self + 9933592));
-  CWayPointSceneMgr_ctor((CAI *)((char *)self + 9933624));
-  NPCPoolMgr_ctor((CAI *)((char *)self + 10031940));
-  CSceneSharedData_ctor((CAI *)((char *)self + 10031948));
-  FWLogClient_ctor((CAI *)((char *)self + 10033656));
+  NPCGroupInfo_ctor((NPCGroupInfo*)((char *)self + 5629576));
+  CNPCAttAccess_ctor((CNPCAttAccess*)((char *)self + 5629584));
+  CSpawnMgr_ctor((CSpawnMgr*)((char *)self + 9933592));
+  CWayPointSceneMgr_ctor((CWayPointSceneMgr*)((char *)self + 9933624));
+  NPCPoolMgr_ctor((NPCPoolMgr*)((char *)self + 10031940));
+  CSceneSharedData_ctor((CSceneSharedData*)((char *)self + 10031948));
+  FWLogClient_ctor((FWLogClient*)((char *)self + 10033656));
   v6 = time(NULL);
   *(((DWORD*)(void*)self) + 4008492) = 0;
   *(((DWORD*)(void*)self) + 4008491) = 0;
@@ -11970,7 +11970,7 @@ void CAI_ctor(CAI *self)
   *(DWORD *)self = CLog_RegisterModule((CLog *)&SysLog, 4, "AI");
   g_pLog = *(DWORD *)self;
   *(((DWORD*)(void*)self) + 2483397) = (char *)self + 5629576;
-  g_pcNPCList = (CAI *)((char *)self + 5629576);
+  g_pcNPCList = (NPCGroupInfo*)((char *)self + 5629576);
   *(((DWORD*)(void*)self) + 2491600) = 0;
   *(((DWORD*)(void*)self) + 2491600) = malloc(276000);
   memset(*((void **)self + 2491600), 0, 0x43620u);
@@ -12742,16 +12742,16 @@ char *CVKY_CollisionList_GetNPCCount(CVKY_CollisionList *self)
 //----- (080A0BD0) --------------------------------------------------------
 void CSceneSharedData_ctor(CSceneSharedData *self)
 {
-  CVKY_PCList_ctor(self);
-  CVKY_NPCTypeList_ctor((CSceneSharedData *)((char *)self + 1584));
-  CVKY_CollisionList_ctor((CSceneSharedData *)((char *)self + 1592));
+  CVKY_PCList_ctor((CVKY_PCList*)self);
+  CVKY_NPCTypeList_ctor((CVKY_NPCTypeList*)((char *)self + 1584));
+  CVKY_CollisionList_ctor((CVKY_CollisionList*)((char *)self + 1592));
 }
 
 //----- (080A0C90) --------------------------------------------------------
 void CSceneSharedData_dtor(CSceneSharedData *self, char a2){
-  CVKY_CollisionList_dtor((CSceneSharedData *)((char *)self + 1592), 2);
-  CVKY_NPCTypeList_dtor((CSceneSharedData *)((char *)self + 1584), 2);
-  CVKY_PCList_dtor(self, 2);
+  CVKY_CollisionList_dtor((CVKY_CollisionList*)((char *)self + 1592), 2);
+  CVKY_NPCTypeList_dtor((CVKY_NPCTypeList*)((char *)self + 1584), 2);
+  CVKY_PCList_dtor((CVKY_PCList*)self, 2);
   if ( a2 & 1 )
     free(self);
 }
@@ -13596,8 +13596,8 @@ int lua_load(int a1, int a2, int a3, void *a4){
   v4 = a4;
   if ( !a4 )
     v4 = NULL;
-  luaZ_init(&v7, a2, a3, (int)v4);
-  v5 = luaZ_lookahead(&v7);
+  luaZ_init((DWORD*)&v7, a2, a3, (int)v4);
+  v5 = luaZ_lookahead((DWORD*)&v7);
   return luaD_protectedparser(a1, (int)&v7, v5 == 27);
 }
 
@@ -16715,8 +16715,8 @@ int luaY_field(int a1, DWORD *a2){
   v2 = *(int **)(a1 + 36);
   luaK_exp2anyreg(v2, a2);
   next(a1);
-  checkname(a1, &v4);
-  return luaK_indexed(v2, a2, &v4);
+  checkname(a1, (DWORD*)&v4);
+  return luaK_indexed(v2, a2, (DWORD*)&v4);
 }
 
 //----- (080A75BC) --------------------------------------------------------
@@ -16743,17 +16743,17 @@ int recfield(int a1, int a2){
   {
     luaX_checklimit(a1, *(DWORD *)(a2 + 24), 2147483645, (int)"items in a constructor");
     ++*(DWORD *)(a2 + 24);
-    checkname(a1, &v8);
+    checkname(a1, (DWORD*)&v8);
   }
   else
   {
-    luaY_index(a1, &v8);
+    luaY_index(a1, (DWORD*)&v8);
   }
   check(a1, 61);
-  luaK_exp2RK(v2, &v8);
+  luaK_exp2RK(v2, (DWORD*)&v8);
   expr(a1, v7);
   v5 = luaK_exp2RK(v2, v7);
-  v3 = luaK_exp2RK(v2, &v8);
+  v3 = luaK_exp2RK(v2, (DWORD*)&v8);
   luaK_codeABC((int)v2, 9, *(DWORD *)(*(DWORD *)(a2 + 20) + 4), v3, v5);
   result = v6;
   v2[9] = v6;
@@ -16832,7 +16832,7 @@ int constructor(int a1, DWORD *a2){
   v10 = 0;
   v8 = a2;
   init_exp(a2, 10, v4);
-  init_exp(&v7, 0, 0);
+  init_exp((DWORD*)&v7, 0, 0);
   luaK_exp2nextreg(*(int **)(a1 + 36), a2);
   check(a1, 123);
   do
@@ -16840,7 +16840,7 @@ int constructor(int a1, DWORD *a2){
     testnext(a1, 59);
     if ( *(DWORD *)(a1 + 12) == 125 )
       break;
-    closelistfield(v6, &v7);
+    closelistfield(v6, (DWORD*)&v7);
     v2 = *(DWORD *)(a1 + 12);
     if ( v2 != 91 && (v2 != 278 || (lookahead(a1), *(DWORD *)(a1 + 24) != 61)) )
       listfield(a1, (int)&v7);
@@ -16849,7 +16849,7 @@ int constructor(int a1, DWORD *a2){
   }
   while ( testnext(a1, 44) || testnext(a1, 59) );
   check_match(a1, 125, 123, v5);
-  lastlistfield(v6, &v7);
+  lastlistfield(v6, (DWORD*)&v7);
   *(DWORD *)(*(DWORD *)(*v6 + 12) + 4 * v4) = (luaO_int2fb(v10) << 15) & 0xFF8000 | *(DWORD *)(*(DWORD *)(*v6 + 12)
                                                                                                 + 4 * v4) & 0xFF007FFF;
   result = (((unsigned short)luaO_log2(v9) + 1) << 6) & 0x7FC0;
@@ -17028,8 +17028,8 @@ int primaryexp(DWORD *a1, DWORD *a2)
       if ( result == 58 )
       {
         next((int)a1);
-        checkname((int)a1, &v4);
-        luaK_self(v3, a2, &v4);
+        checkname((int)a1, (DWORD*)&v4);
+        luaK_self(v3, a2, (DWORD*)&v4);
         goto LABEL_17;
       }
       if ( result > 58 )
@@ -17055,8 +17055,8 @@ LABEL_17:
     if ( result != 91 )
       return result;
     luaK_exp2anyreg(v3, a2);
-    luaY_index((int)a1, &v4);
-    luaK_indexed(v3, a2, &v4);
+    luaY_index((int)a1, (DWORD*)&v4);
+    luaK_indexed(v3, a2, (DWORD*)&v4);
   }
   if ( result == 286 )
     goto LABEL_16;
@@ -17215,7 +17215,7 @@ int subexpr(int a1, int *a2, int a3){
     {
       next(a1);
       luaK_infix(*(int **)(a1 + 36), v5, a2);
-      v6 = subexpr(a1, &v8, (unsigned char)byte_819AACD[2 * v5]);
+      v6 = subexpr(a1, (DWORD*)&v8, (unsigned char)byte_819AACD[2 * v5]);
       luaK_posfix(*(int **)(a1 + 36), v5, a2, &v8);
       v5 = v6;
     }
@@ -17252,7 +17252,7 @@ void block(int a1){
   char v2; // [esp+14h] [ebp-14h]
 
   v1 = *(int **)(a1 + 36);
-  enterblock((int)v1, &v2, 0);
+  enterblock((int)v1, (DWORD*)&v2, 0);
   chunk((DWORD *)a1);
   leaveblock(v1);
 }
@@ -17307,10 +17307,10 @@ int assignment(DWORD *a1, DWORD *a2, int a3){
   if ( testnext((int)a1, 44) )
   {
     v6 = a2;
-    primaryexp(a1, &v7);
+    primaryexp(a1, (DWORD*)&v7);
     if ( v7 == 5 )
       check_conflict((int)a1, a2, (int)&v7);
-    assignment(a1, &v6, a3 + 1);
+    assignment(a1, (DWORD*)&v6, a3 + 1);
   }
   else
   {
@@ -17359,11 +17359,11 @@ void whilestat(int a1, int a2){
   next(a1);
   v8 = luaK_jump(v2);
   v6 = luaK_getlabel((int)v2);
-  expr(a1, &v11);
+  expr(a1, (DWORD*)&v11);
   if ( v11 == 4 )
     v11 = 2;
   v9 = *(DWORD *)(a1 + 4);
-  luaK_goiffalse(v2, &v11);
+  luaK_goiffalse(v2, (DWORD*)&v11);
   luaK_concat(v2, &v13, v2[8]);
   v2[8] = -1;
   v3 = v2[6] - v6;
@@ -17372,7 +17372,7 @@ void whilestat(int a1, int a2){
   for ( i = 0; i < v3; ++i )
     *(DWORD *)&v14[4 * i] = *(DWORD *)(*(DWORD *)(*v2 + 12) + 4 * (i + v6));
   v2[6] = v6;
-  enterblock((int)v2, &v10, 1);
+  enterblock((int)v2, (DWORD*)&v10, 1);
   check(a1, 259);
   v7 = luaK_getlabel((int)v2);
   block(a1);
@@ -17400,7 +17400,7 @@ void repeatstat(int a1, int a2){
 
   v2 = *(int **)(a1 + 36);
   v3 = luaK_getlabel(*(DWORD *)(a1 + 36));
-  enterblock((int)v2, &v4, 1);
+  enterblock((int)v2, (DWORD*)&v4, 1);
   next(a1);
   block(a1);
   check_match(a1, 276, 272, a2);
@@ -17414,7 +17414,7 @@ int exp1(int a1){
   int v1; // edi
   int v3; // [esp+14h] [ebp-14h]
 
-  expr(a1, &v3);
+  expr(a1, (DWORD*)&v3);
   v1 = v3;
   luaK_exp2nextreg(*(int **)(a1 + 36), &v3);
   return v1;
@@ -17432,7 +17432,7 @@ void forbody(int a1, int a2, int a3, int a4, int a5){
   v5 = *(int **)(a1 + 36);
   adjustlocalvars(a1, a4);
   check(a1, 259);
-  enterblock((int)v5, &v10, 1);
+  enterblock((int)v5, (DWORD*)&v10, 1);
   v6 = luaK_getlabel((int)v5);
   block(a1);
   luaK_patchtohere(v5, v6 - 1);
@@ -17520,7 +17520,7 @@ void forstat(int a1, int a2){
   char v5; // [esp+14h] [ebp-14h]
 
   v2 = *(int **)(a1 + 36);
-  enterblock((int)v2, &v5, 0);
+  enterblock((int)v2, (DWORD*)&v5, 0);
   next(a1);
   v3 = str_checkname(a1);
   v4 = *(DWORD *)(a1 + 12);
@@ -17604,8 +17604,8 @@ int localfunc(DWORD *a1)
   init_exp(v5, 5, v1[9]);
   luaK_reserveregs(v1, 1);
   adjustlocalvars((int)a1, 1);
-  body(a1, &v4, 0, a1[1]);
-  luaK_storevar(v1, v5, &v4);
+  body(a1, (DWORD*)&v4, 0, a1[1]);
+  luaK_storevar(v1, v5, (DWORD*)&v4);
   result = 3 * v1[v1[13] + 173];
   *(DWORD *)(*(DWORD *)(*v1 + 24) + 12 * v1[v1[13] + 173] + 4) = v1[6];
   return result;
@@ -17664,8 +17664,8 @@ int funcstat(int a1, int a2){
 
   next(a1);
   v2 = funcname(a1, v5);
-  body((DWORD *)a1, &v4, v2, a2);
-  luaK_storevar(*(int **)(a1 + 36), v5, &v4);
+  body((DWORD *)a1, (DWORD*)&v4, v2, a2);
+  luaK_storevar(*(int **)(a1 + 36), v5, (DWORD*)&v4);
   return luaK_fixline(*(DWORD **)(a1 + 36), a2);
 }
 
@@ -17677,11 +17677,11 @@ int exprstat(DWORD *a1)
   int v4; // [esp+24h] [ebp-14h]
 
   v2 = a1[9];
-  primaryexp(a1, &v4);
+  primaryexp(a1, (DWORD*)&v4);
   if ( v4 == 12 )
     return luaK_setcallreturns(v2, &v4, 0);
   v3 = 0;
-  return assignment(a1, &v3, 1);
+  return assignment(a1, (DWORD*)&v3, 1);
 }
 
 //----- (080A8D50) --------------------------------------------------------
@@ -23793,7 +23793,7 @@ LABEL_15:
       result = v9;
     return result;
   }
-  v7 = mysql_errno(self);
+  v7 = mysql_errno((MYSQL*)self);
   v4 = (const char *)mysql_error((MYSQL*)self);
   sprintf(&s, "Mysql errro occured %s\n", v4);
   if ( v7 == 2006 || v7 == 2013 )
@@ -26729,7 +26729,7 @@ int CScene_DeleteObject(CScene *self, VKY_SCENE_tObjectHandle *a2)
 {
   CVKY_Entity *v3; // [esp+14h] [ebp-4h]
 
-  v3 = (CVKY_Entity *)CVKY_EntityManager_FindEntity(self, *(((DWORD*)(void*)a2) + 32));
+  v3 = (CVKY_Entity *)CVKY_EntityManager_FindEntity((CVKY_EntityManager*)self, *(((DWORD*)(void*)a2) + 32));
   if ( !v3 )
     return printf("\nERROR_ Trying to delete unrecognize object with ID %u\n", *(((DWORD*)(void*)a2) + 32));
   (*(void (**)(CScene *, VKY_SCENE_tObjectHandle *))(*(((DWORD*)(void*)self) + 33134) + 40))(self, a2);
@@ -26974,7 +26974,7 @@ int *tf22CVKY_CollisionResponse()
 
 //----- (08175D20) --------------------------------------------------------
 
-int *tf18CVKY_EntityManager()
+int *tf18CVKY_EntityManager_func()
 {
   if ( !ti18CVKY_EntityManager )
     0;
@@ -31931,9 +31931,9 @@ DWORD unk_819DCD0; // weak
 DWORD unk_819F078; // weak
 DWORD unk_819F250; // weak
 DWORD unk_819FA80; // weak
-int *off_81A0064 = &tf6CScene; // weak
-int *off_81A01E4 = &tf6CScene; // weak
-int *off_81A08B8 = &ti18CVKY_EntityManager; // weak
+int *off_81A0064 = (int*)tf6CScene(); // weak
+int *off_81A01E4 = (int*)tf6CScene(); // weak
+int *off_81A08B8 = (int*)tf18CVKY_EntityManager_func(); // weak
 // int (*(*0)[4])() = NULL; // weak
 // DUPLICATE: int completed_4 = 0; // weak
 // DUPLICATE: int force_to_data = 0; // weak
@@ -32210,7 +32210,7 @@ float g_fSinTable[256]; // idb
 int ti12CIndoorScene; // weak
 int ti15CLandscapeScene; // weak
 // DUPLICATE: int ti22CVKY_CollisionResponse; // weak
-int tf6CScene; // weak
+// DUPLICATE: int tf6CScene; // weak
 // DUPLICATE: int ti9CGEN_Node; // weak
 // DUPLICATE: int ti18CVKY_EntityManager; // weak
 int ti11CVKY_Entity; // weak
