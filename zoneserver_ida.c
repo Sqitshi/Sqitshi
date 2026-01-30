@@ -222,7 +222,7 @@ void CMemObject_dtor(CMemObject *self, char a2);int CMemObject_GetElementsCount(
 int CMemMgr_QueryMemObject(CMemMgr *self, unsigned int a2);int CMemPage_QueryMemObject(CMemPage *self, unsigned int a2);int CMemObject_Init(CMemObject *self, unsigned int a2, unsigned int a3);int CMemObject_Read(CMemObject *self, CDBAccess *a2);
 DWORD CMemObject_Flush(CMemObject *self, CDBAccess *); // idb
 CMemAccess *CMemAccess_ctor(CMemAccess *self, char *src, char *, char *, char *); // idb
-void CMemAccess_dtor(CMemAccess *self, char a2_dup);int CMemAccess_Lock(CMemAccess *, int a2_dup, int a3, void*); // idbint CMemAccess_Lock(CMemAccess *, int a2_dup, void*); // idbint CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3);CMemAccess *CMemAccess_RefreshCacheObject(CMemAccess *self, tMemCacheObject *a2);
+void CMemAccess_dtor(CMemAccess *self, char a2_dup);int CMemAccess_Lock(CMemAccess *, int a2_dup, int a3, void*); // idbint CMemAccess_Lock(CMemAccess *, int a2_dup, void*); // idbint CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3);void* CMemAccess_RefreshCacheObject(void* self, void* a2);
 tMemCacheObject *CMemAccess_Add(CMemAccess *self, CMemObject *a2);
 int CMemAccess_AddCacheObject(CMemAccess *self, tMemCacheObject *a2);
 int CMemAccess_FlushCache(CMemAccess *self, int a2);int CMemAccess_DeleteCacheObject(CMemAccess *self, tMemCacheObject *a2);
@@ -343,8 +343,8 @@ int valismarked(int *a1);
 void cleartablekeys(int a1);void cleartablevalues(int a1);void *freeobj(int a1, unsigned char *ptr);int sweeplist(int a1, unsigned char **a2, int a2_dup);DWORD *sweepstrings(int a1, int a2_dup);int checkSizes(int a1, int a2_dup);void do1gcTM(int a1, int a2_dup);char luaC_callGCTM(int a1);int luaC_sweep(int a1, int a2_dup);int markroot(int *a1, int a2_dup);int mark(int a1);char luaC_collectgarbage(int a1);int luaC_link(int a1, int a2_dup, unsigned char a3);void *luaM_growaux(DWORD *a1, void *ptr, int *a3, int a2_dup, int a5, char *a6);void *luaM_realloc(int a1, void *ptr, int a2_dup, size_t size);int luaO_int2fb(unsigned int a1);int luaO_log2(unsigned int a1);int luaO_rawequalObj(DWORD *a1, DWORD *a2);
 int luaO_str2d(const char *nptr, double *a2);
 int pushstr(DWORD *a1, void *src);
-int luaO_pushvfstring(void*, char *s, void*); // idb
-int luaO_pushfstring(void*, char *s, void*); // idb
+void* luaO_pushvfstring(void*, char *s, void*); // idb
+void* luaO_pushfstring(void*, char *s, void*); // idb
 char *luaO_chunkid(char *dest, const char *s, size_t n);
 int next(int a1);int lookahead(int a1);void /* __noreturn */ error_expected(int a1, int a2_dup);int testnext(int a1, int a2_dup);int check(int a1, int a2_dup);int check_match(int a1, int a2_dup, int a3_dup, int a4_dup);int str_checkname(int a1);DWORD *init_exp(DWORD *a1, int a2_dup, int a3_dup);DWORD *codestring(int a1, DWORD *a2, int a3_dup);DWORD *checkname(int a1, DWORD *a2);int luaI_registerlocalvar(int a1, int a2_dup);int new_localvar(int a1, int a2_dup, int a3_dup);int adjustlocalvars(int a1, int a2_dup);int removevars(int a1, int a2_dup);int new_localvarstr(int a1, void *src, int a2_dup);int create_local(int a1, void *a2);int indexupvalue(int *a1, int a2_dup, DWORD *a3);int searchvar(DWORD *a1, int a2_dup);DWORD *markupval(int a1, int a2_dup);DWORD *singlevaraux(int *a1, int a2_dup, DWORD *a3, int a4);int singlevar(int a1, DWORD *a2, int a3_dup);int adjust_assign(int a1, int a2_dup, int a3_dup, int *a4);int code_params(int a1, int a2_dup, int a3_dup);int enterblock(int a1, DWORD *a2, int a3_dup);void leaveblock(int *a1);
 int pushclosure(int a1, int *a2, DWORD *a3);int open_func(DWORD *a1, DWORD *a2);
@@ -371,7 +371,7 @@ DWORD *luaV_tonumber(DWORD *a1, int a2_dup);int luaV_tostring(int a1, int a2);ch
 char callTM(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4, DWORD *a5);
 DWORD *luaV_index(int a1, int a2, DWORD *a3, int a4_dup);DWORD *luaV_getnotable(int a1, DWORD *a2, int a3_dup, int a4_dup);DWORD *luaV_gettable(int a1, DWORD *a2, DWORD *a3, int a4);char luaV_settable(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4);
 int call_binTM(DWORD *a1, DWORD *a2, DWORD *a3, int a4_dup, int a5);DWORD *get_compTM(int a1, int a2_dup, int a3_dup, int a4_dup);int call_orderTM(int a1, DWORD *a2, DWORD *a3, int a4);int luaV_strcmp(int a1, int a2_dup);int luaV_lessthan(int a1, DWORD *a2, DWORD *a3);int luaV_lessequal(int a1, DWORD *a2, DWORD *a3);int luaV_equalval(int a1, int a2_dup, int a3_dup);int **luaV_concat(DWORD *a1, int a2_dup, int a3_dup);int Arith(DWORD *a1, int a2_dup, DWORD *a3, DWORD *a4, int a5);DWORD *luaV_execute(int a1);int luaZ_fill(int a1);int luaZ_lookahead(DWORD *a1);
-DWORD *luaZ_init(DWORD *a1, int a2_dup, int a3_dup, int a4);size_t luaZ_read(int a1, void *dest, size_t n);int luaZ_openspace(void* a1, int a2_dup, size_t size);int luaK_nil(DWORD *a1, int a2, int a3_dup);int luaK_jump(int *a1);
+DWORD *luaZ_init(DWORD *a1, int a2_dup, int a3_dup, int a4);size_t luaZ_read(int a1, void *dest, size_t n);void* luaZ_openspace(void* a1, int a2_dup, unsigned int size);int luaK_nil(DWORD *a1, int a2, int a3_dup);int luaK_jump(int *a1);
 int luaK_condjump(int *a1, int a2_dup, int a3_dup, int a4_dup, int a5);int luaK_fixjump(int *a1, int a2_dup, int a3_dup);int luaK_getlabel(int a1);int luaK_getjump(int a1, int a2_dup);int getjumpcontrol(int a1, int a2_dup);int need_value(int a1, int a2_dup, int a3_dup);unsigned int patchtestreg(unsigned int *a1, int a2_dup);void luaK_patchlistaux(int *a1, int a2, int a3_dup, int a4, int a5, int a6, int a7);void luaK_dischargejpc(int *a1);
 void luaK_patchlist(int *a1, int a2_dup, int a3_dup);void luaK_patchtohere(int *a1, int a2_dup);void luaK_concat(int *a1, int *a2, int a3);int luaK_checkstack(int *a1, int a2_dup);int luaK_reserveregs(int *a1, int a2_dup);int freereg(int a1, int a2_dup);int freeexp(int a1, DWORD *a2);int addk(int *a1, DWORD *a2, DWORD *a3);
 int luaK_stringK(int *a1, int a2);int luaK_numberK(void*, double); // idb
@@ -9800,6 +9800,9 @@ void CMemAccess_dtor(CMemAccess *self, char a2){
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (0806F988) --------------------------------------------------------
+// Forward declaration for CMemAccess_RefreshCacheObject
+void* CMemAccess_RefreshCacheObject(void* self, void* a2);
+
 int CMemAccess_Lock(CMemAccess *a1, int a2, int a3, int a4){
   *(DWORD *)(a2 + 16) = a4;
   return CMemAccess_Lock(a1, a2, a3, 0);
@@ -10016,7 +10019,7 @@ int CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3){
 // 804B208: using guessed type int malloc(DWORD);
 
 //----- (08070920) --------------------------------------------------------
-CMemAccess *CMemAccess_RefreshCacheObject(CMemAccess *self, tMemCacheObject *a2)
+void* CMemAccess_RefreshCacheObject(void* self, void* a2)
 {
   CMemAccess *result; // eax
 
@@ -16054,7 +16057,7 @@ int pushstr(DWORD *a1, void *src)
 }
 
 //----- (080A67D8) --------------------------------------------------------
-int luaO_pushvfstring(int a1, char *s, int a3){  char *v3; // esi
+void* luaO_pushvfstring(void* a1, char *s, void* a3){  char *v3; // esi
   int v4; // edi
   DWORD *v5; // ebx
   int v6; // edx
@@ -16141,7 +16144,7 @@ LABEL_21:
 // 819A83F: using guessed type char byte_819A83F;
 
 //----- (080A69D8) --------------------------------------------------------
-int luaO_pushfstring(int a1, char *s, int a3){  return luaO_pushvfstring(a1, s, (int)&a3);
+void* luaO_pushfstring(void* a1, char *s, void* a3){  return luaO_pushvfstring(a1, s, (int)&a3);
 }
 
 //----- (080A69F4) --------------------------------------------------------
@@ -20663,7 +20666,7 @@ size_t luaZ_read(int a1, void *dest, size_t n){
 }
 
 //----- (080AC98C) --------------------------------------------------------
-int luaZ_openspace(int a1, int a2, size_t size){
+void* luaZ_openspace(void* a1, int a2, unsigned int size){
   size_t v3; // ebx
   unsigned int v4; // eax
 
@@ -20978,7 +20981,7 @@ int luaK_stringK(int *a1, int a2){
 }
 
 //----- (080ACF28) --------------------------------------------------------
-int luaK_numberK(int a1, double a2){
+int luaK_numberK(void* a1, double a2){
   int v3; // [esp+Ch] [ebp-Ch]
   double v4; // [esp+10h] [ebp-8h]
 
@@ -21797,7 +21800,7 @@ int readname(int a1){
 // 81D4870: using guessed type int _ctype_b;
 
 //----- (080ADF58) --------------------------------------------------------
-int read_numeral(int a1, int a2, double *a3){
+int read_numeral(void* a1, int a2, double *a3){
   int v3; // esi
   int v4; // eax
   int i; // edx
@@ -22331,7 +22334,7 @@ LABEL_61:
 // 81D4870: using guessed type int _ctype_b;
 
 //----- (080AE818) --------------------------------------------------------
-int luaX_lex(int a1, double *a2){
+int luaX_lex(void* a1, double *a2){
   int v2; // ebx
   DWORD *v3; // eax
   int v5; // eax
@@ -24489,7 +24492,7 @@ void CSndPkt_dtor(CSndPkt *self, char a2){
 // 804B1D8: using guessed type int free(DWORD);
 
 //----- (081615D0) --------------------------------------------------------
-int CSndPkt_AddNetObject(CSndPkt *a1, void *src, int a3){  int result; // eax
+int CSndPkt_AddNetObject(CSndPkt *a1, void *src, void* a3){  int result; // eax
   DWORD *v4; // edx
   DWORD *v5; // [esp+10h] [ebp-8h]
   DWORD *v6; // [esp+10h] [ebp-8h]
@@ -24662,7 +24665,7 @@ DWORD *CSndPkt_AddObjectData(int a1, DWORD *a2, int a3){
 }
 
 //----- (08162128) --------------------------------------------------------
-int CSndPkt_AddObjectHeader(int a1, int a2, void *src){
+int CSndPkt_AddObjectHeader(void* a1, int a2, void *src){
   int result; // eax
 
   memcpy((void *)(a2 + *((DWORD*)(void*)a2) + 24), (char *)src + 2, 2u);
@@ -30906,7 +30909,7 @@ CMemAccess *CMemAccess_ctor(CMemAccess *self, char *src, char *, char *, char *)
 // FIXME FWD: int CMemAccess_Purge(CMemAccess *, void*); // idb
 // FIXME FWD: int CMemAccess_PurgeCategory(CMemAccess *self, unsigned int a2);int CMemAccess_NumFree(int a1, int a2_dup);int CMemAccess_Count(int a1, int a2_dup);int CMemAccess_CreateElements(CMemAccess *, void*); // idb
 // FIXME FWD: int CMemAccess_DeleteElements(int a1, int a2);int CMemAccess_GenerateUniqueID(CMemAccess *self, char *a2);
-// FIXME FWD: int CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3);CMemAccess *CMemAccess_RefreshCacheObject(CMemAccess *self, tMemCacheObject *a2);
+// FIXME FWD: int CMemAccess_Init(CMemAccess *self, int a2, CMemMgr *a3);void* CMemAccess_RefreshCacheObject(void* self, void* a2);
 tMemCacheObject *CMemAccess_Add(CMemAccess *self, CMemObject *a2);
 // FIXME FWD: int CMemAccess_AddCacheObject(CMemAccess *self, tMemCacheObject *a2);
 // FIXME FWD: int CMemAccess_FlushCache(CMemAccess *self, int a2);int CMemAccess_DeleteCacheObject(CMemAccess *self, tMemCacheObject *a2);
@@ -31159,8 +31162,8 @@ void /* __noreturn */ luaG_runerror(DWORD *a1, char *s, ...);
 // FIXME FWD: void cleartablekeys(int a1);void cleartablevalues(int a1);void *freeobj(int a1, unsigned char *ptr);int sweeplist(int a1, unsigned char **a2, int a2_dup);DWORD *sweepstrings(int a1, int a2_dup);int checkSizes(int a1, int a2_dup);void do1gcTM(int a1, int a2_dup);char luaC_callGCTM(int a1);int luaC_sweep(int a1, int a2_dup);int markroot(int *a1, int a2_dup);int mark(int a1);char luaC_collectgarbage(int a1);int luaC_link(int a1, int a2_dup, unsigned char a3);void *luaM_growaux(DWORD *a1, void *ptr, int *a3, int a2_dup, int a5, char *a6);void *luaM_realloc(int a1, void *ptr, int a2_dup, size_t size);unsigned int luaO_int2fb(unsigned int a1);int luaO_log2(unsigned int a1);int luaO_rawequalObj(DWORD *a1, DWORD *a2);
 // FIXME FWD: int luaO_str2d(const char *nptr, double *a2);
 // FIXME FWD: int pushstr(DWORD *a1, void *src);
-// FIXME FWD: int luaO_pushvfstring(void*, char *s, void*); // idb
-// FIXME FWD: int luaO_pushfstring(void*, char *s, void*); // idb
+// FIXME FWD: void* luaO_pushvfstring(void*, char *s, void*); // idb
+// FIXME FWD: void* luaO_pushfstring(void*, char *s, void*); // idb
 // FIXME FWD: char *luaO_chunkid(char *dest, const char *s, size_t n);
 // FIXME FWD: int next(int a1);int lookahead(int a1);void /* __noreturn */ error_expected(int a1, int a2_dup);int testnext(int a1, int a2_dup);int check(int a1, int a2_dup);int check_match(int a1, int a2_dup, int a3_dup, int a4_dup);int str_checkname(int a1);DWORD *init_exp(DWORD *a1, int a2_dup, int a3_dup);DWORD *codestring(int a1, DWORD *a2, int a3_dup);DWORD *checkname(int a1, DWORD *a2);int luaI_registerlocalvar(int a1, int a2_dup);int new_localvar(int a1, int a2_dup, int a3_dup);int adjustlocalvars(int a1, int a2_dup);int removevars(int a1, int a2_dup);int new_localvarstr(int a1, void *src, int a2_dup);int create_local(int a1, void *a2);int indexupvalue(int *a1, int a2_dup, DWORD *a3);int searchvar(DWORD *a1, int a2_dup);DWORD *markupval(int a1, int a2_dup);DWORD *singlevaraux(int *a1, int a2_dup, DWORD *a3, int a4);int singlevar(int a1, DWORD *a2, int a3_dup);int adjust_assign(int a1, int a2_dup, int a3_dup, int *a4);int code_params(int a1, int a2_dup, int a3_dup);int enterblock(int a1, DWORD *a2, int a3_dup);void leaveblock(int *a1);
 // FIXME FWD: int pushclosure(int a1, int *a2, DWORD *a3);int open_func(DWORD *a1, DWORD *a2);
@@ -31188,7 +31191,7 @@ void /* __noreturn */ luaG_runerror(DWORD *a1, char *s, ...);
 // FIXME FWD: char callTM(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4, DWORD *a5);
 // FIXME FWD: DWORD *luaV_index(int a1, int a2, DWORD *a3, int a4_dup);DWORD *luaV_getnotable(int a1, DWORD *a2, int a3_dup, int a4_dup);DWORD *luaV_gettable(int a1, DWORD *a2, DWORD *a3, int a4);char luaV_settable(DWORD *a1, DWORD *a2, DWORD *a3, DWORD *a4);
 // FIXME FWD: int call_binTM(DWORD *a1, DWORD *a2, DWORD *a3, int a4_dup, int a5);DWORD *get_compTM(int a1, int a2_dup, int a3_dup, int a4_dup);int call_orderTM(int a1, DWORD *a2, DWORD *a3, int a4);int luaV_strcmp(int a1, int a2_dup);int luaV_lessthan(int a1, DWORD *a2, DWORD *a3);int luaV_lessequal(int a1, DWORD *a2, DWORD *a3);int luaV_equalval(int a1, int a2_dup, int a3_dup);int ***luaV_concat(DWORD *a1, int a2_dup, int a3_dup);int Arith(DWORD *a1, int a2_dup, DWORD *a3, DWORD *a4, int a5);DWORD *luaV_execute(int a1);int luaZ_fill(int a1);int luaZ_lookahead(DWORD *a1);
-// FIXME FWD: DWORD *luaZ_init(DWORD *a1, int a2_dup, int a3_dup, int a4);size_t luaZ_read(int a1, void *dest, size_t n);int luaZ_openspace(void* a1, int a2_dup, size_t size); // idbint luaK_nil(DWORD *a1, int a2, int a3_dup);int luaK_jump(int *a1);
+// FIXME FWD: DWORD *luaZ_init(DWORD *a1, int a2_dup, int a3_dup, int a4);size_t luaZ_read(int a1, void *dest, size_t n);void* luaZ_openspace(void* a1, int a2_dup, unsigned int size); // idbint luaK_nil(DWORD *a1, int a2, int a3_dup);int luaK_jump(int *a1);
 // FIXME FWD: int luaK_condjump(int *a1, int a2_dup, int a3_dup, int a4_dup, int a5);int luaK_fixjump(int *a1, int a2_dup, int a3_dup);int luaK_getlabel(int a1);int luaK_getjump(int a1, int a2_dup);int getjumpcontrol(int a1, int a2_dup);int need_value(int a1, int a2_dup, int a3_dup);unsigned int patchtestreg(unsigned int *a1, int a2_dup);void luaK_patchlistaux(int *a1, int a2, int a3_dup, int a4, int a5, int a6, int a7);void luaK_dischargejpc(int *a1);
 // FIXME FWD: void luaK_patchlist(int *a1, int a2_dup, int a3_dup);void luaK_patchtohere(int *a1, int a2_dup);void luaK_concat(int *a1, int *a2, int a3);int luaK_checkstack(int *a1, int a2_dup);int luaK_reserveregs(int *a1, int a2_dup);int freereg(int a1, int a2_dup);DWORD *freeexp(int a1, DWORD *a2);int addk(int *a1, DWORD *a2, DWORD *a3);
 // FIXME FWD: int luaK_stringK(int *a1, int a2);int luaK_numberK(void*, double); // idb
