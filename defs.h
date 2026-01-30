@@ -109,7 +109,6 @@ static inline int MD5_Final(unsigned char* m, MD5_CTX* c) { return 0; }
 
 // Fehlende Funktionsdeklarationen
 extern "C" {
-    int luaK_jump(void* fs);
     void ERR_print_errors_fp(void* fp);
     void syslog(int priority, const char* format, ...);
 }
@@ -119,19 +118,8 @@ typedef struct CVKY_CollisionResponse_tCollisionData {
     int dummy;
 } CVKY_CollisionResponse_tCollisionData;
 
-// Fehlende Funktionen
+// CMemAccess_Init - nur Deklaration, Definition in stubs.c
 int CMemAccess_Init(void* self);
-int CMemAccess_RefreshCacheObject(void* self, void* obj);
-
-// Fehlende Funktionen für Linker
-int CDBAccess_FetchNextRow(CDBAccess* self, char* fmt, ...);
-int CSndPkt_AddNetObject(CSndPkt* pkt, void* obj, void* data);
-int CSndPkt_AddObjectHeader(void* pkt, int type, void* obj);
-void* luaO_pushvfstring(void* L, char* fmt, void* args);
-void* luaO_pushfstring(void* L, char* fmt, void* args);
-int luaX_lex(void* ls, double* seminfo);
-int luaK_numberK(void* fs, double r);
-void* luaZ_openspace(void* L, int buff, unsigned int n);
 
 #endif /* _FWONLINE_DEFS_H_ */
 
